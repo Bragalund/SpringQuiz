@@ -1,4 +1,4 @@
-package no.group3.springQuiz.quiz.Api
+package no.group3.springQuiz.quiz.api
 
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
