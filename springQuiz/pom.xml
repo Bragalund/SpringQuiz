@@ -8,16 +8,6 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>springQuiz</name>
-    <description>Assignment in enterprise programming</description>
-
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.7.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
-    </parent>
-
     <properties>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -26,57 +16,25 @@
         <kotlin.version>1.1.51</kotlin.version>
     </properties>
 
+    <name>springQuiz</name>
+    <description>Assignment in enterprise programming</description>
+
     <modules>
         <module>quiz</module>
+        <module>forum</module>
+        <module>user</module>
     </modules>
 
-
-    <build>
-        <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
-        <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                </plugin>
-                <plugin>
-                    <artifactId>kotlin-maven-plugin</artifactId>
-                    <groupId>org.jetbrains.kotlin</groupId>
-                    <version>${kotlin.version}</version>
-                    <configuration>
-                        <compilerPlugins>
-                            <plugin>spring</plugin>
-                        </compilerPlugins>
-                        <jvmTarget>1.8</jvmTarget>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>compile</id>
-                            <phase>compile</phase>
-                            <goals>
-                                <goal>compile</goal>
-                            </goals>
-                        </execution>
-                        <execution>
-                            <id>test-compile</id>
-                            <phase>test-compile</phase>
-                            <goals>
-                                <goal>test-compile</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                    <dependencies>
-                        <dependency>
-                            <groupId>org.jetbrains.kotlin</groupId>
-                            <artifactId>kotlin-maven-allopen</artifactId>
-                            <version>${kotlin.version}</version>
-                        </dependency>
-                    </dependencies>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
-
-
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <!-- Import dependency management from Spring Boot -->
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>1.5.8.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>
