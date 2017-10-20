@@ -12,9 +12,10 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="forum" target="1.8" />
-      <module name="quiz" target="1.8" />
-      <module name="user" target="1.8" />
+      <module name="forum" target="1.5" />
+      <module name="quiz" target="1.5" />
+      <module name="SpringQuiz" target="1.5" />
+      <module name="user" target="1.5" />
       <module name="UserService" target="1.8" />
     </bytecodeTargetLevel>
   </component>
