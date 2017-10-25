@@ -5,7 +5,7 @@ import javax.persistence.Entity
 @Entity
 class Password(
 
-        var PasswordHash: String,
+        var passwordHash: String,
 
-        var Salt: String
+        var salt: String
 )
