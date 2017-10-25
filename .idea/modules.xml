@@ -4,10 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/SpringQuiz.iml" filepath="$PROJECT_DIR$/.idea/SpringQuiz.iml" />
       <module fileurl="file://$PROJECT_DIR$/forum/forum.iml" filepath="$PROJECT_DIR$/forum/forum.iml" />
-      <module fileurl="file://$PROJECT_DIR$/forum/forum.iml" filepath="$PROJECT_DIR$/forum/forum.iml" />
       <module fileurl="file://$PROJECT_DIR$/quiz/quiz.iml" filepath="$PROJECT_DIR$/quiz/quiz.iml" />
-      <module fileurl="file://$PROJECT_DIR$/quiz/quiz.iml" filepath="$PROJECT_DIR$/quiz/quiz.iml" />
-      <module fileurl="file://$PROJECT_DIR$/user/user.iml" filepath="$PROJECT_DIR$/user/user.iml" />
       <module fileurl="file://$PROJECT_DIR$/user/user.iml" filepath="$PROJECT_DIR$/user/user.iml" />
     </modules>
   </component>
