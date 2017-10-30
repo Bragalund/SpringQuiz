@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.RestController
 class Heartbeat{
 
     @RequestMapping("/heartbeat")
-    fun hello(): String{
+    fun heartbeat(): String{
         return "<3"
     }
+
 }
