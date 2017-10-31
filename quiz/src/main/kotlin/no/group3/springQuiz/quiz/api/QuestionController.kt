@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiParam
 import io.swagger.annotations.ApiResponse
 import no.group3.springQuiz.quiz.model.dto.QuestionConverter
 import no.group3.springQuiz.quiz.model.dto.QuestionDto
+import no.group3.springQuiz.quiz.model.entity.Question
 import no.group3.springQuiz.quiz.model.repository.CategoryRepository
 import no.group3.springQuiz.quiz.model.repository.QuestionRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -37,7 +38,9 @@ class QuestionController{
     fun get(): ResponseEntity<List<QuestionDto>> {
         return ResponseEntity.ok(QuestionConverter.transform(questionRepository.findAll()))
     }
-    /*
+
+
+
     @ApiOperation("Create a question")
     @PostMapping(consumes = arrayOf(MediaType.APPLICATION_JSON_VALUE))
     @ApiResponse(code = 201, message = "The id of created question")
@@ -45,39 +48,33 @@ class QuestionController{
             @ApiParam("Json representation of the question to create")
             @RequestBody
             dto: QuestionDto): ResponseEntity<Long> {
-        // don't want the id from the client
         if (dto.id != null) {
             // 400, client made an error
             return ResponseEntity.status(400).build()
         }
 
-        if (dto.questionText == null || dto.correctAnswer == null || dto.correctAnswer == null)  {
+        if (dto.questionText == null || dto.answers == null || dto.correctAnswer == null)  {
             return ResponseEntity.status(400).build()
         }
 
-        // Need to belong to a valid persisted subcategory
-        val category = subCatRepository.findOne(dto.subCategoryId!!.toLong())
+        /*
+        val category = categoryRepository.findOne(dto.subCategoryId!!.toLong())
         if (category == null) {
             return ResponseEntity.status(400).build()
         }
+        */
 
-        val question: QuestionEntity?
+        val question: Question?
         try {
-            question = questionRepository.save(QuestionEntity(dto.questionText!!, dto.answers, dto.correctAnswer, category))
+            question = questionRepository.save(Question(questionText =  dto.questionText!!, answers = dto.answers,
+                    correctAnswers = dto.correctAnswer))
         } catch (e: ConstraintViolationException) {
             return ResponseEntity.status(400).build()
         }
 
-        // most likely bug
-        if (category == null) {
-            return ResponseEntity.status(500).build()
-        }
 
-        category.questions.add(question)
-
-
+        questionRepository.save(question)
 
         return ResponseEntity.status(201).body(question.id)
     }
-    */
 }
