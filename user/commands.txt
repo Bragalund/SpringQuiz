@@ -1,0 +1,3 @@
+mvn clean package               To build .jar with maven(doesnt work, becaus missing main-manifest)
+mvn package docker:build        To build docker-image of spring-application
+mvn spring-boot:run             To run spring with maven locally
