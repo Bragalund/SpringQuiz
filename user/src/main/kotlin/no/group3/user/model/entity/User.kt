@@ -21,5 +21,8 @@ class User(
         var lastName: String,
 
         @get: CustomEmail @get: NotEmpty @get: NotNull
-        var email: String
+        var email: String,
+
+        @get: NotEmpty @get: NotNull
+        var passwordHash: String
 )
