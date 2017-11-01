@@ -16,5 +16,8 @@ data class UserDto(
         var lastName: String,
 
         @ApiModelProperty("Email of user")
-        var email: String
+        var email: String,
+
+        @ApiModelProperty("Password of user")
+        var password: String
 )

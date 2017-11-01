@@ -10,7 +10,8 @@ class UserConverter{
                     userName = user.userName,
                     firstName = user.firstName,
                     lastName = user.lastName,
-                    email = user.email
+                    email = user.email,
+                    password = user.passwordHash
             )
         }
         fun transform(entities: Iterable<User>): List<UserDto> {
