@@ -36,7 +36,7 @@ class UserApplicationTests {
     fun setUp() {
         RestAssured.baseURI = "http://localhost"
         RestAssured.port = port
-        RestAssured.basePath = "/user"
+        RestAssured.basePath = "/users"
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails()
         RestAssuredMockMvc.webAppContextSetup(context)
     }
@@ -55,8 +55,14 @@ class UserApplicationTests {
     //Creates user and tries and checks if user exists
     @Test
     fun testCreateAndGetById() {
-        val userDto = getUserDto()
-        val hashedPassword = BCrypt.hashpw(userDto.password, BCrypt.gensalt(10))
+        val id = null
+        val userName = "SomeUserName"
+        val firstName = "SomeFirstName"
+        val lastName = "SomeLastName"
+        val email = "MyMail@SomeMail.com"
+        val password = "SomePassword"
+        val userDto = UserDto(id, userName, firstName,lastName, email, password)
+        //val hashedPassword = BCrypt.hashpw(userDto.password, BCrypt.gensalt(10))
 
         val userId = given().contentType(ContentType.JSON)
                 .body(userDto)
@@ -73,16 +79,17 @@ class UserApplicationTests {
                 .body("firstname", equalTo(userDto.firstName))
                 .body("lastname", equalTo(userDto.lastName))
                 .body("MyMail@SomeMail.com", equalTo(userDto.email))
-                .body("password", equalTo(hashedPassword))
+                //.body("password", equalTo(hashedPassword))
     }
 
     fun getUserDto(): UserDto{
+        val id = null
         val username = "SomeUserName"
         val firstname = "SomeFirstName"
         val lastname = "SomeLastName"
         val email = "MyMail@SomeMail.com"
         val password = "SomePassword"
-        return UserDto(null, username, firstname,lastname, email, password)
+        return UserDto(id, username, firstname,lastname, email, password)
     }
 
 }
