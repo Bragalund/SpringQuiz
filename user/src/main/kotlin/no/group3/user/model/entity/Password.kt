@@ -8,9 +8,7 @@ import javax.persistence.Id
 class Password(
 
         @get: Id @get: GeneratedValue
-        var passwordId: String,
+        var passwordId: Long,
 
-        var passwordHash: String,
-
-        var salt: String
+        var passwordHash: String
 )

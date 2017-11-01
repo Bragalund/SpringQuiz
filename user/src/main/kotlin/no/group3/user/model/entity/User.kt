@@ -8,10 +8,10 @@ import javax.persistence.Id
 import javax.validation.constraints.NotNull
 
 @Entity
-class UserEntity(
+class User(
 
         @get: Id @get: GeneratedValue
-        var userId: String,
+        var userId: Long? = null,
 
         @get: NotEmpty @get: NotNull
         var userName: String,
