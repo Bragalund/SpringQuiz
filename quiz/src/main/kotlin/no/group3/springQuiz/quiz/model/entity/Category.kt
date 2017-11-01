@@ -18,5 +18,5 @@ class Category(
         @get: NotNull @get: NotEmpty
         var name : String? = null,
         @get: OneToMany(mappedBy = "category")
-        var questions : MutableList<Question>? = null
+        var questions : MutableList<Question> = ArrayList()
 )
