@@ -1,0 +1,9 @@
+version: '2'
+services:
+  user:
+    #image: cda6a044e869    <-- spesifiserer lokalt bilde(allerede bygget)
+    build:       # Bygger bilde på Dockerfile
+      context: ./user/ # angir hvor Dockerfilen befinner seg
+      dockerfile: Dockerfile  #Angir navnet på filen
+    ports:  # - <port utenfor container>:<applikasjonens port inne i containeren>
+      - 8082:8082
