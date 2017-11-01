@@ -1,4 +1,4 @@
-package no.group3.springQuiz.forum
+package no.group3.springQuiz.highscore
 
 import org.junit.Test
 import org.junit.runner.RunWith

@@ -1,11 +1,11 @@
-package no.group3.springQuiz.forum
+package no.group3.springQuiz.highscore
 
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 
 @SpringBootApplication
-class ForumApplication
+class HighscoreApplication
 
 fun main(args: Array<String>) {
-    SpringApplication.run(ForumApplication::class.java, *args)
+    SpringApplication.run(HighscoreApplication::class.java, *args)
 }
