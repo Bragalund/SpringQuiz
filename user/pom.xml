@@ -93,12 +93,16 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <!--<configuration>-->
-                    <!--<archive>-->
-                        <!--<manifest>-->
-                            <!--<mainClass>no.group3.user.UserApplication</mainClass>-->
-                        <!--</manifest>-->
-                    <!--</archive>-->
+                    <!--<mainClass>no.group3.user.UserApplication</mainClass>-->
+                    <!--<layout>JAR</layout>-->
                 <!--</configuration>-->
             </plugin>
             <plugin>
