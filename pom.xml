@@ -22,7 +22,7 @@
 
     <modules>
         <module>quiz</module>
-        <module>forum</module>
+        <module>highscore</module>
         <module>user</module>
     </modules>
 
