@@ -1,50 +1,20 @@
 package no.group3.user
 
-import io.restassured.RestAssured
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
-import io.restassured.module.mockmvc.RestAssuredMockMvc
+import junit.framework.Assert.assertEquals
 import no.group3.user.model.dto.UserDto
-import no.group3.user.model.entity.User
 import org.hamcrest.CoreMatchers.equalTo
-import org.junit.After
-import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.springframework.boot.context.embedded.LocalServerPort
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.junit4.SpringRunner
-import org.springframework.web.context.WebApplicationContext
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.crypto.bcrypt.BCrypt
-import org.springframework.test.context.ContextConfiguration
+import org.springframework.test.annotation.DirtiesContext
 
 
-@RunWith(SpringRunner::class)
-@SpringBootTest(classes = arrayOf(UserApplication::class),
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ContextConfiguration(classes = arrayOf(UserApplication::class))
-class UserApplicationTests {
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD) // clean after each test
+class UserApplicationTests: UserTestBase() {
 
-    @Autowired
-    private val context: WebApplicationContext? = null
-
-    @LocalServerPort
-    protected var port = 0
-
-    @Before
-    fun setUp() {
-        RestAssured.baseURI = "http://localhost"
-        RestAssured.port = port
-        RestAssured.basePath = "/users"
-        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails()
-        RestAssuredMockMvc.webAppContextSetup(context)
-    }
-
-    @After
-    fun breakDown() {
-        RestAssuredMockMvc.reset()
-    }
+companion object {
+    val USERS_PATH= "/users"
+}
 
 
     //Checks if application starts
@@ -62,20 +32,21 @@ class UserApplicationTests {
         val email = "MyMail@SomeMail.com"
         val password = "SomePassword"
         val userDto = UserDto(id, userName, firstName,lastName, email, password)
+        assertEquals(userName, userDto.userName)
         //val hashedPassword = BCrypt.hashpw(userDto.password, BCrypt.gensalt(10))
 
         val userId = given().contentType(ContentType.JSON)
                 .body(userDto)
-                .post()
+                .post(USERS_PATH)
                 .then()
                 .statusCode(201)
                 .extract().asString()
 
         given().pathParam("id", userId)
-                .get("/{id}")
+                .get(USERS_PATH+"/{id}")
                 .then()
                 .statusCode(200)
-                .body("id", equalTo(userId))
+                .body("id", equalTo(userId.toInt()))
                 .body("firstname", equalTo(userDto.firstName))
                 .body("lastname", equalTo(userDto.lastName))
                 .body("MyMail@SomeMail.com", equalTo(userDto.email))
