@@ -1,6 +1,8 @@
 package no.group3.springQuiz.quiz
 
+import no.group3.springQuiz.quiz.model.entity.Category
 import no.group3.springQuiz.quiz.model.entity.Question
+import no.group3.springQuiz.quiz.model.repository.CategoryRepository
 import no.group3.springQuiz.quiz.model.repository.QuestionRepository
 import org.aspectj.weaver.patterns.TypePatternQuestions
 import org.springframework.boot.CommandLineRunner
@@ -19,12 +21,20 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2
 @SpringBootApplication
 class QuizApplication{
 
-    /*
+    /**
     @Bean
-    fun init(questionRepository: QuestionRepository) = CommandLineRunner {
-        questionRepository.save(Question(questionText = "who am I?", answers = listOf("?", "?", "js", "?"),
-                correctAnswers = 2))
+    fun init(questionRepository: QuestionRepository, categoryRepository: CategoryRepository) = CommandLineRunner {
+        val cat = categoryRepository.save(Category(name = "random"))
+
+        println(cat)
+
+        val question = questionRepository.save(Question(questionText = "who am I?", answers = listOf("?", "?", "js", "?"),
+                correctAnswers = 2, category = cat))
+        cat.questions!!.add(question)
+
+        categoryRepository.save(cat)
     }*/
+
 }
 
 @EnableSwagger2
