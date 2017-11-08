@@ -13,9 +13,9 @@ class Score(
         @get: Id @get: GeneratedValue
         var id : Long? = null,
         @get: NotNull @get: NotEmpty
-        var name : String? = null,
+        var user : String? = null,
         @get: NotNull @get: NotEmpty
-        var score : Long? = null
+        var score : Int? = null
 )
 
 
