@@ -2,8 +2,10 @@ package no.group3.springQuiz.quiz
 
 import no.group3.springQuiz.quiz.model.entity.Category
 import no.group3.springQuiz.quiz.model.entity.Question
+import no.group3.springQuiz.quiz.model.entity.Quiz
 import no.group3.springQuiz.quiz.model.repository.CategoryRepository
 import no.group3.springQuiz.quiz.model.repository.QuestionRepository
+import no.group3.springQuiz.quiz.model.repository.QuizRepository
 import org.aspectj.weaver.patterns.TypePatternQuestions
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.SpringApplication
@@ -21,9 +23,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2
 @SpringBootApplication
 class QuizApplication{
 
-    /**
+/*
     @Bean
-    fun init(questionRepository: QuestionRepository, categoryRepository: CategoryRepository) = CommandLineRunner {
+    fun init(questionRepository: QuestionRepository, categoryRepository: CategoryRepository,
+             quizRepository: QuizRepository) = CommandLineRunner {
         val cat = categoryRepository.save(Category(name = "random"))
 
         println(cat)
@@ -33,8 +36,13 @@ class QuizApplication{
         cat.questions!!.add(question)
 
         categoryRepository.save(cat)
-    }*/
 
+        val quiz = quizRepository.save(Quiz(difficulty = 1))
+        quiz.questions!!.add(question)
+
+        quizRepository.save(quiz)
+    }
+*/
 }
 
 @EnableSwagger2

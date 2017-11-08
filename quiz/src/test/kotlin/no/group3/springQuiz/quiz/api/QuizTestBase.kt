@@ -6,12 +6,14 @@ import io.restassured.http.ContentType
 import no.group3.springQuiz.quiz.QuizApplication
 import no.group3.springQuiz.quiz.model.dto.CategoryDto
 import no.group3.springQuiz.quiz.model.dto.QuestionDto
+import no.group3.springQuiz.quiz.model.dto.QuizDto
 import org.junit.After
 import org.junit.Before
 import org.junit.runner.RunWith
 import org.springframework.boot.context.embedded.LocalServerPort
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit4.SpringRunner
+import javax.naming.ldap.Control
 
 /**
  * Created by josoder on 31.10.17.
@@ -35,6 +37,8 @@ abstract class QuizTestBase {
 
     }
 
+    // Helper methods.
+
     fun addCategory(name: String): Long {
         val catDto = CategoryDto(name = name)
 
@@ -49,7 +53,7 @@ abstract class QuizTestBase {
     }
 
     fun addQuestion(catId : Long): Long {
-        val qDto = QuestionDto(questionText = "whatever?",answers = listOf("1", "2"),
+        val qDto = QuestionDto(questionText = "whatever?",answers = listOf("1", "2", "3", "4"),
                 correctAnswer = 1, category = catId)
 
         val qId = given().contentType(ContentType.JSON)
@@ -63,7 +67,7 @@ abstract class QuizTestBase {
     }
 
     fun addQuestion(questionText: String, catId : Long): QuestionDto {
-        val qDto = QuestionDto(questionText = questionText,answers = listOf("1", "2"),
+        val qDto = QuestionDto(questionText = questionText,answers = listOf("1", "2", "3", "4"),
                 correctAnswer = 1, category = catId)
 
         val qId = given().contentType(ContentType.JSON)
@@ -75,4 +79,29 @@ abstract class QuizTestBase {
         qDto.id = qId
         return qDto
     }
+
+    fun addQuiz(questions : List<QuestionDto>): QuizDto {
+        val quizDto = QuizDto(questions = questions, difficulty = 1)
+
+        val qId = given().contentType(ContentType.JSON)
+                .body(quizDto)
+                .post("/quizzes")
+                .then()
+                .statusCode(201)
+                .extract().asString().toLong()
+        quizDto.id = qId
+        return quizDto
+    }
+
+    // create cat and questions as well
+    fun addQuiz(): Long {
+        val cat = addCategory("test")
+        val q1 = addQuestion(questionText = "testq1", catId = cat)
+        val q2 = addQuestion(questionText = "testq2", catId = cat)
+        val qList = listOf(q1, q2)
+        val q = addQuiz(qList)
+
+        return q.id!!
+    }
+
 }
