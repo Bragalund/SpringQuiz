@@ -12,16 +12,15 @@ import javax.transaction.Transactional
  * Created by josoder on 18.10.17.
  */
 @Repository
-interface QuestionRepository : CrudRepository<Question, Long>, QuestionRepositoryCustom {
-}
+interface QuestionRepository : CrudRepository<Question, Long>, QuestionRepositoryCustom
+
 
 @Transactional
 interface QuestionRepositoryCustom {
-    // Used
+    // Used to patch the question text
     fun update(id:Long,
                name: String): Boolean
 }
-
 
 open class QuestionRepositoryImpl : QuestionRepositoryCustom {
     @PersistenceContext
@@ -34,5 +33,4 @@ open class QuestionRepositoryImpl : QuestionRepositoryCustom {
         question.questionText = newText
         return true
     }
-
 }

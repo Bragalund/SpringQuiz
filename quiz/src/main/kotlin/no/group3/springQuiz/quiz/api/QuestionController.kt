@@ -4,12 +4,14 @@ import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
 import io.swagger.annotations.ApiResponse
+import no.group3.springQuiz.quiz.model.dto.PatchQuestionTextDto
 import no.group3.springQuiz.quiz.model.dto.QuestionConverter
 import no.group3.springQuiz.quiz.model.dto.QuestionDto
 import no.group3.springQuiz.quiz.model.entity.Question
 import no.group3.springQuiz.quiz.model.repository.CategoryRepository
 import no.group3.springQuiz.quiz.model.repository.QuestionRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
@@ -119,7 +121,7 @@ class QuestionController{
     }
 
 
-    @ApiOperation("Update an existing question. Not allowed to update id.")
+    @ApiOperation("Update an existing question(if it exists). Not allowed to update id.")
     @PutMapping(path = arrayOf("/{id}"), consumes = arrayOf(MediaType.APPLICATION_JSON_VALUE))
     fun put(
             @ApiParam("The id of the question to update.")
@@ -159,5 +161,50 @@ class QuestionController{
         }
 
         return ResponseEntity.status(204).build()
+    }
+
+    @ApiOperation("Update the actual question text of a question given bt id")
+    @PatchMapping(path = arrayOf("/{id}"), consumes = arrayOf(MediaType.APPLICATION_JSON_VALUE))
+    fun patch(
+            @ApiParam("The id of the question to patch.")
+            @PathVariable("id")
+            pId: String?,
+            @ApiParam("The new QuestionText that will replace the old one.")
+            @RequestBody
+            dto: PatchQuestionTextDto): ResponseEntity<Any>{
+        val id : Long
+
+        try{
+            id = pId!!.toLong()
+        }
+        catch (e : Exception){
+            return ResponseEntity.status(404).build()
+        }
+
+        if(!questionRepository.exists(id)){
+            return ResponseEntity.status(404).build()
+        }
+
+        if(dto.updatedText.isNullOrBlank() || dto.updatedText!!.length > 500){
+            return ResponseEntity.status(400).build()
+        }
+
+        if(!questionRepository.update(id, dto.updatedText!!)){
+            return ResponseEntity.status(500).build()
+        }
+
+        return ResponseEntity.ok().build()
+    }
+
+    @ExceptionHandler(value = ConstraintViolationException::class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    fun handleValidationException(ex: ConstraintViolationException): String {
+        val messages = StringBuilder()
+
+        for (violation in ex.constraintViolations) {
+            messages.append(violation.message + "\n")
+        }
+
+        return messages.toString()
     }
 }
