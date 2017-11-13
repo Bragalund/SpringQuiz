@@ -29,9 +29,6 @@ import javax.validation.ConstraintViolationException
 @Validated
 class CategoryController{
     @Autowired
-    lateinit var questionRepository : QuestionRepository
-
-    @Autowired
     lateinit var categoryRepository : CategoryRepository
 
     @ApiOperation("Retrieve all categories")
@@ -39,8 +36,6 @@ class CategoryController{
     fun get(): ResponseEntity<List<CategoryDto>> {
         return ResponseEntity.ok(CategoryConverter.transform(categoryRepository.findAll()))
     }
-
-
 
     @ApiOperation("Create a category")
     @PostMapping(consumes = arrayOf(MediaType.APPLICATION_JSON_VALUE))

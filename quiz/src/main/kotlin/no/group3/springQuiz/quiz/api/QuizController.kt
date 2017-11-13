@@ -42,6 +42,28 @@ class QuizController {
         return ResponseEntity.ok(QuizConverter.transform(quizRepository.findAll()))
     }
 
+    @ApiOperation("Delete quiz with the given id")
+    @DeleteMapping(path = arrayOf("/{id}"))
+    fun deleteQuestion(@ApiParam("id of the quiz to delete")
+                       @PathVariable("id")
+                       pId: String?): ResponseEntity<Any> {
+        val id: Long
+        try {
+            id = pId!!.toLong()
+        } catch (e: Exception) {
+            return ResponseEntity.status(400).build()
+        }
+
+        if(!quizRepository.exists(id)) {
+            return ResponseEntity.status(404).build()
+        }
+
+        val q = quizRepository.findOne(id)
+
+        quizRepository.delete(id)
+        return ResponseEntity.status(204).build()
+    }
+
     @ApiOperation("Create a quiz")
     @PostMapping(consumes = arrayOf(MediaType.APPLICATION_JSON_VALUE))
     @ApiResponse(code = 201, message = "The id of created quiz")
