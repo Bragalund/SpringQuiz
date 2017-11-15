@@ -129,6 +129,37 @@ class QuizApiTest: QuizTestBase() {
     }
 
     @Test
+    fun patchQuestion() {
+        val catId = addCategory("test")
+
+        val originalText = "original"
+
+        val question = addQuestion(questionText = originalText, catId = catId)
+
+        given().pathParam("id", question.id)
+                .get("$QUESTION_PATH/{id}")
+                .then()
+                .statusCode(200)
+                .body("questionText", equalTo(originalText))
+
+        val updatedText = "patched"
+        val patchDto = PatchQuestionTextDto(updatedText)
+
+        given().contentType(ContentType.JSON)
+                .pathParam("id", question.id)
+                .body(patchDto)
+                .patch("$QUESTION_PATH/{id}")
+                .then()
+                .statusCode(200)
+
+        given().pathParam("id", question.id)
+                .get("$QUESTION_PATH/{id}")
+                .then()
+                .statusCode(200)
+                .body("questionText", equalTo(updatedText))
+    }
+
+    @Test
     fun createAndGetQuizzes(){
         given().get(QUIZ_PATH)
                 .then()
@@ -168,34 +199,19 @@ class QuizApiTest: QuizTestBase() {
     }
 
     @Test
-    fun patchQuestion() {
-        val catId = addCategory("test")
+    fun deleteQuiz() {
+        val quizId = addQuiz()
 
-        val originalText = "original"
-
-        val question = addQuestion(questionText = originalText, catId = catId)
-
-        given().pathParam("id", question.id)
-                .get("$QUESTION_PATH/{id}")
+        given().pathParam("id", quizId)
+                .get("$QUIZ_PATH/{id}")
                 .then()
                 .statusCode(200)
-                .body("questionText", equalTo(originalText))
+                .body("id", equalTo(quizId.toInt()))
 
-        val updatedText = "patched"
-        val patchDto = PatchQuestionTextDto(updatedText)
-
-        given().contentType(ContentType.JSON)
-                .pathParam("id", question.id)
-                .body(patchDto)
-                .patch("$QUESTION_PATH/{id}")
+        given().pathParam("id", quizId)
+                .delete("$QUIZ_PATH/{id}")
                 .then()
-                .statusCode(200)
-
-        given().pathParam("id", question.id)
-                .get("$QUESTION_PATH/{id}")
-                .then()
-                .statusCode(200)
-                .body("questionText", equalTo(updatedText))
+                .statusCode(204)
     }
 
 }
