@@ -2,7 +2,7 @@ package no.group3.user.model.repository
 
 import no.group3.user.model.entity.User
 import org.springframework.data.repository.CrudRepository
-import org.springframework.security.crypto.bcrypt.BCrypt
+//import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 import javax.persistence.EntityManager
@@ -29,7 +29,7 @@ interface UserRepositoryCustom {
 open class UserRepositoryImpl : UserRepositoryCustom {
 
     override fun updatePassword(id: Long, plainPassword: String): Boolean {
-        val hashedPassword = BCrypt.hashpw(plainPassword, BCrypt.gensalt(10))
+        val hashedPassword = plainPassword//BCrypt.hashpw(plainPassword, BCrypt.gensalt(10))
         var user = em.find(User::class.java, id) ?: return false
         user.passwordHash = hashedPassword
         return true
@@ -42,7 +42,7 @@ open class UserRepositoryImpl : UserRepositoryCustom {
     }
 
     override fun createUser(userName: String, firstName: String, lastName: String, email: String, plainPassword: String ): Long {
-        val hashedPassword = BCrypt.hashpw(plainPassword, BCrypt.gensalt(10))
+        val hashedPassword = plainPassword//BCrypt.hashpw(plainPassword, BCrypt.gensalt(10))
         val user = User(null, userName, firstName, lastName, email, hashedPassword)
         em.persist(user)
         return user.userId!!
@@ -81,7 +81,7 @@ open class UserRepositoryImpl : UserRepositoryCustom {
         user.firstName = firstName
         user.lastName = lastName
         user.email = email
-        user.passwordHash = BCrypt.hashpw(plainPassword, BCrypt.gensalt(10))
+        user.passwordHash = plainPassword//BCrypt.hashpw(plainPassword, BCrypt.gensalt(10))
         return true
     }
 }

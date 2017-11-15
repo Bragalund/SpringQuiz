@@ -20,7 +20,7 @@ class User(
         var firstName: String,
         var lastName: String,
 
-        @get: CustomEmail @get: NotEmpty @get: NotNull
+        @get: NotEmpty @get: NotNull
         var email: String,
 
         @get: NotEmpty @get: NotNull

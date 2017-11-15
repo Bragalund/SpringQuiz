@@ -58,7 +58,7 @@ class UserCRUD {
 
         val userId: Long?
         try {
-                userId = userRepository.createUser(userDto.userName, userDto.firstName, userDto.lastName, userDto.email, userDto.password)
+                userId = userRepository.createUser(userDto.userName!!, userDto.firstName!!, userDto.lastName!!, userDto.email!!, userDto.password!!)
         }catch (e: ConstraintViolationException){
             e.stackTrace
             return ResponseEntity.status(400).build()

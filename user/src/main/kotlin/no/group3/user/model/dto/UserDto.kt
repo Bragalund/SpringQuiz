@@ -9,19 +9,19 @@ data class UserDto(
         var id: Long? = null,
 
         @ApiModelProperty("username of user")
-        var userName: String,
+        var userName: String? = null,
 
         @ApiModelProperty("First name of user")
-        var firstName: String,
+        var firstName: String? = null,
 
         @ApiModelProperty("Last name of user")
-        var lastName: String,
+        var lastName: String? = null,
 
         @ApiModelProperty("Email of user")
-        var email: String,
+        var email: String? = null,
 
         @ApiModelProperty("Password of user")
-        var password: String
+        var password: String? = null
 )
 
 class UserConverter{
