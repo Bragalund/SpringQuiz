@@ -145,7 +145,7 @@ class UserCRUD {
 
         // Try to save updated user and check for constraintviolations
         try {
-            userRepository.updateUser(id!!,userDto.userName!!, userDto.firstName!!, userDto.lastName!!, userDto.email!!, userDto.password!!)
+            userRepository.updateUser(id,userDto.userName!!, userDto.firstName!!, userDto.lastName!!, userDto.email!!, userDto.password!!)
         } catch (e: ConstraintViolationException) {
             return ResponseEntity.status(400).build()
         }

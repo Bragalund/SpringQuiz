@@ -1,11 +1,8 @@
 package no.group3.user
 
-import io.restassured.RestAssured
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
-import junit.framework.Assert.assertEquals
 import no.group3.user.model.dto.UserDto
-import org.hamcrest.CoreMatchers
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Test
 import org.springframework.test.annotation.DirtiesContext
@@ -83,14 +80,14 @@ class UserApplicationTests : UserTestBase() {
                 .statusCode(201)
                 .extract().asString()
 
-        // Sets id to userDto
-        userDto.id = userId.toLong()
-
         //Checks that user exists
         given().pathParam("id", userId)
                 .get(USERS_PATH + "/{id}")
                 .then()
                 .statusCode(200)
+
+        // Sets id to userDto-instance
+        //userDto.id = userId.toLong()
 
 
         // Changes firstname of userdto
