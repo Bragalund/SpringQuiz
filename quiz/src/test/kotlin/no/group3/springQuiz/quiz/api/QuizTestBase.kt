@@ -19,7 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner
  * Test base with helper methods
  */
 @RunWith(SpringRunner::class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+@SpringBootTest("eureka.client.enabled:false" ,webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         classes = arrayOf(QuizApplication::class))
 abstract class QuizTestBase {
     @LocalServerPort
@@ -30,7 +30,7 @@ abstract class QuizTestBase {
     fun clean() {
         RestAssured.baseURI = "http://localhost"
         RestAssured.port = port
-        RestAssured.basePath = "/api"
+        RestAssured.basePath = "/"
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails()
     }
 

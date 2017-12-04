@@ -1,0 +1,16 @@
+zuul:
+  routes:
+    quiz:
+      path: "/quiz/**"
+spring:
+  application:
+    name: "zuul"
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    healthcheck:
+      enabled: true
+    service-url:
+      defaultZone: http://eureka:8761/eureka/
+

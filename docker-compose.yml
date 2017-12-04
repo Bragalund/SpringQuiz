@@ -1,9 +1,34 @@
-version: '2'
+version: '3'
 services:
+  zuul:
+    build:
+      context: ./zuul-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "80:8080"
+    depends_on:
+      - eureka
+
+  eureka:
+    build:
+      context: ./eureka-server
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+
   user:
     #image: cda6a044e869    <-- spesifiserer lokalt bilde(allerede bygget)
     build:       # Bygger bilde på Dockerfile
       context: ./user/ # angir hvor Dockerfilen befinner seg
       dockerfile: Dockerfile  #Angir navnet på filen
     ports:  # - <port utenfor container>:<applikasjonens port inne i containeren>
-      - 8082:8082
+      - "8082:8082"
+
+  quiz:
+    build:
+      context: ./quiz/
+      dockerfile: Dockerfile
+    ports:
+      - "8083"
+    depends_on:
+      - zuul
