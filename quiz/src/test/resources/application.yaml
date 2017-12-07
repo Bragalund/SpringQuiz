@@ -1,0 +1,6 @@
+server:
+  context-path: "/apiV1"
+
+spring:
+  session:
+    store-type: none

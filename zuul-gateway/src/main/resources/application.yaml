@@ -2,9 +2,10 @@ zuul:
   routes:
     quiz-service:
       path: "/quiz/**"
+      sensitive-headers:
     user-service:
-      path: "/user/**"
-
+      path: "/user/details/**"
+      sensitive-headers:
 eureka:
   instance:
     prefer-ip-address: true
@@ -16,5 +17,26 @@ eureka:
 spring:
   application:
     name: "zuul"
+  jpa:
+    show-sql: true
+  session:
+    store-type: redis
+  redis:
+    host: redis
+    port: 6379
+ # datasource:
+ #   url: "jbdc:postgresql://postgres:5432/postgres"
+ #   username: "postgres"
+ #   password: ""
+ #   driver-class-name: "org.postgresql.Driver"
+
+
+security:
+  session: ALWAYS
+
+logging:
+  level:
+    org.springframework.security: debug
+
 
 

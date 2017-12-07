@@ -1,5 +1,16 @@
 version: '3'
 services:
+  eureka:
+    build:
+      context: ./eureka-server
+      dockerfile: Dockerfile
+    ports: # only for debugging purposes will be 8761 without host-port forwarding in prod
+      - "8761:8761"
+
+
+  redis:
+      image: "redis:latest"
+
   zuul:
     build:
       context: ./zuul-gateway
@@ -8,22 +19,20 @@ services:
       - "80:8080"
     depends_on:
       - eureka
+      - redis
 
-  eureka:
-    build:
-      context: ./eureka-server
-      dockerfile: Dockerfile
-    ports:
-      - "8761:8761"
 
+
+  # user-service
   user:
     #image: cda6a044e869    <-- spesifiserer lokalt bilde(allerede bygget)
     build:       # Bygger bilde på Dockerfile
       context: ./user/ # angir hvor Dockerfilen befinner seg
       dockerfile: Dockerfile  #Angir navnet på filen
     ports:  # - <port utenfor container>:<applikasjonens port inne i containeren>
-      - "8082:8082"
+      - "8082"
 
+  # quiz-service
   quiz:
     build:
       context: ./quiz/
@@ -31,4 +40,6 @@ services:
     ports:
       - "8083"
     depends_on:
-      - zuul
+      - redis
+
+
