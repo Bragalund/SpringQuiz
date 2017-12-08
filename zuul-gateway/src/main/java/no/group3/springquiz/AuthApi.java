@@ -38,7 +38,8 @@ public class AuthApi {
     }
 
     @PostMapping(value = "/register", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public ResponseEntity<Void> register(String username, String password){
+    public ResponseEntity<Void> register(@ModelAttribute(name = "the_user") String username,
+                                         @ModelAttribute(name = "the_password") String password){
         if(userService.userExists(username)){
             return ResponseEntity.status(409).build();
         }
@@ -60,7 +61,8 @@ public class AuthApi {
     }
 
     @PostMapping(value = "/signIn", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public ResponseEntity<Void> login(String username, String password){
+    public ResponseEntity<Void> login(@ModelAttribute(name= "the_user") String username,
+                                      @ModelAttribute(name= "the_password") String password){
 
         if(!userService.validateUser(username, password)){
             return ResponseEntity.status(403).build();

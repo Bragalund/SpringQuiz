@@ -2,6 +2,7 @@ package no.group3.springquiz;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -11,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import javax.sql.DataSource;
+import java.lang.reflect.Method;
 
 
 /**
@@ -42,10 +44,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/user").authenticated()
-                .antMatchers("/quiz/**").authenticated()
+                .antMatchers(HttpMethod.POST ,"/quiz/**").authenticated()
+                .antMatchers(HttpMethod.GET, "/quiz/**").permitAll()
                 .antMatchers("/register").permitAll()
                 .antMatchers("/login").permitAll()
-                .antMatchers("/user/details/**").authenticated()
+                .antMatchers(HttpMethod.POST,"/user/details/**").authenticated()
+                .antMatchers(HttpMethod.GET, "/user/details/**").permitAll()
                 .anyRequest().denyAll()
                 .and()
                 .csrf()
