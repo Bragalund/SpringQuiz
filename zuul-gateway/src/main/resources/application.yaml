@@ -17,18 +17,21 @@ eureka:
 spring:
   application:
     name: "zuul"
-  jpa:
-    show-sql: true
   session:
     store-type: redis
   redis:
     host: redis
     port: 6379
- # datasource:
- #   url: "jbdc:postgresql://postgres:5432/postgres"
- #   username: "postgres"
- #   password: ""
- #   driver-class-name: "org.postgresql.Driver"
+  datasource:
+    url: "jdbc:postgresql://zuul-db:5432/quiz"
+    username: "quiz"
+    password: ""
+    driver-class-name: "org.postgresql.Driver"
+  jpa:
+    show-sql: true
+    database: postgresql
+    hibernate:
+      ddl-auto: update
 
 
 security:

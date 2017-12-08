@@ -9,6 +9,15 @@ spring:
     port: 6379
   session:
     store-type: redis
+  datasource:
+    url: "jdbc:postgresql://quiz-db:5432/quiz"
+    username: "quiz"
+    password: ""
+    driver-class-name: "org.postgresql.Driver"
+  jpa:
+    database: "postgresql"
+    hibernate:
+      ddl-auto: "update"
 
 eureka:
   instance:

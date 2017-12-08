@@ -73,6 +73,12 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-spring-web</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+
         <!-- rest-assure -->
         <dependency>
             <groupId>io.rest-assured</groupId>

@@ -16,6 +16,8 @@
         <kotlin.version>1.1.51</kotlin.version>
         <version.springfox>2.6.1</version.springfox>
         <spring-cloud.version>Edgware.RELEASE</spring-cloud.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <version.testcontainers>1.4.3</version.testcontainers>
     </properties>
 

@@ -14,9 +14,6 @@
     <artifactId>e2e</artifactId>
     <packaging>jar</packaging>
 
-    <properties>
-        <kotlin.version>1.2.0</kotlin.version>
-    </properties>
 
     <dependencies>
 
