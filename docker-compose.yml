@@ -56,6 +56,9 @@ services:
       - redis
       - quiz-db
       - zuul
+      # create some initial data
+    environment:
+      - "SPRING_PROFILES_ACTIVE=default-init"
 
   quiz2:
     build:

@@ -21,7 +21,7 @@
         <version.testcontainers>1.4.3</version.testcontainers>
     </properties>
 
-    <name>springQuiz</name>
+    <name>SpringQuiz</name>
     <description>Assignment in enterprise programming</description>
 
     <modules>

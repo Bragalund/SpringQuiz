@@ -18,6 +18,7 @@ import org.springframework.core.annotation.Order
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.test.context.ActiveProfiles
 
 
 /**
@@ -27,6 +28,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 @RunWith(SpringRunner::class)
 @SpringBootTest("eureka.client.enabled:false" ,webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         classes = arrayOf(QuizApplication::class))
+@ActiveProfiles("test")
 abstract class QuizTestBase {
     @LocalServerPort
     protected var port = 0
@@ -36,7 +38,7 @@ abstract class QuizTestBase {
     fun clean() {
         RestAssured.baseURI = "http://localhost"
         RestAssured.port = port
-        RestAssured.basePath = "/apiV1"
+        RestAssured.basePath = "/api"
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails()
     }
 

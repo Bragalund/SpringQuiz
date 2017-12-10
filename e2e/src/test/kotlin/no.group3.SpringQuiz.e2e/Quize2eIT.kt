@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit
 /**
  * Created by josoder on 08.12.17.
  */
-class QuizE2EIT {
+class Quize2eIT {
     companion object {
         class KDockerComposeContainer(path: File) : DockerComposeContainer<KDockerComposeContainer>(path)
 
@@ -39,7 +39,8 @@ class QuizE2EIT {
                     .ignoreExceptions()
                     .until({
                         // zuul and eureka is up when 200 is returned
-                        given().get("http://localhost:80/quiz/apiV1/quizzes").then().statusCode(200)
+                        // this will in itself act as a test proving both zuul and eureka works
+                        given().get("http://localhost:80/quiz/api/quizzes").then().statusCode(200)
 
                         given().get("http://localhost:80/user/details/apiV1/")
                                 .then().statusCode(200)
@@ -117,7 +118,7 @@ class QuizE2EIT {
         val cookies = registerUser(id, password)
 
         given().cookie("SESSION", cookies.session)
-                .get("/quiz/apiV1/quizzes")
+                .get("/quiz/api/quizzes")
                 .then()
                 .statusCode(200)
     }

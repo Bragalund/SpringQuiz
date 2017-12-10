@@ -1,6 +1,6 @@
 server:
   port: "8083"
-  context-path: "/apiV1"
+  context-path: "/api"
 spring:
   application:
     name: "quiz-service"
@@ -30,3 +30,19 @@ eureka:
 
 security:
   sessions: NEVER
+
+---
+spring:
+  profiles: development
+  datasource:
+    url: "jdbc:h2:mem:"
+    driver-class-name: "org.h2.Driver"
+  jpa:
+    database: "h2"
+    hibernate:
+      ddl-auto: "create-drop"
+  session:
+    store-type: none
+eureka:
+  client:
+    enabled: false
