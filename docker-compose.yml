@@ -1,0 +1,80 @@
+version: '3'
+services:
+  # load balancing
+  eureka:
+    build:
+      context: ./eureka-server
+      dockerfile: Dockerfile
+    ports: # only for debugging purposes will be 8761 without host-port forwarding in prod
+      - "8761:8761"
+  ###
+
+  # session handling
+  redis:
+      image: "redis:latest"
+  ###
+
+  # zuul-gateway
+  zuul:
+    build:
+      context: ./zuul-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "80:8080"
+    depends_on:
+      - eureka
+      - redis
+      - zuul-db
+
+  zuul-db:
+    image: "postgres:10"
+    ports:
+     - "5433"
+    environment:
+      POSTGRES_DB: quiz
+      POSTGRES_USER: quiz
+
+  # user-service
+  user:
+    #image: cda6a044e869    <-- spesifiserer lokalt bilde(allerede bygget)
+    build:       # Bygger bilde på Dockerfile
+      context: ./user/ # angir hvor Dockerfilen befinner seg
+      dockerfile: Dockerfile  #Angir navnet på filen
+    ports:  # - <port utenfor container>:<applikasjonens port inne i containeren>
+      - "8082"
+  ###
+
+  # quiz-service, creates two instances, to be able to handle more traffic and make it more robust.
+  # Will be load-balanced with eureka
+  quiz1:
+    build:
+      context: ./quiz/
+      dockerfile: Dockerfile
+    ports:
+      - "8083"
+    depends_on:
+      - redis
+      - quiz-db
+      - zuul
+      # create some initial data
+    environment:
+      - "SPRING_PROFILES_ACTIVE=default-init"
+
+  quiz2:
+    build:
+      context: ./quiz/
+      dockerfile: Dockerfile
+    ports:
+      - "8084"
+    depends_on:
+      - redis
+      - quiz-db
+      - zuul
+
+  quiz-db:
+    image: "postgres:10"
+    ports:
+      - "5433"
+    environment:
+      POSTGRES_DB: quiz
+      POSTGRES_USER: quiz

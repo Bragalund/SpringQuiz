@@ -1,0 +1,38 @@
+.spreadOut{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.alignAndJustifyCenter{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.alignTopAndMaxSpread{
+    display: flex;
+    justify-content: flex-start space-between;
+}
+
+.alignTopAndToTheRight{
+    display:flex;
+    justify-content: flex-end;
+}
+
+.alignBottomAndToTheRight{
+    display: flex;
+    justify-content: flex-end space-around;
+    align-items: flex-end;
+}
+
+.alignTopAndToTheLeft{
+    display:flex;
+    justify-content: flex-start;
+}
+
+.alignBottomAndToTheLeft{
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+}

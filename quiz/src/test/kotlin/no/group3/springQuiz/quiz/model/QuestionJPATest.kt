@@ -31,4 +31,18 @@ class QuestionJPATest {
         println("id : " + savedQuestion.id)
         Assert.assertNotNull(questionRepository.findOne(savedQuestion.id))
     }
+
+    @Test
+    fun updateQuestion(){
+        var originalText = "original"
+
+        val savedQ = questionRepository.save(Question(questionText = originalText, answers = listOf("1", "2", "3", "4"),
+                correctAnswers = 1))
+
+        Assert.assertEquals(savedQ.questionText, originalText)
+
+        val patchedText = "updated text"
+
+        questionRepository.update(savedQ.id!!, patchedText)
+    }
 }

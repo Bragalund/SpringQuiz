@@ -2,6 +2,7 @@ package no.group3.springQuiz.quiz.api
 
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
+import no.group3.springQuiz.quiz.model.dto.PatchQuestionTextDto
 import no.group3.springQuiz.quiz.model.dto.QuestionDto
 import org.junit.Test
 import org.hamcrest.CoreMatchers.equalTo
@@ -15,6 +16,7 @@ class QuizApiTest: QuizTestBase() {
     companion object {
         val QUESTION_PATH = "/questions"
         val CATEGORY_PATH = "/categories"
+        val QUIZ_PATH = "/quizzes"
     }
 
     @Test
@@ -118,10 +120,98 @@ class QuizApiTest: QuizTestBase() {
                 .put("$QUESTION_PATH/{id}")
                 .then()
                 .statusCode(204)
+
+        given().pathParam("id", qDto.id)
+                .get("$QUESTION_PATH/{id}")
+                .then()
+                .statusCode(200)
+                .body("questionText", equalTo(after))
     }
 
+    @Test
+    fun patchQuestion() {
+        val catId = addCategory("test")
 
+        val originalText = "original"
 
+        val question = addQuestion(questionText = originalText, catId = catId)
 
+        given().pathParam("id", question.id)
+                .get("$QUESTION_PATH/{id}")
+                .then()
+                .statusCode(200)
+                .body("questionText", equalTo(originalText))
+
+        val updatedText = "patched"
+        val patchDto = PatchQuestionTextDto(updatedText)
+
+        given().contentType(ContentType.JSON)
+                .pathParam("id", question.id)
+                .body(patchDto)
+                .patch("$QUESTION_PATH/{id}")
+                .then()
+                .statusCode(200)
+
+        given().pathParam("id", question.id)
+                .get("$QUESTION_PATH/{id}")
+                .then()
+                .statusCode(200)
+                .body("questionText", equalTo(updatedText))
+    }
+
+    @Test
+    fun createAndGetQuizzes(){
+        given().get(QUIZ_PATH)
+                .then()
+                .statusCode(200)
+                .body("size()", equalTo( 0))
+
+        // Create the questions that will populate the quiz.
+        val cat = addCategory("test")
+        val q1 = addQuestion(questionText = "testq1", catId = cat)
+        val q2 = addQuestion(questionText = "testq2", catId = cat)
+        val qList = listOf(q1, q2)
+
+        val quizDto = addQuiz(questions = qList)
+
+        given().get(QUIZ_PATH)
+                .then()
+                .statusCode(200)
+                .body("size()", equalTo(1))
+
+        // get the quiz by id
+        given().pathParam("id", quizDto.id)
+                .get("$QUIZ_PATH/{id}")
+                .then()
+                .statusCode(200)
+                .body("id", equalTo(quizDto.id!!.toInt()))
+    }
+
+    @Test
+    fun getAllQuestionsFromQuiz() {
+        val quizId = addQuiz()
+
+        given().pathParam("id", quizId)
+                .get("$QUIZ_PATH/{id}/questions")
+                .then()
+                .statusCode(200)
+                .body("size()", equalTo(2))
+    }
+
+    @Test
+    fun deleteQuiz() {
+        val quizId = addQuiz()
+
+        given().pathParam("id", quizId)
+                .get("$QUIZ_PATH/{id}")
+                .then()
+                .statusCode(200)
+                .body("id", equalTo(quizId.toInt()))
+
+        given().pathParam("id", quizId)
+                .delete("$QUIZ_PATH/{id}")
+                .then()
+                .statusCode(204)
+    }
 
 }

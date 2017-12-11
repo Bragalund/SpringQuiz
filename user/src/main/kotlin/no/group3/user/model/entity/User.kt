@@ -1,6 +1,5 @@
 package no.group3.user.model.entity
 
-import no.group3.user.model.validation.CustomEmail
 import org.hibernate.validator.constraints.NotEmpty
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
@@ -14,12 +13,15 @@ class User(
         var userId: Long? = null,
 
         @get: NotEmpty @get: NotNull
-        var userName: String,
+        var userName: String? = null,
 
         @get: NotEmpty @get: NotNull
-        var firstName: String,
-        var lastName: String,
+        var firstName: String? = null,
+        var lastName: String? = null,
 
-        @get: CustomEmail @get: NotEmpty @get: NotNull
-        var email: String
+        @get: NotEmpty @get: NotNull
+        var email: String? = null,
+
+        @get: NotEmpty @get: NotNull
+        var passwordHash: String? = null
 )

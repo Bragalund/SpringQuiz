@@ -10,6 +10,7 @@ import no.group3.springQuiz.quiz.model.entity.Category
 import no.group3.springQuiz.quiz.model.repository.CategoryRepository
 import no.group3.springQuiz.quiz.model.repository.QuestionRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
@@ -28,9 +29,6 @@ import javax.validation.ConstraintViolationException
 @Validated
 class CategoryController{
     @Autowired
-    lateinit var questionRepository : QuestionRepository
-
-    @Autowired
     lateinit var categoryRepository : CategoryRepository
 
     @ApiOperation("Retrieve all categories")
@@ -38,8 +36,6 @@ class CategoryController{
     fun get(): ResponseEntity<List<CategoryDto>> {
         return ResponseEntity.ok(CategoryConverter.transform(categoryRepository.findAll()))
     }
-
-
 
     @ApiOperation("Create a category")
     @PostMapping(consumes = arrayOf(MediaType.APPLICATION_JSON_VALUE))
@@ -58,7 +54,7 @@ class CategoryController{
 
         val category: Category?
         try {
-            category = categoryRepository.save(Category(name =  dto.name!!))
+            category = categoryRepository.save(Category(name =  dto.name))
         } catch (e: ConstraintViolationException) {
             return ResponseEntity.status(400).build()
         }
@@ -92,4 +88,15 @@ class CategoryController{
         return ResponseEntity.status(204).build()
     }
 
+    @ExceptionHandler(value = ConstraintViolationException::class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    fun handleValidationException(ex: ConstraintViolationException): String {
+        val messages = StringBuilder()
+
+        for (violation in ex.constraintViolations) {
+            messages.append(violation.message + "\n")
+        }
+
+        return messages.toString()
+    }
 }

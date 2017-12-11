@@ -26,7 +26,8 @@ class QuestionConverter {
                     id = entity.id,
                     category = entity.category!!.id,
                     answers = entity.answers,
-                    questionText = entity.questionText
+                    questionText = entity.questionText,
+                    correctAnswer = entity.correctAnswers
             )
         }
 

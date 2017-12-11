@@ -15,15 +15,22 @@
         <java.version>1.8</java.version>
         <kotlin.version>1.1.51</kotlin.version>
         <version.springfox>2.6.1</version.springfox>
+        <spring-cloud.version>Edgware.RELEASE</spring-cloud.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <version.testcontainers>1.4.3</version.testcontainers>
     </properties>
 
-    <name>springQuiz</name>
+    <name>SpringQuiz</name>
     <description>Assignment in enterprise programming</description>
 
     <modules>
         <module>quiz</module>
         <module>highscore</module>
         <module>user</module>
+        <module>eureka-server</module>
+        <module>zuul-gateway</module>
+        <module>e2e</module>
     </modules>
 
     <dependencyManagement>
@@ -53,6 +60,29 @@
                 <artifactId>springfox-spring-web</artifactId>
                 <version>${version.springfox}</version>
             </dependency>
+            <!-- test -->
+
+            <dependency>
+                <!-- To use Docker from tests -->
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers</artifactId>
+                <version>${version.testcontainers}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>selenium</artifactId>
+                <version>${version.testcontainers}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <!-- For handling waiting of asynchronous events -->
+                <groupId>org.awaitility</groupId>
+                <artifactId>awaitility</artifactId>
+                <version>3.0.0</version>
+                <scope>test</scope>
+            </dependency>
+
             <!-- rest-assure -->
             <dependency>
                 <groupId>io.rest-assured</groupId>
@@ -64,6 +94,13 @@
                 <artifactId>resteasy-client</artifactId>
                 <version>RELEASE</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
