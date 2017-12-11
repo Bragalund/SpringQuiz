@@ -4,6 +4,12 @@
     <facet type="Spring" name="Spring">
       <configuration />
     </facet>
+    <facet type="web" name="Web">
+      <configuration>
+        <webroots />
+        <sourceRoots />
+      </configuration>
+    </facet>
     <facet type="kotlin-language" name="Kotlin">
       <configuration version="3" platform="JVM 1.8" useProjectSettings="false">
         <compilerSettings />
@@ -212,14 +218,14 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-oxm:4.3.12.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.ws:spring-ws-core:2.4.0.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.ws:spring-xml:2.4.0.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-actuator:1.5.8.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-actuator:1.5.8.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-reflect:1.1.51" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot:1.5.8.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context:4.3.12.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-autoconfigure:1.5.8.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.10" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.8.10" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-actuator:1.5.8.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-actuator:1.5.8.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: junit:junit:4.12" level="project" />
     <orderEntry type="library" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.testcontainers:testcontainers:1.4.3" level="project" />
