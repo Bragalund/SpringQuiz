@@ -12,9 +12,9 @@ import javax.validation.constraints.NotNull
 class Score(
         @get: Id @get: GeneratedValue
         var id : Long? = null,
-        @get: NotNull @get: NotEmpty
+        @get: NotNull
         var user : String? = null,
-        @get: NotNull @get: NotEmpty
+        @get: NotNull
         var score : Int? = null
 )
 

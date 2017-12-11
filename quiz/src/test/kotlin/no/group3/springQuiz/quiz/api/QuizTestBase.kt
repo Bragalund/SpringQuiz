@@ -31,8 +31,6 @@ abstract class QuizTestBase {
         RestAssured.port = port
         RestAssured.basePath = "/api"
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails()
-
-
     }
 
     fun addCategory(name: String): Long {
