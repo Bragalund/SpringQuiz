@@ -166,7 +166,7 @@ class QuizApiTest: QuizTestBase() {
                 .statusCode(200)
                 .body("size()", equalTo( 0))
 
-        // Create the questions who will populate the quiz.
+        // Create the questions that will populate the quiz.
         val cat = addCategory("test")
         val q1 = addQuestion(questionText = "testq1", catId = cat)
         val q2 = addQuestion(questionText = "testq2", catId = cat)

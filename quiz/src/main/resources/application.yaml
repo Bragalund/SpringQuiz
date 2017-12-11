@@ -1,0 +1,48 @@
+server:
+  port: "8083"
+  context-path: "/api"
+spring:
+  application:
+    name: "quiz-service"
+  redis:
+    host: redis
+    port: 6379
+  session:
+    store-type: redis
+  datasource:
+    url: "jdbc:postgresql://quiz-db:5432/quiz"
+    username: "quiz"
+    password: ""
+    driver-class-name: "org.postgresql.Driver"
+  jpa:
+    database: "postgresql"
+    hibernate:
+      ddl-auto: "update"
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    healthcheck:
+      enabled: true
+    serviceUrl:
+      defaultZone: http://eureka:8761/eureka/
+
+security:
+  sessions: NEVER
+
+---
+spring:
+  profiles: development
+  datasource:
+    url: "jdbc:h2:mem:"
+    driver-class-name: "org.h2.Driver"
+  jpa:
+    database: "h2"
+    hibernate:
+      ddl-auto: "create-drop"
+  session:
+    store-type: none
+eureka:
+  client:
+    enabled: false

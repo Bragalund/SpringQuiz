@@ -1,0 +1,17 @@
+server:
+  port: "8082"
+  context-path: "/apiV1"
+ #security.basic.enabled=false
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    healthcheck:
+      enabled: true
+    service-url:
+      defaultZone: "http://eureka:8761/eureka/"
+
+spring:
+  application:
+    name: "user-service"

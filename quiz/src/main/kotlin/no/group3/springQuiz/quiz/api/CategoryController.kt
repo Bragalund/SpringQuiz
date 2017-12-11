@@ -54,7 +54,7 @@ class CategoryController{
 
         val category: Category?
         try {
-            category = categoryRepository.save(Category(name =  dto.name!!))
+            category = categoryRepository.save(Category(name =  dto.name))
         } catch (e: ConstraintViolationException) {
             return ResponseEntity.status(400).build()
         }

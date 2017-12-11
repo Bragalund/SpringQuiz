@@ -7,20 +7,28 @@ import no.group3.springQuiz.quiz.QuizApplication
 import no.group3.springQuiz.quiz.model.dto.CategoryDto
 import no.group3.springQuiz.quiz.model.dto.QuestionDto
 import no.group3.springQuiz.quiz.model.dto.QuizDto
+import no.group3.springQuiz.quiz.security.WebSecurityConfig
 import org.junit.After
 import org.junit.Before
 import org.junit.runner.RunWith
 import org.springframework.boot.context.embedded.LocalServerPort
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.Configuration
+import org.springframework.core.annotation.Order
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.test.context.junit4.SpringRunner
+import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.test.context.ActiveProfiles
+
 
 /**
  * Created by josoder on 31.10.17.
  * Test base with helper methods
  */
 @RunWith(SpringRunner::class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+@SpringBootTest("eureka.client.enabled:false" ,webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         classes = arrayOf(QuizApplication::class))
+@ActiveProfiles("test")
 abstract class QuizTestBase {
     @LocalServerPort
     protected var port = 0
@@ -100,5 +108,20 @@ abstract class QuizTestBase {
 
         return q.id!!
     }
-
 }
+
+@Configuration
+@EnableWebSecurity
+@Order(1)
+class WebSecurityConfigLocalFake : WebSecurityConfig() {
+    override fun configure(http: HttpSecurity) {
+       http.httpBasic()
+               .and()
+               .authorizeRequests()
+               .antMatchers("/**").permitAll()
+               .anyRequest().denyAll()
+               .and()
+               .csrf().disable()
+    }
+}
+
