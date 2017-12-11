@@ -20,6 +20,8 @@ interface ScoreRepository : CrudRepository<Score, Long>, ScoreRepositoryCustom {
 @Transactional
 interface ScoreRepositoryCustom {
     fun createScore(id:Long, user: String, score: Int) : Boolean
+    fun deleteScoreById(id:Long) : Boolean
+    fun updateHighscore(id: Long, user: String, score: Int): Boolean
 
 }
 
@@ -33,4 +35,24 @@ open class ScoreRepositoryImpl : ScoreRepositoryCustom {
         scores.score = score
         return true
     }
+
+    override fun deleteScoreById(id:Long) : Boolean{
+        val score = em.find(Score::class.java, id) ?: return false
+        em.remove(score)
+        return true
+    }
+
+    override fun updateHighscore(id: Long, user: String, score: Int): Boolean {
+        val highscore = em.find(Score::class.java, id) ?: return false
+        highscore.user = user
+        highscore.score = score
+        return true
+    }
+
+
+ /*   override fun createScore(user: String, score: Int ): Long {
+        val score = Score(null, user, score)
+        em.persist(user)
+        return score.id!!
+    }*/
 }

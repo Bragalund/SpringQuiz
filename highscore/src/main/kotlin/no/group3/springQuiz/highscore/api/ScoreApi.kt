@@ -11,6 +11,7 @@ import no.group3.springQuiz.highscore.model.repository.ScoreRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import javax.validation.ConstraintViolationException
 
@@ -24,6 +25,7 @@ import javax.validation.ConstraintViolationException
         produces = arrayOf(MediaType.APPLICATION_JSON_VALUE)
 )
 @RestController
+@Validated
 class ScoreApi{
     @Autowired
     lateinit var scoreRepository : ScoreRepository
@@ -58,7 +60,7 @@ class ScoreApi{
             return ResponseEntity.status(400).build()
         }
 
-        if (dto.user == null)  {
+        if (dto.user.isNullOrEmpty())  {
             return ResponseEntity.status(400).build()
         }
 
@@ -75,11 +77,58 @@ class ScoreApi{
     }
 
 
-
     //Delete a highscore
+    @ApiOperation("Delete score with the given id")
+    @DeleteMapping(path = arrayOf("/{id}"))
+    fun delete(@ApiParam(" delete the score with given id")
+                       @PathVariable("id")
+                       scoreId: String?): ResponseEntity<Any> {
+        val id: Long
+        try {
+            id = scoreId!!.toLong()
+        } catch (e: Exception) {
+            return ResponseEntity.status(400).build()
+        }
 
-    //Delete all highscores
+        if(!scoreRepository.exists(id)) {
+            return ResponseEntity.status(404).build()
+        }
+
+        val score = scoreRepository.findOne(id)
+        scoreRepository.delete(id)
+        return ResponseEntity.status(204).build()
+    }
+
+    //Put
+    //Put User
+    @ApiOperation("Update score")
+    @PutMapping(path = arrayOf("/{id}"))
+    @ApiResponse(code = 204, message = "Succesfully updated score")
+    fun put(
+            @ApiParam("Id of the score to update")
+            @PathVariable("id")
+            scoreId: String?, scoreDto: ScoreDto): ResponseEntity<Any> {
+        val id: Long
+        try {
+            id = scoreId!!.toLong()
+        } catch (exception: Exception) {
+            return ResponseEntity.status(400).build()
+        }
+
+        if (!scoreRepository.exists(id)) {
+            return ResponseEntity.status(404).build()
+        }
 
 
-    //
+        // Try to save updated user and check for constraintviolations
+        try {
+            scoreRepository.updateHighscore(id!!, scoreDto.user!!, scoreDto.score!!)
+        } catch (e: ConstraintViolationException) {
+            return ResponseEntity.status(400).build()
+        }
+
+        return ResponseEntity.status(204).build()
+    }
+
+    //Patch
 }
