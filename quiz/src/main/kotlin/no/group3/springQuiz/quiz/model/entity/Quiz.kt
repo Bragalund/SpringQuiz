@@ -13,5 +13,6 @@ class Quiz(
         @get: OneToMany
         var questions: MutableList<Question>? = ArrayList(),
         @get: Min(1) @get: Max(3)
-        var difficulty : Int? = null
+        var difficulty : Int? = null,
+        var category: String? = null
         )
