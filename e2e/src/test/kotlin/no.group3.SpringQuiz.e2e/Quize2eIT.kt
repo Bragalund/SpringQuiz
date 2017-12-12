@@ -121,5 +121,8 @@ class Quize2eIT {
                 .get("/quiz/api/quizzes")
                 .then()
                 .statusCode(200)
+
+        given().cookie("SESSION", cookies.session)
+                .get("/quiz/api/quizzes/")
     }
 }

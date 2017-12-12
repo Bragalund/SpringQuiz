@@ -2,6 +2,7 @@ package no.group3.springQuiz.quiz.api
 
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
+import no.group3.springQuiz.quiz.model.dto.AnswersDto
 import no.group3.springQuiz.quiz.model.dto.PatchQuestionTextDto
 import no.group3.springQuiz.quiz.model.dto.QuestionDto
 import org.junit.Test
@@ -212,6 +213,38 @@ class QuizApiTest: QuizTestBase() {
                 .delete("$QUIZ_PATH/{id}")
                 .then()
                 .statusCode(204)
+    }
+
+    @Test
+    fun checkAnswer() {
+        val quizId = addQuiz()
+
+        val dto = AnswersDto(answers= arrayOf(1,1), username = "sven")
+
+        given().pathParam("id", quizId)
+                .contentType(ContentType.JSON)
+                .body(dto)
+                .post("$QUIZ_PATH/{id}/check")
+                .then()
+                .statusCode(201)
+                .body("score", equalTo(2))
+    }
+
+    @Test
+    fun getQuizByCategory() {
+        // (set to category 'mixed' in testbase)
+        val quizId = addQuiz()
+
+        given().get("$QUIZ_PATH?category=mixed")
+                .then()
+                .statusCode(200)
+                .body("size()", equalTo(1))
+
+        given().get("$QUIZ_PATH?category=nonexisting")
+                .then()
+                .statusCode(200)
+                .body("size()", equalTo(0))
+
     }
 
 }

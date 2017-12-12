@@ -4,12 +4,10 @@ import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
 import io.swagger.annotations.ApiResponse
-import no.group3.springQuiz.quiz.model.dto.QuestionConverter
-import no.group3.springQuiz.quiz.model.dto.QuestionDto
-import no.group3.springQuiz.quiz.model.dto.QuizConverter
-import no.group3.springQuiz.quiz.model.dto.QuizDto
+import no.group3.springQuiz.quiz.model.dto.*
 import no.group3.springQuiz.quiz.model.entity.Question
 import no.group3.springQuiz.quiz.model.entity.Quiz
+import no.group3.springQuiz.quiz.model.repository.CategoryRepository
 import no.group3.springQuiz.quiz.model.repository.QuestionRepository
 import no.group3.springQuiz.quiz.model.repository.QuizRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,6 +15,7 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
+import java.security.Principal
 import javax.validation.ConstraintViolationException
 
 /**
@@ -36,10 +35,26 @@ class QuizController {
     @Autowired
     lateinit var quizRepository : QuizRepository
 
-    @ApiOperation("Retrieve all quizzes")
+    @Autowired
+    lateinit var categoryRepository : CategoryRepository
+
+    @ApiOperation("Retrieve all quizzes, apply '?category={categoryname}' to get quizzes from one specific category")
     @GetMapping
-    fun get(): ResponseEntity<List<QuizDto>> {
-        return ResponseEntity.ok(QuizConverter.transform(quizRepository.findAll()))
+    fun get(@ApiParam("Category")
+            @RequestParam(value="category", required = false)
+            category: String?
+    ): ResponseEntity<List<QuizDto>> {
+        val list = if(category.isNullOrBlank()) {
+            quizRepository.findAll()
+        } else {
+            quizRepository.findByCategory(category!!)
+        }
+
+        if(list!=null){
+            return ResponseEntity.ok(QuizConverter.transform(list))
+        }
+
+        return ResponseEntity.ok().build()
     }
 
     @ApiOperation("Delete quiz with the given id")
@@ -72,7 +87,13 @@ class QuizController {
             @RequestBody
             dto: QuizDto): ResponseEntity<Long> {
         // don't want the id from the client
-        if (dto.id != null) {
+        if (dto.id != null || dto.category==null) {
+            return ResponseEntity.status(400).build()
+        }
+
+        val cat = categoryRepository.findByName(dto.category!!)
+
+        if(cat==null && dto.category != "mixed"){
             return ResponseEntity.status(400).build()
         }
 
@@ -94,7 +115,7 @@ class QuizController {
 
         var quiz : Quiz
         try {
-           quiz = quizRepository.save(Quiz(questions = qList, difficulty = dto.difficulty))
+           quiz = quizRepository.save(Quiz(questions = qList, difficulty = dto.difficulty, category = dto.category))
         } catch (e: ConstraintViolationException) {
             return ResponseEntity.status(400).build()
         }
@@ -137,4 +158,45 @@ class QuizController {
     }
 
 
+
+    /**
+     * This one is a bit tricky, it will create a new message added to the amqp
+     */
+    @ApiOperation("Check answer from the playing user, and return the score derived from this session")
+    @PostMapping(path = arrayOf("/{id}/check"), consumes = arrayOf(MediaType.APPLICATION_JSON_VALUE))
+    @ApiResponse(code = 201, message = "answers are submitted")
+    fun checkAnswers(@ApiParam("the id of the quiz to submit answers to")
+                     @PathVariable("id")
+                     pId: String?,
+                     @RequestBody
+                     @ApiParam("json representation of the answers")
+                     dto: AnswersDto): ResponseEntity<ScoreDto> {
+        val id: Long
+        try {
+            id = pId!!.toLong()
+        } catch (e: Exception) {
+            return ResponseEntity.status(404).build()
+        }
+
+        val quiz = quizRepository.findOne(id)
+        var correctAnswers = 0
+
+        if(!dto.answers!!.isNotEmpty() || quiz.questions!=null) {
+            if(quiz.questions!!.size != dto.answers!!.size){
+                return ResponseEntity.status(400).build()
+            }
+            var i = 0
+            dto!!.answers!!.forEach {
+                if(quiz.questions!![i].correctAnswers == it){
+                    correctAnswers++
+                }
+
+                i++
+            }
+        }
+
+        val scoreDto = ScoreDto(score = correctAnswers*quiz.difficulty!!, username = dto.username)
+
+        return ResponseEntity.status(201).body(scoreDto)
+    }
 }

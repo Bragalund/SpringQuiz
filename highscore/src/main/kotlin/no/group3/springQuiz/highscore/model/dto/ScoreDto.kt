@@ -1,7 +1,7 @@
 package no.group3.springQuiz.highscore.model.dto
 
 import io.swagger.annotations.ApiModelProperty
-import no.group3.springQuiz.highscore.model.entity.Score
+
 
 /**
  * Created by johannes on 01.11.2017.
@@ -10,22 +10,15 @@ import no.group3.springQuiz.highscore.model.entity.Score
 data class ScoreDto(
         @ApiModelProperty("The category id")
         var id : Long? = null,
+
         @ApiModelProperty("username")
-        var user : String = "",
+        var user : String? = null,
+
         @ApiModelProperty("The score")
-        var score : Int)
+        var score : Int? = null
+)
 
-class ScoreConverter{
-    companion object {
-        fun transform(entity: Score): ScoreDto {
-            return ScoreDto(
-                    id = entity.id!!,
-                    user = entity.user!!,
-                    score = entity.score!!)
-        }
 
-        fun transform(entities: Iterable<Score>): List<ScoreDto> {
-            return entities.map { transform(it) }
-        }
-    }
-}
+
+
+

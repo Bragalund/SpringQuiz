@@ -13,6 +13,7 @@ import javax.transaction.Transactional
  */
 @Repository
 interface QuizRepository : CrudRepository<Quiz, Long>, QuizRepositoryCustom {
+    fun findByCategory(category: String): List<Quiz>?
 }
 
 @Transactional

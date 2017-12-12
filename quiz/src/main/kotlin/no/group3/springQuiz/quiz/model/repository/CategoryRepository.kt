@@ -13,7 +13,7 @@ import javax.transaction.Transactional
  */
 @Repository
 interface CategoryRepository : CrudRepository<Category, Long>, CategoryRepositoryCustom {
-    fun findByName(name: String) : Category
+    fun findByName(name: String) : Category?
 }
 
 @Transactional
