@@ -10,6 +10,8 @@ import no.group3.springQuiz.quiz.model.entity.Quiz
 import no.group3.springQuiz.quiz.model.repository.CategoryRepository
 import no.group3.springQuiz.quiz.model.repository.QuestionRepository
 import no.group3.springQuiz.quiz.model.repository.QuizRepository
+import org.springframework.amqp.core.FanoutExchange
+import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -37,6 +39,12 @@ class QuizController {
 
     @Autowired
     lateinit var categoryRepository : CategoryRepository
+
+    @Autowired
+    private lateinit var  template: RabbitTemplate
+
+    @Autowired
+    private lateinit var fanout: FanoutExchange
 
     @ApiOperation("Retrieve all quizzes, apply '?category={categoryname}' to get quizzes from one specific category")
     @GetMapping
@@ -196,6 +204,8 @@ class QuizController {
         }
 
         val scoreDto = ScoreDto(score = correctAnswers*quiz.difficulty!!, username = dto.username)
+
+        template.convertAndSend(fanout.name, "", scoreDto)
 
         return ResponseEntity.status(201).body(scoreDto)
     }
