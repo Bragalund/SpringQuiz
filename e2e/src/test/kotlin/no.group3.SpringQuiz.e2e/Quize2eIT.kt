@@ -20,6 +20,9 @@ class Quize2eIT {
     companion object {
         class KDockerComposeContainer(path: File) : DockerComposeContainer<KDockerComposeContainer>(path)
 
+        val QUIZ_URL = "http://localhost/quiz/api"
+        val USER_URL = "http://localhost/user/api"
+
         @ClassRule
         @JvmField
         val env = KDockerComposeContainer(File("../docker-compose.yml"))
@@ -40,10 +43,8 @@ class Quize2eIT {
                     .until({
                         // zuul and eureka is up when 200 is returned
                         // this will in itself act as a test proving both zuul and eureka works
-                        given().get("http://localhost:80/quiz/api/quizzes").then().statusCode(200)
-
-                        given().get("http://localhost:80/user/details/apiV1/")
-                                .then().statusCode(200)
+                        RestAssured.given().get("$QUIZ_URL/health").then().body("status", equalTo("UP"))
+                        RestAssured.given().get("$USER_URL/health").then()
 
                         true
                     })

@@ -2,37 +2,37 @@ server:
   port: 8082
   context-path: "/api"
 
-#spring:
-#  application:
-#    name: "user"
-#  redis:
-#    host: redis
-#    port: 6379
-#  session:
-#    store-type: redis
-#  datasource:
-#    url: "jdbc:postgresql://user-db:5434/user"
-#    username: "user"
-#    password: ""
-#    driver-class-name: "org.postgresql.Driver"
-#  jpa:
-#    database: "postgresql"
-#    hibernate:
-#      ddl-auto: "update"
-#  rabbitmq:
-#    host: rabbitmq
-#
-#eureka:
-#  instance:
-#    preferIpAddress: true
-#  client:
-#    healthcheck:
-#      enabled: true
-#    serviceUrl:
-#      defaultZone: http://eureka:8761/eureka/
-#
-#security:
-#  sessions: NEVER
+spring:
+  application:
+    name: "user-service"
+  redis:
+    host: redis
+    port: 6379
+  session:
+    store-type: redis
+  datasource:
+    url: "jdbc:postgresql://user-db:5432/quiz"
+    username: "quiz"
+    password: ""
+    driver-class-name: "org.postgresql.Driver"
+  jpa:
+    database: "postgresql"
+    hibernate:
+      ddl-auto: "update"
+  rabbitmq:
+    host: rabbitmq
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    healthcheck:
+      enabled: true
+    serviceUrl:
+      defaultZone: http://eureka:8761/eureka/
+
+security:
+  sessions: NEVER
 
 ---
 spring:

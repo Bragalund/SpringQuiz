@@ -4,9 +4,11 @@ import org.hibernate.validator.constraints.NotEmpty
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
+import javax.persistence.Table
 import javax.validation.constraints.NotNull
 
 @Entity
+@Table(name="userdetails")
 class User(
 
         @get: Id @get: GeneratedValue
