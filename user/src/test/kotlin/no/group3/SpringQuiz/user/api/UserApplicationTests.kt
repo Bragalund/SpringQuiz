@@ -168,8 +168,4 @@ class UserApplicationTests : UserTestBase() {
                 .then()
                 .statusCode(204)
     }
-
-
-
-
 }

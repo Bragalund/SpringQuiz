@@ -29,6 +29,9 @@ abstract class UserTestBase{
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails()
     }
 
+
+    // helper methods
+
     fun createUser(): String {
         return RestAssured.given().contentType(ContentType.JSON)
                 .body(getUserDto())
@@ -37,6 +40,9 @@ abstract class UserTestBase{
                 .statusCode(201)
                 .extract().asString()
     }
+
+
+
 
     fun getUserDto(): UserDto {
         val id = null
