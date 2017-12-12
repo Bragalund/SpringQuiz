@@ -1,31 +1,26 @@
-package no.group3.user.security
+ package no.group3.user.security
 
-import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpMethod
-import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 
 
 // This just allows all (for development)
-@Configuration
-@EnableWebSecurity
-class WebSecurityConfig: WebSecurityConfigurerAdapter() {
-    override fun configure(http: HttpSecurity) {
-        http.httpBasic()
-                .and()
-                .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/**").permitAll()
-                .antMatchers(HttpMethod.PUT, "/**").permitAll()
-                .antMatchers(HttpMethod.PATCH, "/**").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/**").permitAll()
-                .anyRequest().denyAll()
-                .and()
-                .csrf().disable()
-    }
-
-}
+//@Configuration
+//@EnableWebSecurity
+//class WebSecurityConfig: WebSecurityConfigurerAdapter() {
+//    override fun configure(http: HttpSecurity) {
+//        http.httpBasic()
+//                .and()
+//                .authorizeRequests()
+//                .antMatchers(HttpMethod.GET, "/**").permitAll()
+//                .antMatchers(HttpMethod.POST, "/**").permitAll()
+//                .antMatchers(HttpMethod.PUT, "/**").permitAll()
+//                .antMatchers(HttpMethod.PATCH, "/**").permitAll()
+//                .antMatchers(HttpMethod.DELETE, "/**").permitAll()
+//                .anyRequest().denyAll()
+//                .and()
+//                .csrf().disable()
+//    }
+//
+//}
 /*
 
 import org.springframework.context.annotation.Configuration
