@@ -13,7 +13,9 @@ data class QuizDto(
         @ApiModelProperty("List of questions in this quiz")
         var questions: List<QuestionDto>? = null,
         @ApiModelProperty("Number between 1-3, representing difficulty of this quiz")
-        var difficulty : Int? = null
+        var difficulty : Int? = null,
+        @ApiModelProperty("The name of the category this quiz belongs to")
+        var category: String? = null
 )
 
 class QuizConverter {
@@ -22,8 +24,9 @@ class QuizConverter {
             return QuizDto(
                     id = entity.id,
                     questions = QuestionConverter.transform(entity.questions!!),
-                    difficulty = entity.difficulty
-            )
+                    difficulty = entity.difficulty,
+                    category = entity.category
+                    )
         }
 
         fun transform(entities: Iterable<Quiz>): List<QuizDto> {

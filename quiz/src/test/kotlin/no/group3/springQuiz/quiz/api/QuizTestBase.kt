@@ -15,6 +15,7 @@ import org.springframework.boot.context.embedded.LocalServerPort
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -86,7 +87,7 @@ abstract class QuizTestBase {
     }
 
     fun addQuiz(questions : List<QuestionDto>): QuizDto {
-        val quizDto = QuizDto(questions = questions, difficulty = 1)
+        val quizDto = QuizDto(questions = questions, difficulty = 1, category = "mixed")
 
         val qId = given().contentType(ContentType.JSON)
                 .body(quizDto)
@@ -119,9 +120,14 @@ class WebSecurityConfigLocalFake : WebSecurityConfig() {
                .and()
                .authorizeRequests()
                .antMatchers("/**").permitAll()
-               .anyRequest().denyAll()
                .and()
                .csrf().disable()
+    }
+
+    override fun configure(auth: AuthenticationManagerBuilder?) {
+        auth!!
+                .inMemoryAuthentication()
+                .withUser("user").password("password").roles("USER")
     }
 }
 

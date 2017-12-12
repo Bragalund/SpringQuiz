@@ -26,6 +26,7 @@ class DataInitializer(var questionRepository: QuestionRepository,
         var questions= ArrayList<Question>()
 
         val quiz = quizRepository.save(Quiz(difficulty = 1))
+        quiz.category = cat.name
         questions.add(questionRepository.save(Question(questionText = "2+2", answers = listOf("1", "2", "4", "6"),
                 correctAnswers = 3, category = cat)))
         questions.add(questionRepository.save(Question(questionText = "2+3", answers = listOf("5", "2", "4", "6"),
@@ -49,6 +50,7 @@ class DataInitializer(var questionRepository: QuestionRepository,
         questions.add(questionRepository.save(Question(questionText = "2+6*2*3^3",
                 answers = listOf("110", "324", "126", "172"), correctAnswers = 1, category = cat)))
         val hardQuiz = quizRepository.save(Quiz(difficulty = 3))
+        hardQuiz.category = cat.name
 
         questions.forEach({
             cat.questions!!.add(it)
