@@ -16,7 +16,6 @@ class UserApplicationTest : UserTestBase() {
     }
 
 
-    //Checks if application starts
     @Test
     fun contextLoads() {
     }
