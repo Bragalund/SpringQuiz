@@ -189,6 +189,10 @@ class QuizController {
         val quiz = quizRepository.findOne(id)
         var correctAnswers = 0
 
+        if(quiz==null){
+            return ResponseEntity.status(400).build()
+        }
+
         if(!dto.answers!!.isNotEmpty() || quiz.questions!=null) {
             if(quiz.questions!!.size != dto.answers!!.size){
                 return ResponseEntity.status(400).build()

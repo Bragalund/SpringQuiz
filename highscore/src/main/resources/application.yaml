@@ -1,0 +1,5 @@
+spring:
+  rabbitmq:
+    host: rabbitmq
+server:
+  port: 8085
