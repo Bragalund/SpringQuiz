@@ -16,25 +16,25 @@ interface UserRepository : CrudRepository<User, Long>, UserRepositoryCustom {
 
 @Transactional
 interface UserRepositoryCustom {
-    fun createUser(userName: String, firstName: String, lastName: String, email: String, plainPassword: String): Long
+    fun createUser(userName: String, firstName: String, lastName: String, email: String): Long
     fun deleteUserById(id: Long): Boolean
     fun updateUserName(id: Long, userName: String): Boolean
     fun updateFirstName(id: Long, firstName: String): Boolean
     fun updateLastName(id: Long, lastName: String): Boolean
     fun updateEmail(id: Long, email: String): Boolean
-    fun updatePassword(id: Long, plainPassword: String): Boolean
-    fun updateUser(id: Long, userName: String, firstName: String, lastName: String, email: String, plainPassword: String): Boolean
+//    fun updatePassword(id: Long, plainPassword: String): Boolean
+    fun updateUser(id: Long, userName: String, firstName: String, lastName: String, email: String): Boolean
     fun updateUserNameFirstNameAndLastName(id: Long, firstName: String, lastName: String, email: String): Boolean
 }
 
 open class UserRepositoryImpl : UserRepositoryCustom {
 
-    override fun updatePassword(id: Long, plainPassword: String): Boolean {
-        val hashedPassword = plainPassword//BCrypt.hashpw(plainPassword, BCrypt.gensalt(10))
-        var user = em.find(User::class.java, id) ?: return false
-        user.passwordHash = hashedPassword
-        return true
-    }
+//    override fun updatePassword(id: Long, plainPassword: String): Boolean {
+//        val hashedPassword = plainPassword//BCrypt.hashpw(plainPassword, BCrypt.gensalt(10))
+//        var user = em.find(User::class.java, id) ?: return false
+//        user.passwordHash = hashedPassword
+//        return true
+//    }
 
     override fun deleteUserById(id: Long): Boolean {
         var user = em.find(User::class.java, id) ?: return false
@@ -42,9 +42,9 @@ open class UserRepositoryImpl : UserRepositoryCustom {
         return true
     }
 
-    override fun createUser(userName: String, firstName: String, lastName: String, email: String, plainPassword: String ): Long {
-        val hashedPassword = plainPassword//BCrypt.hashpw(plainPassword, BCrypt.gensalt(10))
-        val user = User(null, userName, firstName, lastName, email, hashedPassword)
+    override fun createUser(userName: String, firstName: String, lastName: String, email: String): Long {
+        //val hashedPassword = plainPassword//BCrypt.hashpw(plainPassword, BCrypt.gensalt(10))
+        val user = User(null, userName, firstName, lastName, email)
         em.persist(user)
         return user.userId!!
     }
@@ -86,13 +86,13 @@ open class UserRepositoryImpl : UserRepositoryCustom {
 
 
 
-    override fun updateUser(id: Long, userName: String, firstName: String, lastName: String, email: String, plainPassword: String): Boolean {
+    override fun updateUser(id: Long, userName: String, firstName: String, lastName: String, email: String): Boolean {
         var user = em.find(User::class.java, id) ?: return false
         user.userName = userName
         user.firstName = firstName
         user.lastName = lastName
         user.email = email
-        user.passwordHash = plainPassword//BCrypt.hashpw(plainPassword, BCrypt.gensalt(10))
+     //   user.passwordHash = plainPassword//BCrypt.hashpw(plainPassword, BCrypt.gensalt(10))
         return true
     }
 }

@@ -18,10 +18,7 @@ data class UserDto(
         var lastName: String? = null,
 
         @ApiModelProperty("Email of user")
-        var email: String? = null,
-
-        @ApiModelProperty("Password of user")
-        var password: String? = null
+        var email: String? = null
 )
 
 class UserConverter{
@@ -32,8 +29,7 @@ class UserConverter{
                                 userName = entity.userName,
                                 firstName = entity.firstName,
                                 lastName = entity.lastName,
-                                email = entity.email,
-                                password = entity.passwordHash
+                                email = entity.email
                         )
                 }
 

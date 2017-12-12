@@ -18,7 +18,7 @@ open class UserJPATest {
 
     @Test
     fun createUser(){
-        var user = User(null,"AwesomeUsername", "Fredrik", "Thorelfsen", "somemail@mail.com", "jlkdsflkjfdslkj")
+        var user = User(null,"AwesomeUsername", "Fredrik", "Thorelfsen", "somemail@mail.com")
         val savedUserId = userRepository.save(user)
         assertNotNull(savedUserId)
     }

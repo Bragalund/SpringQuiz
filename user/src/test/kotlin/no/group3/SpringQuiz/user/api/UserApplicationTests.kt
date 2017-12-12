@@ -149,7 +149,7 @@ class UserApplicationTests : UserTestBase() {
         val email = "MyMail@SomeMail.com"
         val password = "SomePassword"
         //val hashedPassword = BCrypt.hashpw(userDto.password, BCrypt.gensalt(10))
-        return UserDto(id, username, firstname, lastname, email, password)
+        return UserDto(id, username, firstname, lastname, email)
     }
 
 
