@@ -21,7 +21,8 @@ class Quize2eIT {
         class KDockerComposeContainer(path: File) : DockerComposeContainer<KDockerComposeContainer>(path)
 
         val QUIZ_URL = "http://localhost/quiz/api"
-        val USER_URL = "http://localhost/user/api"
+        val USER_URL = "http://localhost/user/details/api"
+        val HIGHSCORE_URL = "http://localhost/highscore/api"
 
         @ClassRule
         @JvmField
@@ -44,7 +45,9 @@ class Quize2eIT {
                         // zuul and eureka is up when 200 is returned
                         // this will in itself act as a test proving both zuul and eureka works
                         RestAssured.given().get("$QUIZ_URL/health").then().body("status", equalTo("UP"))
-                        RestAssured.given().get("$USER_URL/health").then()
+                        RestAssured.given().get("$USER_URL/health").then().body("status", equalTo("UP"))
+                        RestAssured.given().get("$HIGHSCORE_URL/health").then()
+                                .body("status", equalTo("UP"))
 
                         true
                     })

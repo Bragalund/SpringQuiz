@@ -6,6 +6,8 @@ zuul:
     user-service:
       path: "/user/details/**"
       sensitive-headers:
+    highscore-service:
+      path: "/highscore/**"
 eureka:
   instance:
     prefer-ip-address: true

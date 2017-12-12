@@ -1,5 +1,35 @@
 spring:
   rabbitmq:
     host: rabbitmq
+  application:
+    name: "highscore-service"
 server:
   port: 8085
+
+---
+spring:
+  profiles: dc
+  rabbitmq:
+    host: rabbitmq
+  application:
+    name: "highscore-service"
+  datasource:
+    url: "jdbc:postgresql://highscore-db:5432/quiz"
+    username: "quiz"
+    password: ""
+    driver-class-name: "org.postgresql.Driver"
+  jpa:
+    database: "postgresql"
+    hibernate:
+      ddl-auto: "update"
+server:
+  port: 8085
+  context-path: "/api"
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    healthcheck:
+      enabled: true
+    serviceUrl:
+      defaultZone: http://eureka:8761/eureka/

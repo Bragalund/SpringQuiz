@@ -15,7 +15,7 @@ services:
   ###
 
   rabbitmq:
-    image: "rabbitmq:3"
+    image: rabbitmq
 
   # zuul-gateway
   zuul:
@@ -32,7 +32,7 @@ services:
   zuul-db:
     image: "postgres:10"
     ports:
-     - "5433"
+     - "5435"
     environment:
       POSTGRES_DB: quiz
       POSTGRES_USER: quiz
@@ -92,3 +92,25 @@ services:
     environment:
       POSTGRES_DB: quiz
       POSTGRES_USER: quiz
+
+  # highscore service
+  highscore:
+    build:
+      context: ./highscore/
+      dockerfile: Dockerfile
+    ports:
+      - "8085"
+    depends_on:
+      - rabbitmq
+      - highscore-db
+      - zuul
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dc"
+
+  highscore-db:
+      image: "postgres:10"
+      ports:
+        - "5435"
+      environment:
+        POSTGRES_DB: quiz
+        POSTGRES_USER: quiz

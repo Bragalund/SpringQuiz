@@ -18,8 +18,6 @@
     <name>quiz</name>
     <description>The actual game model</description>
 
-
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>

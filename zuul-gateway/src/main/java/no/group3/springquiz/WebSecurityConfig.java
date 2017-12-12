@@ -44,10 +44,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/user").authenticated()
-                .antMatchers(HttpMethod.POST ,"/quiz/**").authenticated()
+                // quiz-service rules
                 .antMatchers(HttpMethod.GET, "/quiz/**").permitAll()
+                .antMatchers(HttpMethod.POST ,"/quiz/**").authenticated()
+                .antMatchers(HttpMethod.PUT , "/quiz/**").authenticated()
+                .antMatchers(HttpMethod.PATCH, "/quiz/**").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/quiz/**").authenticated()
+                // highscore-service rules
+                .antMatchers(HttpMethod.GET, "/highscore/**").permitAll()
+                .antMatchers(HttpMethod.POST ,"/highscore/**").authenticated()
+                .antMatchers(HttpMethod.PUT , "/highscore/**").authenticated()
+                .antMatchers(HttpMethod.PATCH, "/highscore/**").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/highscore/**").authenticated()
+                // auth api rules
                 .antMatchers("/register").permitAll()
                 .antMatchers("/login").permitAll()
+                .antMatchers("/user").authenticated()
+                // user-service rules
                 .antMatchers(HttpMethod.POST,"/user/details/**").authenticated()
                 .antMatchers(HttpMethod.GET, "/user/details/**").permitAll()
                 .anyRequest().denyAll()
