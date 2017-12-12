@@ -122,13 +122,17 @@ class UserCRUD {
     }
 
     //Put User
+
+    //@ApiResponse(code = 204, message = "Succesfully updated user")
     @ApiOperation("Update user")
     @PutMapping(path = arrayOf("/{id}"))
-    @ApiResponse(code = 204, message = "Succesfully updated user")
     fun updateUser(
             @ApiParam(ID_PARAM)
             @PathVariable("id")
-            userId: String?, userDto: UserDto): ResponseEntity<Any> {
+            userId: Long?,
+            @ApiParam("New body to replace old one")
+            @RequestBody
+            userDto: UserDto): ResponseEntity<Any> {
 
         val id: Long
         try {
@@ -145,7 +149,7 @@ class UserCRUD {
 
         // Try to save updated user and check for constraintviolations
         try {
-            userRepository.updateUser(id,userDto.userName!!, userDto.firstName!!, userDto.lastName!!, userDto.email!!, userDto.password!!)
+            userRepository.updateUser(id, userDto.userName!!, userDto.firstName!!, userDto.lastName!!, userDto.email!!, userDto.password!!)
         } catch (e: ConstraintViolationException) {
             return ResponseEntity.status(400).build()
         }

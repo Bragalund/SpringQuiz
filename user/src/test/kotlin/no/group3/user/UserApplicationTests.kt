@@ -87,7 +87,7 @@ class UserApplicationTests : UserTestBase() {
                 .statusCode(200)
 
         // Sets id to userDto-instance
-        //userDto.id = userId.toLong()
+        userDto.id = userId.toLong()
 
 
         // Changes firstname of userdto
