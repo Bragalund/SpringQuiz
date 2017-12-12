@@ -1,4 +1,5 @@
-package no.group3.user.model.validation
+/*
+package no.group3.SpringQuiz.user.model.validation
 
 class EmailChecker{
     companion object {
@@ -11,4 +12,4 @@ class EmailChecker{
             return false
         }
     }
-}
+}*/

@@ -7,9 +7,6 @@ import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 import javax.transaction.Transactional
 
-/**
- * Created by johannes on 01.11.2017.
- */
 @Repository
 interface ScoreRepository : CrudRepository<Score, Long>, ScoreRepositoryCustom {
 
@@ -21,8 +18,10 @@ interface ScoreRepository : CrudRepository<Score, Long>, ScoreRepositoryCustom {
 @Transactional
 interface ScoreRepositoryCustom {
     fun createScore(id: Long, user: String, score: Int) : Boolean
-    fun deleteScoreById(id: Long) : Boolean
+    fun deleteHighscoreById(id: Long) : Boolean
     fun updateHighscore(id: Long, user: String, score: Int): Boolean
+    fun updateScore(id: Long, score: Int): Boolean
+    fun updateUser(id: Long, user: String): Boolean
 
 }
 
@@ -37,9 +36,9 @@ open class ScoreRepositoryImpl : ScoreRepositoryCustom {
         return true
     }
 
-    override fun deleteScoreById(id:Long) : Boolean{
-        val score = em.find(Score::class.java, id) ?: return false
-        em.remove(score)
+    override fun deleteHighscoreById(id:Long) : Boolean{
+        val highscore = em.find(Score::class.java, id) ?: return false
+        em.remove(highscore)
         return true
     }
 
@@ -49,5 +48,23 @@ open class ScoreRepositoryImpl : ScoreRepositoryCustom {
         highscore.score = score
         return true
     }
+
+    override fun updateScore(id: Long, score: Int): Boolean {
+        val highscore = em.find(Score::class.java, id) ?: return false
+        highscore.score = score
+        return true
+    }
+
+    override fun updateUser(id: Long, user: String): Boolean {
+        val highscore = em.find(Score::class.java, id) ?: return false
+        highscore.user = user
+        return true
+    }
+
+
+
+
+
+
 
 }

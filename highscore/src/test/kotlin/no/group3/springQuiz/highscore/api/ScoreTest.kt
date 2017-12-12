@@ -3,6 +3,7 @@ package no.group3.springQuiz.highscore.api
 import io.restassured.RestAssured.get
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
+import no.group3.springQuiz.highscore.model.dto.PatchScoreDto
 import org.hamcrest.CoreMatchers.equalTo
 import no.group3.springQuiz.highscore.model.dto.ScoreDto
 import org.junit.Test
@@ -40,10 +41,22 @@ class ScoreTest : ScoreTestBase(){
     }
 
     @Test
+    fun testGetSorted()
+    {
+        get(HIGHSCORE_PATH).then().body("size()", equalTo(0))
+        val score1 = addScore(user="Kjell", score=5)
+        val score2 = addScore(user="Lars", score=3)
+        val score3 = addScore(user="Jonas", score=8)
+        get(HIGHSCORE_PATH).then().body("size()", equalTo(3))
+
+
+    }
+
+    @Test
     fun testDelete(){
         get(HIGHSCORE_PATH).then().body("size()", equalTo(0))
 
-        val scoreID = addScore(user="Svein", score=5)
+        val scoreID = addScore(user="Kjell", score=5)
         get(HIGHSCORE_PATH).then().body("size()", equalTo(1))
 
         given().pathParam("id", scoreID)
@@ -64,6 +77,23 @@ class ScoreTest : ScoreTestBase(){
         given().pathParam("id", scoreDto.id)
                 .contentType(ContentType.JSON)
                 .body(scoreDto)
+                .put(HIGHSCORE_PATH + "/{id}")
+                .then()
+                .statusCode(204)
+
+    }
+
+    @Test
+    fun testPatch() {
+        get(HIGHSCORE_PATH).then().body("size()", equalTo(0))
+
+        val scoreDto = addScoreDto(user="Leif", score=0)
+
+        val patch = PatchScoreDto(user = "Nils", score=1)
+
+        given().pathParam("id", scoreDto.id)
+                .contentType(ContentType.JSON)
+                .body(patch)
                 .put(HIGHSCORE_PATH + "/{id}")
                 .then()
                 .statusCode(204)

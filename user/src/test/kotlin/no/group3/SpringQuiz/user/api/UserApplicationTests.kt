@@ -1,11 +1,8 @@
-package no.group3.user
+package no.group3.SpringQuiz.user.api
 
-import io.restassured.RestAssured
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
-import junit.framework.Assert.assertEquals
-import no.group3.user.model.dto.UserDto
-import org.hamcrest.CoreMatchers
+import no.group3.SpringQuiz.user.model.dto.UserDto
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Test
 import org.springframework.test.annotation.DirtiesContext
@@ -83,14 +80,14 @@ class UserApplicationTests : UserTestBase() {
                 .statusCode(201)
                 .extract().asString()
 
-        // Sets id to userDto
-        userDto.id = userId.toLong()
-
         //Checks that user exists
         given().pathParam("id", userId)
                 .get(USERS_PATH + "/{id}")
                 .then()
                 .statusCode(200)
+
+        // Sets id to userDto-instance
+        userDto.id = userId.toLong()
 
 
         // Changes firstname of userdto
@@ -104,6 +101,35 @@ class UserApplicationTests : UserTestBase() {
                 .then()
                 .statusCode(204)
 
+    }
+
+    @Test
+    fun patchUser(){
+        // Creates UserDTO instance
+        val userDto = getUserDto()
+
+        //Saves UserDto in DB and get userId
+        val userId = given().contentType(ContentType.JSON)
+                .body(userDto)
+                .post(USERS_PATH)
+                .then()
+                .statusCode(201)
+                .extract().asString()
+
+        userDto.id=userId.toLong()
+
+        //changes firstname, lastname and email
+        userDto.firstName="Arne"
+        userDto.lastName="Klungenberg"
+        userDto.email="ArneSinMail@mail.com"
+
+        // patches firstname, lastname and email
+        given().pathParam("id", userId)
+                .contentType(ContentType.JSON)
+                .body(userDto)
+                .patch(USERS_PATH +"/{id}")
+                .then()
+                .statusCode(204)
     }
 
     fun createUser(): String {

@@ -1,4 +1,5 @@
-package no.group3.user.model.validation
+/*
+package no.group3.SpringQuiz.user.model.validation
 
 
 import javax.validation.ConstraintValidator
@@ -11,4 +12,4 @@ class EmailValidator : ConstraintValidator<CustomEmail, String> {
     }
 
     override fun initialize(p0: CustomEmail?) {}
-}
+}*/
