@@ -27,12 +27,18 @@ class UserApplicationTests : UserTestBase() {
 
         val userId = given().contentType(ContentType.JSON)
                 .body(getUserDto())
+                .auth()
+                .preemptive()
+                .basic("user", "password")
                 .post(USERS_PATH)
                 .then()
                 .statusCode(201)
                 .extract().asString()
 
         given().pathParam("id", userId)
+                .auth()
+                .preemptive()
+                .basic("user", "password")
                 .get(USERS_PATH + "/{id}")
                 .then()
                 .statusCode(200)
@@ -50,17 +56,26 @@ class UserApplicationTests : UserTestBase() {
 
         //Checks that user exists
         given().pathParam("id", userId)
+                .auth()
+                .preemptive()
+                .basic("user", "password")
                 .get(USERS_PATH + "/{id}")
                 .then()
                 .statusCode(200)
 
         // Deletes user
         given().pathParam("id", userId)
+                .auth()
+                .preemptive()
+                .basic("user", "password")
                 .delete(USERS_PATH + "/{id}")
                 .then().statusCode(204)
 
         // Checks that user does not exist
         given().pathParam("id", userId)
+                .auth()
+                .preemptive()
+                .basic("user", "password")
                 .get(USERS_PATH + "/{id}")
                 .then()
                 .statusCode(404)
@@ -72,7 +87,11 @@ class UserApplicationTests : UserTestBase() {
         val userDto = getUserDto()
 
         //Saves UserDto in DB and get userId
-        val userId = given().contentType(ContentType.JSON)
+        val userId = given()
+                .auth()
+                .preemptive()
+                .basic("user", "password")
+                .contentType(ContentType.JSON)
                 .body(userDto)
                 .post(USERS_PATH)
                 .then()
@@ -81,6 +100,9 @@ class UserApplicationTests : UserTestBase() {
 
         //Checks that user exists
         given().pathParam("id", userId)
+                .auth()
+                .preemptive()
+                .basic("user", "password")
                 .get(USERS_PATH + "/{id}")
                 .then()
                 .statusCode(200)
@@ -94,6 +116,9 @@ class UserApplicationTests : UserTestBase() {
 
         // Updates user
         given().pathParam("id", userId)
+                .auth()
+                .preemptive()
+                .basic("user", "password")
                 .contentType(ContentType.JSON)
                 .body(userDto)
                 .put(USERS_PATH + "/{id}")
@@ -109,6 +134,9 @@ class UserApplicationTests : UserTestBase() {
 
         //Saves UserDto in DB and get userId
         val userId = given().contentType(ContentType.JSON)
+                .auth()
+                .preemptive()
+                .basic("user", "password")
                 .body(userDto)
                 .post(USERS_PATH)
                 .then()
@@ -124,6 +152,9 @@ class UserApplicationTests : UserTestBase() {
 
         // patches firstname, lastname and email
         given().pathParam("id", userId)
+                .auth()
+                .preemptive()
+                .basic("user", "password")
                 .contentType(ContentType.JSON)
                 .body(userDto)
                 .patch(USERS_PATH +"/{id}")
@@ -133,6 +164,9 @@ class UserApplicationTests : UserTestBase() {
 
     fun createUser(): String {
         return given().contentType(ContentType.JSON)
+                .auth()
+                .preemptive()
+                .basic("user", "password")
                 .body(getUserDto())
                 .post(USERS_PATH)
                 .then()
