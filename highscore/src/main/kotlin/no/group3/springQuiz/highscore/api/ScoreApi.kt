@@ -80,6 +80,7 @@ class ScoreApi{
     //Delete a highscore
     @ApiOperation("Delete score with the given id")
     @DeleteMapping(path = arrayOf("/{id}"))
+    @ApiResponse(code = 204, message = "Succesfully deleted score")
     fun delete(
             @ApiParam(" delete the score with given id")
             @PathVariable("id")
@@ -100,7 +101,6 @@ class ScoreApi{
         return ResponseEntity.status(204).build()
     }
 
-    //Put
     //Put User
     @ApiOperation("Update score")
     @PutMapping(path = arrayOf("/{id}"))
@@ -108,7 +108,10 @@ class ScoreApi{
     fun put(
             @ApiParam("Id of the score to update")
             @PathVariable("id")
-            scoreId: String?, scoreDto: ScoreDto): ResponseEntity<Any> {
+            scoreId: Long?,
+            @ApiParam("The body of the new dto that replaces the old one")
+            @RequestBody
+            scoreDto: ScoreDto): ResponseEntity<Any> {
         val id: Long
         try {
             id = scoreId!!.toLong()
@@ -120,8 +123,12 @@ class ScoreApi{
             return ResponseEntity.status(404).build()
         }
 
+        if (scoreDto.user == null || scoreDto.score == null){
+            return ResponseEntity.status(400).build()
+        }
+
         try {
-            scoreRepository.updateHighscore(id!!, scoreDto.user!!, scoreDto.score!!)
+            scoreRepository.updateHighscore(id,scoreDto.user!!, scoreDto.score!!)
         } catch (e: ConstraintViolationException) {
             return ResponseEntity.status(400).build()
         }
