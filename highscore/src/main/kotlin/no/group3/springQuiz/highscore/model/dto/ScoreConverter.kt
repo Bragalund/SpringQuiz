@@ -3,10 +3,9 @@ package no.group3.springQuiz.highscore.model.dto
 import no.group3.springQuiz.highscore.model.entity.Score
 
 /**
- * Created by johannes on 11.12.2017.
+ * For some reason my code didnt't work without splitting ScoreConverter and ScoreDto into different classes
  */
 class ScoreConverter{
-
     companion object {
         fun transform(entity: Score): ScoreDto {
             return ScoreDto(
@@ -15,7 +14,6 @@ class ScoreConverter{
                     score = entity.score!!)
 
         }
-
 
         fun transform(entities: Iterable<Score>): List<ScoreDto> {
             return entities.map { transform(it) }

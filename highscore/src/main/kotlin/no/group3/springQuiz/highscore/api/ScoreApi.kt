@@ -4,6 +4,7 @@ import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
 import io.swagger.annotations.ApiResponse
+import no.group3.springQuiz.highscore.model.dto.PatchScoreDto
 import no.group3.springQuiz.highscore.model.dto.ScoreConverter
 import no.group3.springQuiz.highscore.model.dto.ScoreDto
 import no.group3.springQuiz.highscore.model.entity.Score
@@ -15,9 +16,6 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import javax.validation.ConstraintViolationException
 
-/**
- * Created by johannes on 01.11.2017.
- */
 
 @Api(value = "/highscore", description = "API for highscore.")
 @RequestMapping(
@@ -34,7 +32,9 @@ class ScoreApi{
     @ApiOperation("Returns a list over all scores")
     @GetMapping
     fun get() : ResponseEntity<List<ScoreDto>> {
-        return ResponseEntity.ok(ScoreConverter.transform(scoreRepository.findAll()))
+        val scores = ScoreConverter.transform(scoreRepository.findAll())
+        scores.sortedByDescending { scoreDto -> scoreDto.score }
+        return ResponseEntity.ok(scores)
     }
 
 /*    //Return all scores with highest score on top
@@ -137,4 +137,39 @@ class ScoreApi{
     }
 
     //Patch
+    @ApiOperation("Update score in a highscore")
+    @PatchMapping(path = arrayOf("/{id}"))
+    fun patchScore(
+            @ApiParam("Id of the score to update")
+            @PathVariable("id")
+            id: Long?,
+            @ApiParam("")
+            @RequestBody
+            update: PatchScoreDto
+    ) : ResponseEntity<Any>{
+        if (id == null) {
+            return ResponseEntity.status(400).build()
+        }
+
+        val scoreDto = scoreRepository.findOne(id)
+            ?: return ResponseEntity.status(404).build()
+
+        if (update.user == null || update.score == null){
+            return ResponseEntity.status(400).build()
+        }
+
+        scoreDto.user = update.user!!
+        scoreDto.score = update.score!!
+
+        try {
+            scoreRepository.updateHighscore(id, scoreDto.user!!, scoreDto.score!!)
+        }
+
+        catch (e: ConstraintViolationException){
+            return ResponseEntity.status(400).build()
+        }
+
+        return ResponseEntity.status(204).build()
+    }
+
 }
