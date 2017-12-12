@@ -12,7 +12,7 @@ import org.springframework.test.annotation.DirtiesContext
 class UserApplicationTests : UserTestBase() {
 
     companion object {
-        val USERS_PATH = "/users"
+        val USERS_PATH = "/user"
     }
 
 
@@ -40,7 +40,6 @@ class UserApplicationTests : UserTestBase() {
                 .body("firstName", equalTo(getUserDto().firstName))
                 .body("lastName", equalTo(getUserDto().lastName))
                 .body("email", equalTo(getUserDto().email))
-        //.body("password", equalTo(hashedPassword))
     }
 
     @Test
@@ -147,8 +146,6 @@ class UserApplicationTests : UserTestBase() {
         val firstname = "SomeFirstName"
         val lastname = "SomeLastName"
         val email = "MyMail@SomeMail.com"
-        val password = "SomePassword"
-        //val hashedPassword = BCrypt.hashpw(userDto.password, BCrypt.gensalt(10))
         return UserDto(id, username, firstname, lastname, email)
     }
 
