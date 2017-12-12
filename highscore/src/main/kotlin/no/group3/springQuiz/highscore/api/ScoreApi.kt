@@ -101,7 +101,6 @@ class ScoreApi{
         return ResponseEntity.status(204).build()
     }
 
-    //Put
     //Put User
     @ApiOperation("Update score")
     @PutMapping(path = arrayOf("/{id}"))
