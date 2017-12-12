@@ -129,6 +129,11 @@
             <!--<version>2.9.0.pr3</version>-->
         <!--</dependency>-->
 
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+
 
     </dependencies>
 
@@ -178,6 +183,13 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <!-- For manual handling of generated resources -->
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.0.0</version>
             </plugin>
 
             <!--Self-contained Jar file-->
