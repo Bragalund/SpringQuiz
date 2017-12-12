@@ -161,23 +161,7 @@ class UserApplicationTests : UserTestBase() {
                 .statusCode(204)
     }
 
-    fun createUser(): String {
-        return given().contentType(ContentType.JSON)
-                .body(getUserDto())
-                .post(USERS_PATH)
-                .then()
-                .statusCode(201)
-                .extract().asString()
-    }
 
-    fun getUserDto(): UserDto {
-        val id = null
-        val username = "SomeUserName"
-        val firstname = "SomeFirstName"
-        val lastname = "SomeLastName"
-        val email = "MyMail@SomeMail.com"
-        return UserDto(id, username, firstname, lastname, email)
-    }
 
 
 }
