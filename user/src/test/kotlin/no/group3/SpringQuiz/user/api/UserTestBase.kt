@@ -34,21 +34,3 @@ abstract class UserTestBase{
 
 }
 
-@EnableWebSecurity
-@Order(1)
-open class WebSecurityConfigLocalFake : WebSecurityConfig() {
-    override fun configure(http: HttpSecurity) {
-        http.httpBasic()
-                .and()
-                .authorizeRequests()
-                .antMatchers("/**").permitAll()
-                .and()
-                .csrf().disable()
-    }
-
-    override fun configure(auth: AuthenticationManagerBuilder?) {
-        auth!!
-                .inMemoryAuthentication()
-                .withUser("user").password("password").roles("USER")
-    }
-}
