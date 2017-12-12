@@ -10,7 +10,7 @@ import kotlin.reflect.KClass
 @Constraint(validatedBy = arrayOf(EmailValidator::class))
 @Target(AnnotationTarget.FIELD, AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER, AnnotationTarget.PROPERTY_SETTER, AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.ANNOTATION_CLASS)
 @Retention(AnnotationRetention.RUNTIME)
-@Documented
+@kotlin.annotation.MustBeDocumented
 annotation class CustomEmail(
 
         val groups: Array<KClass<*>> = arrayOf(),
