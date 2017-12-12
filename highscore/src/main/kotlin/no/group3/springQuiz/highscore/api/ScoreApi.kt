@@ -80,9 +80,10 @@ class ScoreApi{
     //Delete a highscore
     @ApiOperation("Delete score with the given id")
     @DeleteMapping(path = arrayOf("/{id}"))
-    fun delete(@ApiParam(" delete the score with given id")
-                       @PathVariable("id")
-                       scoreId: String?): ResponseEntity<Any> {
+    fun delete(
+            @ApiParam(" delete the score with given id")
+            @PathVariable("id")
+            scoreId: String?): ResponseEntity<Any> {
         val id: Long
         try {
             id = scoreId!!.toLong()
@@ -119,8 +120,6 @@ class ScoreApi{
             return ResponseEntity.status(404).build()
         }
 
-
-        // Try to save updated user and check for constraintviolations
         try {
             scoreRepository.updateHighscore(id!!, scoreDto.user!!, scoreDto.score!!)
         } catch (e: ConstraintViolationException) {

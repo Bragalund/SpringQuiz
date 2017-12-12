@@ -19,7 +19,14 @@ class ScoreTest : ScoreTestBase(){
     }
 
     @Test
-    fun testGetAllScore(){
+    fun testGet(){
+        get(HIGHSCORE_PATH)
+                .then()
+                .body("size()", equalTo(0))
+    }
+
+    @Test
+    fun testPost(){
         get(HIGHSCORE_PATH).then().body("size()", equalTo(0))
 
         val dto = ScoreDto(user="Svein", score = 7)
@@ -33,15 +40,34 @@ class ScoreTest : ScoreTestBase(){
     }
 
     @Test
-    fun deleteAllScores(){
+    fun testDelete(){
 
         get(HIGHSCORE_PATH).then().body("size()", equalTo(0))
+
         val scoreID = addScore(user="Svein", score=5)
         get(HIGHSCORE_PATH).then().body("size()", equalTo(1))
+
         given().pathParam("id", scoreID)
                 .delete(HIGHSCORE_PATH + "/{id}")
                 .then().statusCode(204)
         get(HIGHSCORE_PATH).then().body("size()", equalTo(0))
+
+    }
+
+    @Test
+    fun testPut() {
+        get(HIGHSCORE_PATH).then().body("size()", equalTo(0))
+
+        val scoreDto = addScoreDto(user="Per", score=9)
+
+        scoreDto.score = 7
+        // Updates user
+        given().pathParam("id", scoreDto)
+                .contentType(ContentType.JSON)
+                .body(scoreDto)
+                .put(HIGHSCORE_PATH + "/{id}")
+                .then()
+                .statusCode(204)
 
     }
 

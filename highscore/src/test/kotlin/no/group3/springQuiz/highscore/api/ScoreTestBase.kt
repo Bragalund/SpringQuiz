@@ -41,4 +41,19 @@ abstract class ScoreTestBase{
         return scoreId
     }
 
+    fun addScoreDto(user: String, score: Int) : ScoreDto {
+        val scoreDto = ScoreDto(user = user, score = score)
+
+        val id = RestAssured.given().contentType(ContentType.JSON)
+                .body(scoreDto)
+                .post("/highscore")
+                .then()
+                .statusCode(201)
+                .extract().asString().toLong()
+
+        scoreDto.id= id
+
+        return scoreDto
+    }
+
 }
