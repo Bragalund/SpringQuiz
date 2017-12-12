@@ -18,6 +18,8 @@ spring:
     database: "postgresql"
     hibernate:
       ddl-auto: "update"
+  rabbitmq:
+    host: rabbitmq
 
 eureka:
   instance:
@@ -48,3 +50,4 @@ eureka:
     enabled: false
 security:
   sessions: always
+
