@@ -41,7 +41,6 @@ class ScoreTest : ScoreTestBase(){
 
     @Test
     fun testDelete(){
-
         get(HIGHSCORE_PATH).then().body("size()", equalTo(0))
 
         val scoreID = addScore(user="Svein", score=5)
@@ -61,8 +60,8 @@ class ScoreTest : ScoreTestBase(){
         val scoreDto = addScoreDto(user="Per", score=9)
 
         scoreDto.score = 7
-        // Updates user
-        given().pathParam("id", scoreDto)
+
+        given().pathParam("id", scoreDto.id)
                 .contentType(ContentType.JSON)
                 .body(scoreDto)
                 .put(HIGHSCORE_PATH + "/{id}")
