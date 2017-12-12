@@ -14,6 +14,7 @@ import javax.transaction.Transactional
 interface ScoreRepository : CrudRepository<Score, Long>, ScoreRepositoryCustom {
 
     fun findAllByScore(score: Int) : Iterable<Score>
+    fun findByUser(user: String) : Score?
 
 }
 
