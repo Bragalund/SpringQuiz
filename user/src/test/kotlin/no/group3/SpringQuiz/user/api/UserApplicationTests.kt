@@ -13,6 +13,8 @@ class UserApplicationTests : UserTestBase() {
 
     companion object {
         val USERS_PATH = "/user"
+        val AUTH_USERNAME = "user"
+        val AUTH_PASSWORD = "password"
     }
 
 
@@ -21,15 +23,21 @@ class UserApplicationTests : UserTestBase() {
     fun contextLoads() {
     }
 
+    @Test
+    fun testCreateUser(){
+        given().contentType(ContentType.JSON)
+                .body(getUserDto())
+                .post(USERS_PATH)
+                .then()
+                .statusCode(201)
+    }
+
     //Creates user and tries and checks if user exists
     @Test
     fun testCreateAndGetById() {
 
         val userId = given().contentType(ContentType.JSON)
                 .body(getUserDto())
-                .auth()
-                .preemptive()
-                .basic("user", "password")
                 .post(USERS_PATH)
                 .then()
                 .statusCode(201)
@@ -38,7 +46,7 @@ class UserApplicationTests : UserTestBase() {
         given().pathParam("id", userId)
                 .auth()
                 .preemptive()
-                .basic("user", "password")
+                .basic(AUTH_USERNAME, AUTH_PASSWORD)
                 .get(USERS_PATH + "/{id}")
                 .then()
                 .statusCode(200)
@@ -58,7 +66,7 @@ class UserApplicationTests : UserTestBase() {
         given().pathParam("id", userId)
                 .auth()
                 .preemptive()
-                .basic("user", "password")
+                .basic(AUTH_USERNAME, AUTH_PASSWORD)
                 .get(USERS_PATH + "/{id}")
                 .then()
                 .statusCode(200)
@@ -67,7 +75,7 @@ class UserApplicationTests : UserTestBase() {
         given().pathParam("id", userId)
                 .auth()
                 .preemptive()
-                .basic("user", "password")
+                .basic(AUTH_USERNAME, AUTH_PASSWORD)
                 .delete(USERS_PATH + "/{id}")
                 .then().statusCode(204)
 
@@ -75,7 +83,7 @@ class UserApplicationTests : UserTestBase() {
         given().pathParam("id", userId)
                 .auth()
                 .preemptive()
-                .basic("user", "password")
+                .basic(AUTH_USERNAME, AUTH_PASSWORD)
                 .get(USERS_PATH + "/{id}")
                 .then()
                 .statusCode(404)
@@ -90,7 +98,7 @@ class UserApplicationTests : UserTestBase() {
         val userId = given()
                 .auth()
                 .preemptive()
-                .basic("user", "password")
+                .basic(AUTH_USERNAME, AUTH_PASSWORD)
                 .contentType(ContentType.JSON)
                 .body(userDto)
                 .post(USERS_PATH)
@@ -102,7 +110,7 @@ class UserApplicationTests : UserTestBase() {
         given().pathParam("id", userId)
                 .auth()
                 .preemptive()
-                .basic("user", "password")
+                .basic(AUTH_USERNAME, AUTH_PASSWORD)
                 .get(USERS_PATH + "/{id}")
                 .then()
                 .statusCode(200)
@@ -118,7 +126,7 @@ class UserApplicationTests : UserTestBase() {
         given().pathParam("id", userId)
                 .auth()
                 .preemptive()
-                .basic("user", "password")
+                .basic(AUTH_USERNAME, AUTH_PASSWORD)
                 .contentType(ContentType.JSON)
                 .body(userDto)
                 .put(USERS_PATH + "/{id}")
@@ -135,7 +143,7 @@ class UserApplicationTests : UserTestBase() {
         val userId = given().contentType(ContentType.JSON)
                 .auth()
                 .preemptive()
-                .basic("user", "password")
+                .basic(AUTH_USERNAME, AUTH_PASSWORD)
                 .body(userDto)
                 .post(USERS_PATH)
                 .then()
@@ -153,7 +161,7 @@ class UserApplicationTests : UserTestBase() {
         given().pathParam("id", userId)
                 .auth()
                 .preemptive()
-                .basic("user", "password")
+                .basic(AUTH_USERNAME, AUTH_PASSWORD)
                 .contentType(ContentType.JSON)
                 .body(userDto)
                 .patch(USERS_PATH +"/{id}")
