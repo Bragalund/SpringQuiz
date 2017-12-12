@@ -1,6 +1,7 @@
-package no.group3.user
+package no.group3.SpringQuiz.user.api
 
 import io.restassured.RestAssured
+import no.group3.SpringQuiz.user.UserApplication
 import org.junit.After
 import org.junit.Before
 import org.junit.runner.RunWith

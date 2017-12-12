@@ -1,4 +1,5 @@
-package no.group3.user.model.validation
+/*
+package no.group3.SpringQuiz.user.model.validation
 
 import java.lang.annotation.Documented
 import javax.validation.Constraint
@@ -15,4 +16,4 @@ annotation class CustomEmail(
 
         val groups: Array<KClass<*>> = arrayOf(),
         val payload: Array<KClass<out Payload>> = arrayOf()
-)
+)*/

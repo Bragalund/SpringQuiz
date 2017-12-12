@@ -1,4 +1,4 @@
-package no.group3.user.model.entity
+package no.group3.SpringQuiz.user.model.entity
 
 import org.hibernate.validator.constraints.NotEmpty
 import javax.persistence.Entity

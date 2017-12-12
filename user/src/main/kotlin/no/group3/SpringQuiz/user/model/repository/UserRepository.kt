@@ -1,6 +1,6 @@
-package no.group3.user.model.repository
+package no.group3.SpringQuiz.user.model.repository
 
-import no.group3.user.model.entity.User
+import no.group3.SpringQuiz.user.model.entity.User
 import org.springframework.data.repository.CrudRepository
 //import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.stereotype.Repository

@@ -1,13 +1,13 @@
-package no.group3.user.api
+package no.group3.SpringQuiz.user.api
 
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
 import io.swagger.annotations.ApiResponse
-import no.group3.user.model.dto.PatchDto
-import no.group3.user.model.dto.UserConverter
-import no.group3.user.model.dto.UserDto
-import no.group3.user.model.repository.UserRepository
+import no.group3.SpringQuiz.user.model.dto.PatchDto
+import no.group3.SpringQuiz.user.model.dto.UserConverter
+import no.group3.SpringQuiz.user.model.dto.UserDto
+import no.group3.SpringQuiz.user.model.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*
 import javax.validation.ConstraintViolationException
 
 const val BASE_JSON = MediaType.APPLICATION_JSON_VALUE
-const val USER_JSON = "application/vnd.group3.user+json;charset=UTF-8;version=2"
 const val ID_PARAM = "Id of user"
 
 

@@ -1,8 +1,8 @@
-package no.group3.user
+package no.group3.SpringQuiz.user.api
 
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
-import no.group3.user.model.dto.UserDto
+import no.group3.SpringQuiz.user.model.dto.UserDto
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Test
 import org.springframework.test.annotation.DirtiesContext
@@ -127,7 +127,7 @@ class UserApplicationTests : UserTestBase() {
         given().pathParam("id", userId)
                 .contentType(ContentType.JSON)
                 .body(userDto)
-                .patch(USERS_PATH+"/{id}")
+                .patch(USERS_PATH +"/{id}")
                 .then()
                 .statusCode(204)
     }

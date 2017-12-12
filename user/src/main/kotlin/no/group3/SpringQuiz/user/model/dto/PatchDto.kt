@@ -1,4 +1,4 @@
-package no.group3.user.model.dto
+package no.group3.SpringQuiz.user.model.dto
 
 import io.swagger.annotations.ApiModelProperty
 

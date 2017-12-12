@@ -1,7 +1,7 @@
-package no.group3.user.model.dto
+package no.group3.SpringQuiz.user.model.dto
 
 import io.swagger.annotations.ApiModelProperty
-import no.group3.user.model.entity.User
+import no.group3.SpringQuiz.user.model.entity.User
 
 data class UserDto(
 
@@ -26,10 +26,10 @@ data class UserDto(
 
 class UserConverter{
         companion object {
-                fun transform(entity: User): UserDto{
+                fun transform(entity: User): UserDto {
                         return UserDto(
                                 id = entity.userId,
-                                userName = entity.userName        ,
+                                userName = entity.userName,
                                 firstName = entity.firstName,
                                 lastName = entity.lastName,
                                 email = entity.email,
