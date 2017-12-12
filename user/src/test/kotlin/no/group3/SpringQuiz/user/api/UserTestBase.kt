@@ -36,7 +36,7 @@ abstract class UserTestBase{
     fun createUser(): String {
         return RestAssured.given().contentType(ContentType.JSON)
                 .body(getUserDto())
-                .post(UserApplicationTests.USERS_PATH)
+                .post(UserApplicationTest.USERS_PATH)
                 .then()
                 .statusCode(201)
                 .extract().asString()

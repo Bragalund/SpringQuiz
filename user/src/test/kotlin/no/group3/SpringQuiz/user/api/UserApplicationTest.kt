@@ -7,7 +7,7 @@ import org.junit.Test
 import org.springframework.test.annotation.DirtiesContext
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD) // clean after each test
-class UserApplicationTests : UserTestBase() {
+class UserApplicationTest : UserTestBase() {
 
     companion object {
         val USERS_PATH = "/user"
