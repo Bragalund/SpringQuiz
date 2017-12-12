@@ -124,7 +124,6 @@ class UserApplicationTests : UserTestBase() {
                 .put(USERS_PATH + "/{id}")
                 .then()
                 .statusCode(204)
-
     }
 
     @Test
@@ -164,9 +163,6 @@ class UserApplicationTests : UserTestBase() {
 
     fun createUser(): String {
         return given().contentType(ContentType.JSON)
-                .auth()
-                .preemptive()
-                .basic("user", "password")
                 .body(getUserDto())
                 .post(USERS_PATH)
                 .then()
