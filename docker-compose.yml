@@ -36,12 +36,24 @@ services:
 
   # user-service
   user:
-    #image: cda6a044e869    <-- spesifiserer lokalt bilde(allerede bygget)
-    build:       # Bygger bilde på Dockerfile
-      context: ./user/ # angir hvor Dockerfilen befinner seg
-      dockerfile: Dockerfile  #Angir navnet på filen
-    ports:  # - <port utenfor container>:<applikasjonens port inne i containeren>
+    build:
+      context: ./user/
+      dockerfile: Dockerfile
+    ports:
       - "8082"
+    depends_on:
+          - redis
+          - user-db
+          - zuul
+
+  # User-service db
+  user-db:
+    image: "postgres:10"
+    ports:
+       - "5434"
+    environment:
+      POSTGRES_DB: user
+      POSTGRES_USER: user
   ###
 
   # quiz-service, creates two instances, to be able to handle more traffic and make it more robust.

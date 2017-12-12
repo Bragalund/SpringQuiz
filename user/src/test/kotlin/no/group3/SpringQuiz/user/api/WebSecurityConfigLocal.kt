@@ -13,7 +13,7 @@ open class WebSecurityConfigLocal : WebSecurityConfig() {
         http.httpBasic()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/**").permitAll()
+                .antMatchers("/**").permitAll() // permits all http-methods and url-s for testing
                 .and()
                 .csrf().disable()
     }
