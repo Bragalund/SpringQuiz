@@ -20,7 +20,7 @@ const val ID_PARAM = "Id of user"
 
 
 // Creates base url. example: www.someurl.com/user
-@Api(value = "/users", description = "CRUD for User") //Creates documentation of API with Swagger
+@Api(value = "/user", description = "CRUD actions for User") //Creates documentation of API with Swagger
 @RequestMapping(
         path = arrayOf("/user"),
         produces = arrayOf(BASE_JSON)

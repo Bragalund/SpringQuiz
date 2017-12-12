@@ -23,7 +23,7 @@ abstract class UserTestBase{
     fun setUpAndBreakdown() {
         RestAssured.baseURI = "http://localhost"
         RestAssured.port = port
-        RestAssured.basePath = "/apiV1"
+        RestAssured.basePath = "/api"
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails()
     }
 

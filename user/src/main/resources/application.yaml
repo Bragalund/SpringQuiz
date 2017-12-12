@@ -1,6 +1,6 @@
 server:
   port: "8082"
-  context-path: "/apiV1"
+  context-path: "/api"
  #security.basic.enabled=false
 
 eureka:
