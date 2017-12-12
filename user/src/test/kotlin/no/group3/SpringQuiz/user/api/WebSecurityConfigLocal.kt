@@ -9,11 +9,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @EnableWebSecurity
 @Order(1)
 open class WebSecurityConfigLocal : WebSecurityConfig() {
+
 //    override fun configure(http: HttpSecurity) {
 //        http.httpBasic()
 //                .and()
 //                .authorizeRequests()
-//                .antMatchers("/**").authenticated() // permits all http-methods and url-s for testing
+//                .antMatchers("/**").permitAll()
 //                .and()
 //                .csrf().disable()
 //    }

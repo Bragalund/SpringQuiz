@@ -12,8 +12,9 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit4.SpringRunner
 
 @RunWith(SpringRunner::class)
-@SpringBootTest("eureka.client.enabled:false" ,classes = arrayOf(UserApplication::class),
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest("eureka.client.enabled:false",
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+        classes = arrayOf(UserApplication::class))
 abstract class UserTestBase{
 
 
