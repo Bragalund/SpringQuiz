@@ -4,9 +4,6 @@ import org.hibernate.validator.constraints.NotEmpty
 import javax.persistence.*
 import javax.validation.constraints.NotNull
 
-/**
- * Created by johannes on 01.11.2017.
- */
 
 @Entity
 class Score(
