@@ -4,6 +4,7 @@ import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
 import io.swagger.annotations.ApiResponse
+import no.group3.user.model.dto.PatchDto
 import no.group3.user.model.dto.UserConverter
 import no.group3.user.model.dto.UserDto
 import no.group3.user.model.repository.UserRepository
@@ -36,8 +37,7 @@ class UserCRUD {
     @ApiResponse(code = 201, message = "Returns the ID of the new user") //Swagger expected return value
     fun createUser(
             @ApiParam("null, username, firstname, lastname, email, password")
-            @RequestBody
-            userDto: UserDto): ResponseEntity<Long> {
+            @RequestBody userDto: UserDto): ResponseEntity<Long> {
 
 
         //Checks of fields in object from client
@@ -73,8 +73,7 @@ class UserCRUD {
     @GetMapping(path = arrayOf("/{id}"))
     @ApiResponse(code = 200, message = "user-object")
     fun getUserWithId(@ApiParam(ID_PARAM) //documentation for swagger
-                      @PathVariable("id")  //The actual parameter passed in by url
-                      userId: String?): ResponseEntity<UserDto>  //input and Return-values
+                      @PathVariable("id") userId: String?): ResponseEntity<UserDto>  //input and Return-values
     {
         val id: Long
         try {
@@ -97,8 +96,7 @@ class UserCRUD {
     @DeleteMapping(path = arrayOf("/{id}"))
     @ApiResponse(code = 200, message = "Succesfully deleted user")
     fun deleteUserWithId(@ApiParam(ID_PARAM)
-                         @PathVariable("id")
-                         userId: String?): ResponseEntity<Any> {
+                         @PathVariable("id") userId: String?): ResponseEntity<Any> {
 
         val id: Long
         try {
@@ -120,11 +118,9 @@ class UserCRUD {
     @PutMapping(path = arrayOf("/{id}"))
     fun updateUser(
             @ApiParam(ID_PARAM)
-            @PathVariable("id")
-            userId: String,
+            @PathVariable("id") userId: String,
             @ApiParam("New body to replace old one")
-            @RequestBody
-            userDto: UserDto): ResponseEntity<Any> {
+            @RequestBody userDto: UserDto): ResponseEntity<Any> {
 
         val id: Long
         try {
@@ -149,11 +145,32 @@ class UserCRUD {
         return ResponseEntity.status(204).build()
     }
 
+    @ApiOperation("Modify the private userinfo")
+    @PatchMapping(path = arrayOf("/{id}"))
+    fun patch(@ApiParam(ID_PARAM)
+              @PathVariable("id") userId: String,
+              @RequestBody patchDto: PatchDto): ResponseEntity<Any> {
 
+        val id: Long
+        try {
+            id = userId!!.toLong() //Cast String(userId) to Long
+        } catch (exception: Exception) {
+            return ResponseEntity.status(400).build() //Bad request
+        }
 
+        //Check if user with given ID exists
+        if (!userRepository.exists(id)) {
+            return ResponseEntity.status(404).build()
+        }
 
+        try {
+            userRepository.updateUserNameFirstNameAndLastName(id, patchDto.firstName!!, patchDto.lastName!!, patchDto.email!!)
+        } catch (e: ConstraintViolationException) {
+            return ResponseEntity.status(400).build()
+        }
 
-
+        return ResponseEntity.status(204).build()
+    }
 
 
     @ExceptionHandler(value = ConstraintViolationException::class)

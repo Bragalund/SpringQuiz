@@ -24,6 +24,7 @@ interface UserRepositoryCustom {
     fun updateEmail(id: Long, email: String): Boolean
     fun updatePassword(id: Long, plainPassword: String): Boolean
     fun updateUser(id: Long, userName: String, firstName: String, lastName: String, email: String, plainPassword: String): Boolean
+    fun updateUserNameFirstNameAndLastName(id: Long, firstName: String, lastName: String, email: String): Boolean
 }
 
 open class UserRepositoryImpl : UserRepositoryCustom {
@@ -74,6 +75,16 @@ open class UserRepositoryImpl : UserRepositoryCustom {
         user.userName = userName
         return true
     }
+
+    override fun updateUserNameFirstNameAndLastName(id: Long, firstName: String, lastName: String, email: String): Boolean {
+        var user = em.find(User::class.java, id) ?: return false
+        user.firstName= firstName
+        user.lastName = lastName
+        user.email = email
+        return true
+    }
+
+
 
     override fun updateUser(id: Long, userName: String, firstName: String, lastName: String, email: String, plainPassword: String): Boolean {
         var user = em.find(User::class.java, id) ?: return false

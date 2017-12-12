@@ -103,6 +103,35 @@ class UserApplicationTests : UserTestBase() {
 
     }
 
+    @Test
+    fun patchUser(){
+        // Creates UserDTO instance
+        val userDto = getUserDto()
+
+        //Saves UserDto in DB and get userId
+        val userId = given().contentType(ContentType.JSON)
+                .body(userDto)
+                .post(USERS_PATH)
+                .then()
+                .statusCode(201)
+                .extract().asString()
+
+        userDto.id=userId.toLong()
+
+        //changes firstname, lastname and email
+        userDto.firstName="Arne"
+        userDto.lastName="Klungenberg"
+        userDto.email="ArneSinMail@mail.com"
+
+        // patches firstname, lastname and email
+        given().pathParam("id", userId)
+                .contentType(ContentType.JSON)
+                .body(userDto)
+                .patch(USERS_PATH+"/{id}")
+                .then()
+                .statusCode(204)
+    }
+
     fun createUser(): String {
         return given().contentType(ContentType.JSON)
                 .body(getUserDto())
