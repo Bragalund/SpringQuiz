@@ -31,12 +31,6 @@ class UserCRUD {
     @Autowired
     private lateinit var userRepository: UserRepository
 
-    // TODO remove this
-    @GetMapping("")
-    fun something(): String {
-        return "User endpoint works"
-    }
-
     @ApiOperation("Creates a new user") //Swagger documentation
     @PostMapping(consumes = arrayOf(BASE_JSON))
     @ApiResponse(code = 201, message = "Returns the ID of the new user") //Swagger expected return value
@@ -122,14 +116,12 @@ class UserCRUD {
     }
 
     //Put User
-
-    //@ApiResponse(code = 204, message = "Succesfully updated user")
     @ApiOperation("Update user")
     @PutMapping(path = arrayOf("/{id}"))
     fun updateUser(
             @ApiParam(ID_PARAM)
             @PathVariable("id")
-            userId: Long?,
+            userId: String,
             @ApiParam("New body to replace old one")
             @RequestBody
             userDto: UserDto): ResponseEntity<Any> {
@@ -156,6 +148,13 @@ class UserCRUD {
 
         return ResponseEntity.status(204).build()
     }
+
+
+
+
+
+
+
 
     @ExceptionHandler(value = ConstraintViolationException::class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
