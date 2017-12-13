@@ -1,5 +1,6 @@
 package no.group3.springQuiz.highscore.api
 
+import org.junit.Assert.assertEquals
 import io.restassured.RestAssured.get
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
@@ -44,14 +45,13 @@ class ScoreTest : ScoreTestBase(){
     fun testGetSorted()
     {
         get(HIGHSCORE_PATH).then().body("size()", equalTo(0))
-        val score1 = addScore(user="Kjell", score=5)
-        val score2 = addScore(user="Lars", score=3)
-        val score3 = addScore(user="Jonas", score=8)
+        addScore(user="Kjell", score=5)
+        addScore(user="Lars", score=3)
+        addScore(user="Jonas", score=8)
         get(HIGHSCORE_PATH).then().body("size()", equalTo(3))
         val output = get(HIGHSCORE_PATH).then().extract().asString()
-        //Not sure how to test this, but you can see in the testoutput in the console that the scores are sorted.
-        println(output)
-
+        //Not sure how to test this in a good way, but this is the expected string if the sorting works.
+        assertEquals(output, "[{\"id\":3,\"user\":\"Jonas\",\"score\":8},{\"id\":1,\"user\":\"Kjell\",\"score\":5},{\"id\":2,\"user\":\"Lars\",\"score\":3}]")
     }
 
     @Test
