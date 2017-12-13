@@ -143,30 +143,26 @@ class ScoreApi{
             @ApiParam("Id of the score to update")
             @PathVariable("id")
             id: Long?,
-            @ApiParam("")
+            @ApiParam("the new score")
             @RequestBody
-            update: PatchScoreDto
+            newScore: PatchScoreDto
     ) : ResponseEntity<Any>{
         if (id == null) {
             return ResponseEntity.status(400).build()
         }
 
-        val scoreDto = scoreRepository.findOne(id)
+        scoreRepository.findOne(id)
             ?: return ResponseEntity.status(404).build()
 
-        if (update.user == null || update.score == null){
+        if (newScore == null){
             return ResponseEntity.status(400).build()
         }
-
-        scoreDto.user = update.user!!
-        scoreDto.score = update.score!!
 
         try {
-            scoreRepository.updateHighscore(id, scoreDto.user!!, scoreDto.score!!)
+            scoreRepository.updateScore(id, newScore.score!!)
         }
-
         catch (e: ConstraintViolationException){
-            return ResponseEntity.status(400).build()
+            return ResponseEntity.status(401).build()
         }
 
         return ResponseEntity.status(204).build()
