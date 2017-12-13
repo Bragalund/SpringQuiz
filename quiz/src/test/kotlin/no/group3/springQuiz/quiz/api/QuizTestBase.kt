@@ -89,7 +89,7 @@ abstract class QuizTestBase {
                 .then()
                 .statusCode(201)
                 .extract().asString().toLong()
-        quizDto.id = qId
+        quizDto.quizId = qId
         return quizDto
     }
 
@@ -101,7 +101,7 @@ abstract class QuizTestBase {
         val qList = listOf(q1, q2)
         val q = addQuiz(qList)
 
-        return q.id!!
+        return q.quizId!!
     }
 }
 

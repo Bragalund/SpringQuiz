@@ -9,7 +9,7 @@ import javax.persistence.Id
  */
 data class QuizDto(
         @ApiModelProperty("The quiz id")
-        var id : Long? = null,
+        var quizId : Long? = null,
         @ApiModelProperty("List of questions in this quiz")
         var questions: List<QuestionDto>? = null,
         @ApiModelProperty("Number between 1-3, representing difficulty of this quiz")
@@ -22,7 +22,7 @@ class QuizConverter {
     companion object {
         fun transform(entity: Quiz): QuizDto {
             return QuizDto(
-                    id = entity.id,
+                    quizId = entity.id,
                     questions = QuestionConverter.transform(entity.questions!!),
                     difficulty = entity.difficulty,
                     category = entity.category

@@ -13,7 +13,6 @@ import org.junit.Test
 import org.testcontainers.containers.DockerComposeContainer
 import java.io.File
 import java.util.concurrent.TimeUnit
-import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 /**
@@ -150,6 +149,14 @@ class Quize2eIT {
                 .statusCode(200)
                 .body("size()", equalTo(2))
 
+        val quizIds = given().cookie("SESSION", cookies.session)
+                .get("$QUIZ_URL/quizzes?category=Math")
+                .then()
+                .statusCode(200)
+                .extract().path<List<Long>>("quizId")
+
+        println("uniqueoutput: 1231231231231 id :$quizIds")
+
 
         // in GUI the user would select one correct answer for each question.
         val answers: Array<Int> = arrayOf(1,1,1,1)
@@ -164,22 +171,63 @@ class Quize2eIT {
         assertTrue(id == responsId)
 
 
-        // the dto that is handled by the endpoint described below
-        val answersDto = AnswersDto(answers = answers, username = responsId)
-
         // To submit the answers the quiz module has an endpoint /quizzes/{id}/check
         // It takes the answer and the logged in users id and calculates it score.
         // It will send the score as response and also create a new amqp message and publish it to rabbitmq
+
+        // check that highscore is empty before submitting the answers
+        given().cookie("SESSION", cookies.session)
+                .get("$HIGHSCORE_URL/highscore")
+                .then()
+                .statusCode(200)
+                .body("size()", equalTo(0))
+
+
+        // the dto that is handled by the endpoint /quizzes/{id}/check
+        val answersDto = AnswersDto(answers = answers, username = responsId)
 
         given().cookie("SESSION", cookies.session)
                 .cookie("XSRF-TOKEN", cookies.csrf)
                 .header("X-XSRF-TOKEN", cookies.csrf)
                 .contentType(ContentType.JSON)
-                .pathParam("id", 2)
+                .pathParam("id", quizIds[0])
                 .body(answersDto)
                 .post("$QUIZ_URL/quizzes/{id}/check")
                 .then()
                 .statusCode(201)
                 .body("username", equalTo(responsId))
+
+        // Wait for 3000ms since it will take a moment for the message to be received by the highscore module, with
+        // rabbitmq
+        assertWithinTime(3000, {
+        given().cookie("SESSION", cookies.session)
+                .get("$HIGHSCORE_URL/highscore")
+                .then()
+                .statusCode(200)
+                .body("size()", equalTo(1))
+        })
+
     }
+
+    private fun assertWithinTime(timeoutMS: Long, lambda: () -> Any) {
+        val start = System.currentTimeMillis()
+
+        var delta = 0L
+
+        while (delta < timeoutMS) {
+            try {
+                lambda.invoke()
+                return
+            } catch (e: AssertionError) {
+                Thread.sleep(100)
+                delta = System.currentTimeMillis() - start
+            } catch (e: Exception) {
+                Thread.sleep(100)
+                delta = System.currentTimeMillis() - start
+            }
+        }
+
+        lambda.invoke()
+    }
+
 }
