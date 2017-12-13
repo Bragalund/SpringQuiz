@@ -67,21 +67,6 @@ services:
     ports:
       - "8083"
     depends_on:
-      - redis
-      - quiz-db
-      - zuul
-      # create some initial data
-    environment:
-      - "SPRING_PROFILES_ACTIVE=default-init"
-
-  quiz2:
-    build:
-      context: ./quiz/
-      dockerfile: Dockerfile
-    ports:
-      - "8084"
-    depends_on:
-      - redis
       - quiz-db
       - zuul
 
@@ -100,6 +85,20 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8085"
+    depends_on:
+      - rabbitmq
+      - highscore-db
+      - zuul
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dc"
+
+
+  highscore2:
+    build:
+      context: ./highscore/
+      dockerfile: Dockerfile
+    ports:
+      - "8086"
     depends_on:
       - rabbitmq
       - highscore-db

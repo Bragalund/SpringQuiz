@@ -3,6 +3,7 @@ package no.group3.SpringQuiz.e2e
 import io.restassured.RestAssured
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
+import no.group3.SpringQuiz.e2e.data.AnswersDto
 import org.awaitility.Awaitility.await
 import org.hamcrest.CoreMatchers.*
 import org.hamcrest.Matchers.contains
@@ -12,6 +13,8 @@ import org.junit.Test
 import org.testcontainers.containers.DockerComposeContainer
 import java.io.File
 import java.util.concurrent.TimeUnit
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 /**
  * Created by josoder on 08.12.17.
@@ -48,6 +51,8 @@ class Quize2eIT {
                         RestAssured.given().get("$USER_URL/health").then().body("status", equalTo("UP"))
                         RestAssured.given().get("$HIGHSCORE_URL/health").then()
                                 .body("status", equalTo("UP"))
+                        // need to make sure the data is created before running this tests
+                        RestAssured.given().get("$QUIZ_URL/quizzes").then().body("size()", equalTo(2))
 
                         true
                     })
@@ -94,7 +99,7 @@ class Quize2eIT {
     }
 
     @Test
-    fun testLogin() {
+    fun testSecurity() {
 
         val id = createUniqueId()
         val pwd = "password"
@@ -105,7 +110,17 @@ class Quize2eIT {
                 .then()
                 .statusCode(401)
 
-        //note the difference in cookie name
+        val answer = AnswersDto(arrayOf(1,2,3,4), username = "not-authed")
+
+        given()
+                .pathParam("id", 1)
+                .body(answer)
+                .post("$QUIZ_URL/quizzes/{id}/check")
+                .then()
+                .statusCode(403)
+
+
+
         given().cookie("SESSION", cookies.session)
                 .get("/user")
                 .then()
@@ -114,19 +129,57 @@ class Quize2eIT {
                 .body("roles", contains("ROLE_USER"))
     }
 
+
     @Test
-    fun testQuiz() {
+    fun testGame() {
         val id = createUniqueId()
         val password = "secret"
 
         val cookies = registerUser(id, password)
 
         given().cookie("SESSION", cookies.session)
-                .get("/quiz/api/quizzes")
+                .get("/user")
                 .then()
                 .statusCode(200)
 
+        // get quizzes from category,
+        // in GUI would have the user choose quiz based on category
         given().cookie("SESSION", cookies.session)
-                .get("/quiz/api/quizzes/")
+                .get("$QUIZ_URL/quizzes?category=Math")
+                .then()
+                .statusCode(200)
+                .body("size()", equalTo(2))
+
+
+        // in GUI the user would select one correct answer for each question.
+        val answers: Array<Int> = arrayOf(1,1,1,1)
+
+        // The id would be extracted in the gui to be able to display the username
+        // a logged in users role and username is available at /user
+        val responsId = given().cookie("SESSION", cookies.session)
+                .get("/user")
+                .then()
+                .statusCode(200)
+                .extract().path<String>("username")
+        assertTrue(id == responsId)
+
+
+        // the dto that is handled by the endpoint described below
+        val answersDto = AnswersDto(answers = answers, username = responsId)
+
+        // To submit the answers the quiz module has an endpoint /quizzes/{id}/check
+        // It takes the answer and the logged in users id and calculates it score.
+        // It will send the score as response and also create a new amqp message and publish it to rabbitmq
+
+        given().cookie("SESSION", cookies.session)
+                .cookie("XSRF-TOKEN", cookies.csrf)
+                .header("X-XSRF-TOKEN", cookies.csrf)
+                .contentType(ContentType.JSON)
+                .pathParam("id", 2)
+                .body(answersDto)
+                .post("$QUIZ_URL/quizzes/{id}/check")
+                .then()
+                .statusCode(201)
+                .body("username", equalTo(responsId))
     }
 }
