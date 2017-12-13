@@ -279,7 +279,7 @@ class UserApplicationTest : UserTestBase() {
                 .body(userDto)
                 .put(USERS_PATH + "/{id}")
                 .then()
-                .statusCode(400)
+                .statusCode(409)
 
     }
 

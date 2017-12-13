@@ -139,7 +139,7 @@ class UserCRUD {
         }
 
         if(userRepository.findByUserName(userDto.userName!!)!!.userId != userDto.id) {
-            return ResponseEntity.status(400).build()
+            return ResponseEntity.status(409).build()
         }
 
 
