@@ -32,8 +32,7 @@ class ScoreApi{
     @ApiOperation("Returns a list over all scores")
     @GetMapping
     fun get() : ResponseEntity<List<ScoreDto>> {
-        val scores = ScoreConverter.transform(scoreRepository.findAll())
-        scores.sortedByDescending { scoreDto -> scoreDto.score }
+        val scores = ScoreConverter.transform(scoreRepository.findAll().sortedByDescending { scoreDto -> scoreDto.score })
         return ResponseEntity.ok(scores)
     }
 
