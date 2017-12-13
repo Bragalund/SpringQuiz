@@ -18,6 +18,37 @@ class CreateUserTest : UserTestBase(){
                 .statusCode(201)
     }
 
+    @Test
+    fun createTwoUsersWithDifferentNameTest(){
+        RestAssured.given().contentType(ContentType.JSON)
+                .body(getUserDto(AUTH_USERNAME_1))
+                .post(USERS_PATH)
+                .then()
+                .statusCode(201)
+
+        RestAssured.given().contentType(ContentType.JSON)
+                .body(getUserDto(AUTH_USERNAME_2))
+                .post(USERS_PATH)
+                .then()
+                .statusCode(201)
+    }
+
+    @Test
+    fun createUserWithSameUsernameShouldFailTest(){
+        RestAssured.given().contentType(ContentType.JSON)
+                .body(getUserDto(AUTH_USERNAME_1))
+                .post(USERS_PATH)
+                .then()
+                .statusCode(201)
+
+        RestAssured.given().contentType(ContentType.JSON)
+                .body(getUserDto(AUTH_USERNAME_1))
+                .post(USERS_PATH)
+                .then()
+                .statusCode(409)
+    }
+
+
     //Creates user and tries and checks if user exists
     @Test
     fun createAndGetByIdTest() {

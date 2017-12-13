@@ -6,11 +6,11 @@ import org.junit.Test
 import org.springframework.test.annotation.DirtiesContext
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD) // clean after each test
-class UpdateUserTest : UserTestBase() {
+class PutUserTest : UserTestBase() {
 
 
     @Test
-    fun updateUserTest() {
+    fun putUserTest() {
         // Creates UserDTO instance
         val userDto = getUserDto(UserTestBase.AUTH_USERNAME_1)
 
@@ -53,4 +53,43 @@ class UpdateUserTest : UserTestBase() {
                 .then()
                 .statusCode(204)
     }
+
+    @Test
+    fun cantPutToExistingUsernameTest(){
+        // Creates UserDTO instance
+        val userDto = getUserDto(AUTH_USERNAME_1)
+
+        //Saves UserDto in DB and get userId
+        val userId = RestAssured.given()
+                .contentType(ContentType.JSON)
+                .body(userDto)
+                .post(USERS_PATH)
+                .then()
+                .statusCode(201)
+                .extract().asString()
+
+        // creates additional user
+        RestAssured.given().contentType(ContentType.JSON)
+                .body(getUserDto(AUTH_USERNAME_2))
+                .post(USERS_PATH)
+                .then()
+                .statusCode(201)
+
+        // Changes firstname of userdto
+        userDto.firstName = AUTH_USERNAME_2
+
+        // Updates user
+        RestAssured.given().pathParam("id", userId)
+                .auth()
+                .preemptive()
+                .basic(AUTH_USERNAME_1, AUTH_PASSWORD_1)
+                .contentType(ContentType.JSON)
+                .body(userDto)
+                .put(USERS_PATH + "/{id}")
+                .then()
+                .statusCode(409)
+
+    }
+
+
 }

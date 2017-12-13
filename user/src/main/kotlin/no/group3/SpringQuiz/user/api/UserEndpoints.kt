@@ -46,10 +46,9 @@ class UserCRUD {
         if (userDto.userName.isNullOrEmpty() || userDto.firstName.isNullOrEmpty() || userDto.lastName.isNullOrEmpty() || userDto.email.isNullOrEmpty()) {
             return ResponseEntity.status(400).build()
         }
-        if(userRepository.findByUserName(userDto.userName!!) != null) {
+        if (userRepository.findByUserName(userDto.userName!!) != null) {
             return ResponseEntity.status(409).build()
         }
-
 
 
         //Trying to create user
@@ -138,7 +137,7 @@ class UserCRUD {
             return ResponseEntity.status(404).build()
         }
 
-        if(userRepository.findByUserName(userDto.userName!!)!!.userId != userDto.id) {
+        if (userRepository.findByUserName(userDto.userName!!)!!.userId != userDto.id) {
             return ResponseEntity.status(409).build()
         }
 
@@ -155,9 +154,9 @@ class UserCRUD {
 
     @ApiOperation("Modify the private userinfo")
     @PatchMapping(path = arrayOf("/{id}"))
-    fun patch(@ApiParam(ID_PARAM)
-              @PathVariable("id") userId: String,
-              @RequestBody patchDto: PatchDto): ResponseEntity<Any> {
+    fun patchUserWithId(@ApiParam(ID_PARAM)
+                        @PathVariable("id") userId: String,
+                        @RequestBody patchDto: PatchDto): ResponseEntity<Any> {
 
         val id: Long
         try {
