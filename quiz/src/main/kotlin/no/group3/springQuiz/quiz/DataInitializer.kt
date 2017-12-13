@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component
  * Preload some question and quizzes
  */
 @Component
-@Profile("default-init", "development")
+@Profile("default", "development")
 class DataInitializer(var questionRepository: QuestionRepository,
                       var quizRepository: QuizRepository,
                       var categoryRepository: CategoryRepository) : CommandLineRunner {

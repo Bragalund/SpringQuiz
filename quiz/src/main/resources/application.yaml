@@ -4,11 +4,6 @@ server:
 spring:
   application:
     name: "quiz-service"
-  redis:
-    host: redis
-    port: 6379
-  session:
-    store-type: redis
   datasource:
     url: "jdbc:postgresql://quiz-db:5432/quiz"
     username: "quiz"
@@ -30,8 +25,6 @@ eureka:
     serviceUrl:
       defaultZone: http://eureka:8761/eureka/
 
-security:
-  sessions: NEVER
 
 ---
 spring:
@@ -56,5 +49,5 @@ eureka:
   client:
     enabled: false
 security:
-  sessions: always
+  sessions: NEVER
 

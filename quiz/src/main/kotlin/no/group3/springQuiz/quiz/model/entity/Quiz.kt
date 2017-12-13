@@ -14,5 +14,6 @@ class Quiz(
         var questions: MutableList<Question>? = ArrayList(),
         @get: Min(1) @get: Max(3)
         var difficulty : Int? = null,
+        @get: Column(name="categoryname")
         var category: String? = null
         )

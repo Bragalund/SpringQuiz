@@ -7,18 +7,12 @@ import no.group3.springQuiz.quiz.QuizApplication
 import no.group3.springQuiz.quiz.model.dto.CategoryDto
 import no.group3.springQuiz.quiz.model.dto.QuestionDto
 import no.group3.springQuiz.quiz.model.dto.QuizDto
-import no.group3.springQuiz.quiz.security.WebSecurityConfig
 import org.junit.After
 import org.junit.Before
 import org.junit.runner.RunWith
 import org.springframework.boot.context.embedded.LocalServerPort
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.context.annotation.Configuration
-import org.springframework.core.annotation.Order
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.test.context.junit4.SpringRunner
-import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.test.context.ActiveProfiles
 
 
@@ -108,26 +102,6 @@ abstract class QuizTestBase {
         val q = addQuiz(qList)
 
         return q.id!!
-    }
-}
-
-@Configuration
-@EnableWebSecurity
-@Order(1)
-class WebSecurityConfigLocalFake : WebSecurityConfig() {
-    override fun configure(http: HttpSecurity) {
-       http.httpBasic()
-               .and()
-               .authorizeRequests()
-               .antMatchers("/**").permitAll()
-               .and()
-               .csrf().disable()
-    }
-
-    override fun configure(auth: AuthenticationManagerBuilder?) {
-        auth!!
-                .inMemoryAuthentication()
-                .withUser("user").password("password").roles("USER")
     }
 }
 
