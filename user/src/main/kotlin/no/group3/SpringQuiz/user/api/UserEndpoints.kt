@@ -47,7 +47,7 @@ class UserCRUD {
             return ResponseEntity.status(400).build()
         }
         if(userRepository.findByUserName(userDto.userName!!) != null) {
-            return ResponseEntity.status(400).build()
+            return ResponseEntity.status(409).build()
         }
 
 
@@ -139,7 +139,7 @@ class UserCRUD {
         }
 
         if(userRepository.findByUserName(userDto.userName!!)!!.userId != userDto.id) {
-            return ResponseEntity.status(400).build()
+            return ResponseEntity.status(409).build()
         }
 
 

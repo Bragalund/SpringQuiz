@@ -228,7 +228,7 @@ class UserApplicationTest : UserTestBase() {
                 .body(getUserDto(AUTH_USERNAME_1))
                 .post(USERS_PATH)
                 .then()
-                .statusCode(400)
+                .statusCode(409)
     }
 
     @Test
@@ -279,7 +279,7 @@ class UserApplicationTest : UserTestBase() {
                 .body(userDto)
                 .put(USERS_PATH + "/{id}")
                 .then()
-                .statusCode(400)
+                .statusCode(409)
 
     }
 
