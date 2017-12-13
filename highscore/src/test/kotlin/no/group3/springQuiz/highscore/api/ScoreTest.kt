@@ -47,8 +47,9 @@ class ScoreTest : ScoreTestBase(){
         val score1 = addScore(user="Kjell", score=5)
         val score2 = addScore(user="Lars", score=3)
         val score3 = addScore(user="Jonas", score=8)
+        get(HIGHSCORE_PATH).then().body("size()", equalTo(3))
         val output = get(HIGHSCORE_PATH).then().extract().asString()
-        //Not sure how to test this, but you can see in the test that the scores are sorted.
+        //Not sure how to test this, but you can see in the testoutput in the console that the scores are sorted.
         println(output)
 
     }
