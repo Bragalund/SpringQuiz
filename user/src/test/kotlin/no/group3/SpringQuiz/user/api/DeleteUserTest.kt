@@ -41,4 +41,17 @@ class DeleteUserTest :UserTestBase(){
                 .statusCode(403)
     }
 
+    @Test
+    fun deleteNotExistingUserTest(){
+        // Checks that user does not exist
+        RestAssured.given().pathParam("id", "123")
+                .auth()
+                .preemptive()
+                .basic(AUTH_USERNAME_1, AUTH_PASSWORD_1)
+                .get(USERS_PATH + "/{id}")
+                .then()
+                .statusCode(403)
+    }
+
+
 }

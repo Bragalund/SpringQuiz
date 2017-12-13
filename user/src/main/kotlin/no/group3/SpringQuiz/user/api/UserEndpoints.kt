@@ -75,7 +75,7 @@ class UserCRUD {
     @GetMapping(path = arrayOf("/{id}"))
     @ApiResponse(code = 200, message = "user-object")
     fun getUserWithId(@ApiParam(ID_PARAM) //documentation for swagger
-                      @PathVariable("id") userId: String?): ResponseEntity<UserDto>  //input and Return-values
+                      @PathVariable("id") userId: String): ResponseEntity<UserDto>  //input and Return-values
     {
         val id: Long
         try {
@@ -98,7 +98,7 @@ class UserCRUD {
     @DeleteMapping(path = arrayOf("/{id}"))
     @ApiResponse(code = 204, message = "Succesfully deleted user, no body in http-response")
     fun deleteUserWithId(@ApiParam(ID_PARAM)
-                         @PathVariable("id") userId: String?): ResponseEntity<Any> {
+                         @PathVariable("id") userId: String): ResponseEntity<Any> {
 
         val id: Long
         try {
@@ -160,7 +160,7 @@ class UserCRUD {
 
         val id: Long
         try {
-            id = userId!!.toLong() //Cast String(userId) to Long
+            id = userId.toLong() //Cast String(userId) to Long
         } catch (exception: Exception) {
             return ResponseEntity.status(400).build() //Bad request
         }

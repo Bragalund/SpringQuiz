@@ -7,7 +7,7 @@ import org.junit.Test
 import org.springframework.test.annotation.DirtiesContext
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD) // clean after each test
-class UserApplicationTest : UserTestBase() {
+class ApplicationUserTest : UserTestBase() {
 
     @Test
     fun contextLoads() {

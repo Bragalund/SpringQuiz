@@ -2,6 +2,7 @@ package no.group3.SpringQuiz.user.api
 
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
+import no.group3.SpringQuiz.user.model.dto.PatchDto
 import org.junit.Test
 import org.springframework.test.annotation.DirtiesContext
 
@@ -39,6 +40,22 @@ class PatchUserTest : UserTestBase() {
                 .basic(UserTestBase.AUTH_USERNAME_1, UserTestBase.AUTH_PASSWORD_1)
                 .contentType(ContentType.JSON)
                 .body(userDto)
+                .patch(UserTestBase.USERS_PATH + "/{id}")
+                .then()
+                .statusCode(204)
+    }
+
+    @Test
+    fun patchWithWithPatchDto(){
+        val userId = createUser(AUTH_USERNAME_1)
+
+        val patchDto = PatchDto("Lars", "Larsen", "larsen@mail.com")
+
+        RestAssured.given().pathParam("id", userId)
+                .auth()
+                .basic(UserTestBase.AUTH_USERNAME_1, UserTestBase.AUTH_PASSWORD_1)
+                .contentType(ContentType.JSON)
+                .body(patchDto)
                 .patch(UserTestBase.USERS_PATH + "/{id}")
                 .then()
                 .statusCode(204)

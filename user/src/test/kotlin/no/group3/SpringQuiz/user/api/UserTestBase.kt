@@ -52,7 +52,6 @@ abstract class UserTestBase{
 
 
 
-
     fun getUserDto(chosenUserName: String): UserDto {
         val id = null
         val username = chosenUserName

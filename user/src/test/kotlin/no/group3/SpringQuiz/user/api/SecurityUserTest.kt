@@ -87,4 +87,14 @@ class SecurityUserTest : UserTestBase(){
                 .statusCode(401)
     }
 
+    @Test
+    fun deleteWithMalformedIdInURL(){
+        RestAssured.given().pathParam("id", "ABC")
+                .auth()
+                .basic(AUTH_USERNAME_1, AUTH_PASSWORD_1)
+                .get(USERS_PATH + "/{id}")
+                .then()
+                .statusCode(403)
+    }
+
 }
