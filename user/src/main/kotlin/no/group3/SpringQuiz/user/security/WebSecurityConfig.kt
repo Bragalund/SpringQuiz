@@ -20,7 +20,7 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/health").permitAll()
-                .antMatchers(HttpMethod.POST, "/user/").permitAll()
+                .antMatchers(HttpMethod.POST, "/user").permitAll()
                 .antMatchers( "/user/{id}/**")
                 .access("hasRole('USER') and @userSecurity.checkThatIdIsLong(#id) and @userSecurity.checkThatUserExist(#id) and @userSecurity.checkUserName(authentication, #id)")
                 .anyRequest().denyAll()
