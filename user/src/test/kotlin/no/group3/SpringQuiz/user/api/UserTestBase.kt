@@ -18,6 +18,13 @@ import javax.print.attribute.standard.JobOriginatingUserName
         classes = arrayOf(UserApplication::class))
 abstract class UserTestBase{
 
+    companion object {
+        val USERS_PATH = "/user"
+        val AUTH_USERNAME_1 = "user1"
+        val AUTH_PASSWORD_1 = "password1"
+        val AUTH_USERNAME_2 = "user2"
+        val AUTH_PASSWORD_2 = "password2"
+    }
 
     @LocalServerPort
     protected var port = 0
@@ -37,7 +44,7 @@ abstract class UserTestBase{
     fun createUser(chosenUserName: String): String {
         return RestAssured.given().contentType(ContentType.JSON)
                 .body(getUserDto(chosenUserName))
-                .post(UserApplicationTest.USERS_PATH)
+                .post(USERS_PATH)
                 .then()
                 .statusCode(201)
                 .extract().asString()

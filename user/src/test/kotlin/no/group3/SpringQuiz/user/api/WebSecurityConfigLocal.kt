@@ -2,9 +2,7 @@ package no.group3.SpringQuiz.user.api
 
 import no.group3.SpringQuiz.user.security.WebSecurityConfig
 import org.springframework.core.annotation.Order
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
-import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 
 @EnableWebSecurity

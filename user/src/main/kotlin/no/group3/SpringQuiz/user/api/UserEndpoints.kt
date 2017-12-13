@@ -120,7 +120,7 @@ class UserCRUD {
     //Put User
     @ApiOperation("Update user")
     @PutMapping(path = arrayOf("/{id}"))
-    fun updateUser(
+    fun updateUserWithId(
             @ApiParam(ID_PARAM)
             @PathVariable("id") userId: String,
             @ApiParam("New body to replace old one")
