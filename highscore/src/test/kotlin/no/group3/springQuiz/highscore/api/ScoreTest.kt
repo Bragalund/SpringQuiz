@@ -88,16 +88,14 @@ class ScoreTest : ScoreTestBase(){
         get(HIGHSCORE_PATH).then().body("size()", equalTo(0))
 
         val scoreDto = addScoreDto(user="Leif", score=0)
-
-        val patch = PatchScoreDto(user = "Nils", score=1)
+        val patch = PatchScoreDto(score = 3)
 
         given().pathParam("id", scoreDto.id)
                 .contentType(ContentType.JSON)
                 .body(patch)
-                .put(HIGHSCORE_PATH + "/{id}")
+                .patch(HIGHSCORE_PATH + "/{id}")
                 .then()
                 .statusCode(204)
-
     }
 
 
