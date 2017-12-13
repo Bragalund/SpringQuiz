@@ -215,4 +215,102 @@ class UserApplicationTest : UserTestBase() {
                 .then()
                 .statusCode(403)
     }
+
+    @Test
+    fun createUserWithSameUsernameShouldFailTest(){
+        given().contentType(ContentType.JSON)
+                .body(getUserDto(AUTH_USERNAME_1))
+                .post(USERS_PATH)
+                .then()
+                .statusCode(201)
+
+        given().contentType(ContentType.JSON)
+                .body(getUserDto(AUTH_USERNAME_1))
+                .post(USERS_PATH)
+                .then()
+                .statusCode(400)
+    }
+
+    @Test
+    fun createTwoUsersWithDifferentNameTest(){
+        given().contentType(ContentType.JSON)
+                .body(getUserDto(AUTH_USERNAME_1))
+                .post(USERS_PATH)
+                .then()
+                .statusCode(201)
+
+        given().contentType(ContentType.JSON)
+                .body(getUserDto(AUTH_USERNAME_2))
+                .post(USERS_PATH)
+                .then()
+                .statusCode(201)
+    }
+
+    @Test
+    fun cantPutToExistingUsernameTest(){
+        // Creates UserDTO instance
+        val userDto = getUserDto(AUTH_USERNAME_1)
+
+        //Saves UserDto in DB and get userId
+        val userId = given()
+                .contentType(ContentType.JSON)
+                .body(userDto)
+                .post(USERS_PATH)
+                .then()
+                .statusCode(201)
+                .extract().asString()
+
+        // creates additional user
+        given().contentType(ContentType.JSON)
+                .body(getUserDto(AUTH_USERNAME_2))
+                .post(USERS_PATH)
+                .then()
+                .statusCode(201)
+
+        // Changes firstname of userdto
+        userDto.firstName = AUTH_USERNAME_2
+
+        // Updates user
+        given().pathParam("id", userId)
+                .auth()
+                .preemptive()
+                .basic(AUTH_USERNAME_1, AUTH_PASSWORD_1)
+                .contentType(ContentType.JSON)
+                .body(userDto)
+                .put(USERS_PATH + "/{id}")
+                .then()
+                .statusCode(400)
+
+    }
+
+    @Test
+    fun cantPatchWithoutAuthorizationTest(){
+        // Creates UserDTO instance
+        val userDto = getUserDto(AUTH_USERNAME_1)
+
+        //Saves UserDto in DB and get userId
+        val userId = given().contentType(ContentType.JSON)
+                .auth()
+                .basic(AUTH_USERNAME_1, AUTH_PASSWORD_1)
+                .body(userDto)
+                .post(USERS_PATH)
+                .then()
+                .statusCode(201)
+                .extract().asString()
+
+        userDto.id=userId.toLong()
+
+        //changes firstname, lastname and email
+        userDto.firstName="Arne"
+        userDto.lastName="Klungenberg"
+        userDto.email="ArneSinMail@mail.com"
+
+        // patches firstname, lastname and email
+        given().pathParam("id", userId)
+                .contentType(ContentType.JSON)
+                .body(userDto)
+                .patch(USERS_PATH +"/{id}")
+                .then()
+                .statusCode(401)
+    }
 }

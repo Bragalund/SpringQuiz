@@ -10,12 +10,13 @@ import javax.persistence.PersistenceContext
 
 @Repository
 interface UserRepository : CrudRepository<User, Long>, UserRepositoryCustom {
-    fun findByUserName(userName: String): User
+    fun findByUserName(userName: String): User?
 }
 
 
 @Transactional
 interface UserRepositoryCustom {
+    // fun findByUserName(userName: String): User
     fun createUser(userName: String, firstName: String, lastName: String, email: String): Long
     fun deleteUserById(id: Long): Boolean
     fun updateUserName(id: Long, userName: String): Boolean
@@ -23,7 +24,7 @@ interface UserRepositoryCustom {
     fun updateLastName(id: Long, lastName: String): Boolean
     fun updateEmail(id: Long, email: String): Boolean
     fun updateUser(id: Long, userName: String, firstName: String, lastName: String, email: String): Boolean
-    fun updateUserNameFirstNameAndLastName(id: Long, firstName: String, lastName: String, email: String): Boolean
+    fun updateFirstNameLastNameAndEmail(id: Long, firstName: String, lastName: String, email: String): Boolean
 }
 
 open class UserRepositoryImpl : UserRepositoryCustom {
@@ -68,7 +69,7 @@ open class UserRepositoryImpl : UserRepositoryCustom {
         return true
     }
 
-    override fun updateUserNameFirstNameAndLastName(id: Long, firstName: String, lastName: String, email: String): Boolean {
+    override fun updateFirstNameLastNameAndEmail(id: Long, firstName: String, lastName: String, email: String): Boolean {
         var user = em.find(User::class.java, id) ?: return false
         user.firstName= firstName
         user.lastName = lastName
