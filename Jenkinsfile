@@ -49,7 +49,7 @@ pipeline {
           }
         }
 
-        stage('Deploy app') {
+        stage('Deploy microservice to google cloud') {
           steps {
             sh('gcloud auth activate-service-account --key-file /home/ubuntu/${SECRET_FILE_NAME}')
             sh('gcloud config set project ${ENTERPRISE2_PROJECT_ID}')
