@@ -7,9 +7,7 @@ pipeline {
                  jdk "jdk"
              }
              steps {
-               {
                  sh('mvn clean install verify')
-               }
              }
         }
 
