@@ -10,6 +10,7 @@ import org.junit.runner.RunWith
 import org.springframework.boot.context.embedded.LocalServerPort
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit4.SpringRunner
+import javax.print.attribute.standard.JobOriginatingUserName
 
 @RunWith(SpringRunner::class)
 @SpringBootTest("eureka.client.enabled:false",
@@ -33,9 +34,9 @@ abstract class UserTestBase{
 
     // helper methods
 
-    fun createUser(): String {
+    fun createUser(chosenUserName: String): String {
         return RestAssured.given().contentType(ContentType.JSON)
-                .body(getUserDto())
+                .body(getUserDto(chosenUserName))
                 .post(UserApplicationTest.USERS_PATH)
                 .then()
                 .statusCode(201)
@@ -45,9 +46,9 @@ abstract class UserTestBase{
 
 
 
-    fun getUserDto(): UserDto {
+    fun getUserDto(chosenUserName: String): UserDto {
         val id = null
-        val username = "SomeUserName"
+        val username = chosenUserName
         val firstname = "SomeFirstName"
         val lastname = "SomeLastName"
         val email = "MyMail@SomeMail.com"

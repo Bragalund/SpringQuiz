@@ -22,19 +22,11 @@ interface UserRepositoryCustom {
     fun updateFirstName(id: Long, firstName: String): Boolean
     fun updateLastName(id: Long, lastName: String): Boolean
     fun updateEmail(id: Long, email: String): Boolean
-//    fun updatePassword(id: Long, plainPassword: String): Boolean
     fun updateUser(id: Long, userName: String, firstName: String, lastName: String, email: String): Boolean
     fun updateUserNameFirstNameAndLastName(id: Long, firstName: String, lastName: String, email: String): Boolean
 }
 
 open class UserRepositoryImpl : UserRepositoryCustom {
-
-//    override fun updatePassword(id: Long, plainPassword: String): Boolean {
-//        val hashedPassword = plainPassword//BCrypt.hashpw(plainPassword, BCrypt.gensalt(10))
-//        var user = em.find(User::class.java, id) ?: return false
-//        user.passwordHash = hashedPassword
-//        return true
-//    }
 
     override fun deleteUserById(id: Long): Boolean {
         var user = em.find(User::class.java, id) ?: return false

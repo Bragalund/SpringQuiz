@@ -11,8 +11,10 @@ class UserApplicationTest : UserTestBase() {
 
     companion object {
         val USERS_PATH = "/user"
-        val AUTH_USERNAME = "user"
-        val AUTH_PASSWORD = "password"
+        val AUTH_USERNAME_1 = "user1"
+        val AUTH_PASSWORD_1 = "password1"
+        val AUTH_USERNAME_2 = "user2"
+        val AUTH_PASSWORD_2 = "password2"
     }
 
 
@@ -21,9 +23,9 @@ class UserApplicationTest : UserTestBase() {
     }
 
     @Test
-    fun testCreateUser(){
+    fun createUserTest(){
         given().contentType(ContentType.JSON)
-                .body(getUserDto())
+                .body(getUserDto(AUTH_USERNAME_1))
                 .post(USERS_PATH)
                 .then()
                 .statusCode(201)
@@ -31,10 +33,13 @@ class UserApplicationTest : UserTestBase() {
 
     //Creates user and tries and checks if user exists
     @Test
-    fun testCreateAndGetById() {
+    fun createAndGetByIdTest() {
+// Creates UserDTO instance
+        val userDto = getUserDto(AUTH_USERNAME_1)
 
+        //Saves UserDto in DB and get userId
         val userId = given().contentType(ContentType.JSON)
-                .body(getUserDto())
+                .body(userDto)
                 .post(USERS_PATH)
                 .then()
                 .statusCode(201)
@@ -43,27 +48,27 @@ class UserApplicationTest : UserTestBase() {
         given().pathParam("id", userId)
                 .auth()
                 .preemptive()
-                .basic(AUTH_USERNAME, AUTH_PASSWORD)
+                .basic(AUTH_USERNAME_1, AUTH_PASSWORD_1)
                 .get(USERS_PATH + "/{id}")
                 .then()
                 .statusCode(200)
                 .body("id", equalTo(userId.toInt()))
-                .body("firstName", equalTo(getUserDto().firstName))
-                .body("lastName", equalTo(getUserDto().lastName))
-                .body("email", equalTo(getUserDto().email))
+                .body("firstName", equalTo(userDto.firstName))
+                .body("lastName", equalTo(userDto.lastName))
+                .body("email", equalTo(userDto.email))
     }
 
     @Test
-    fun deleteUser() {
+    fun deleteUserTest() {
 
         // Creates user
-        val userId = createUser()
+        val userId = createUser(AUTH_USERNAME_1)
 
         //Checks that user exists
         given().pathParam("id", userId)
                 .auth()
                 .preemptive()
-                .basic(AUTH_USERNAME, AUTH_PASSWORD)
+                .basic(AUTH_USERNAME_1, AUTH_PASSWORD_1)
                 .get(USERS_PATH + "/{id}")
                 .then()
                 .statusCode(200)
@@ -72,7 +77,7 @@ class UserApplicationTest : UserTestBase() {
         given().pathParam("id", userId)
                 .auth()
                 .preemptive()
-                .basic(AUTH_USERNAME, AUTH_PASSWORD)
+                .basic(AUTH_USERNAME_1, AUTH_PASSWORD_1)
                 .delete(USERS_PATH + "/{id}")
                 .then().statusCode(204)
 
@@ -80,22 +85,22 @@ class UserApplicationTest : UserTestBase() {
         given().pathParam("id", userId)
                 .auth()
                 .preemptive()
-                .basic(AUTH_USERNAME, AUTH_PASSWORD)
+                .basic(AUTH_USERNAME_1, AUTH_PASSWORD_1)
                 .get(USERS_PATH + "/{id}")
                 .then()
-                .statusCode(404)
+                .statusCode(403)
     }
 
     @Test
-    fun updateUser() {
+    fun updateUserTest() {
         // Creates UserDTO instance
-        val userDto = getUserDto()
+        val userDto = getUserDto(AUTH_USERNAME_1)
 
         //Saves UserDto in DB and get userId
         val userId = given()
                 .auth()
                 .preemptive()
-                .basic(AUTH_USERNAME, AUTH_PASSWORD)
+                .basic(AUTH_USERNAME_1, AUTH_PASSWORD_1)
                 .contentType(ContentType.JSON)
                 .body(userDto)
                 .post(USERS_PATH)
@@ -107,7 +112,7 @@ class UserApplicationTest : UserTestBase() {
         given().pathParam("id", userId)
                 .auth()
                 .preemptive()
-                .basic(AUTH_USERNAME, AUTH_PASSWORD)
+                .basic(AUTH_USERNAME_1, AUTH_PASSWORD_1)
                 .get(USERS_PATH + "/{id}")
                 .then()
                 .statusCode(200)
@@ -123,7 +128,7 @@ class UserApplicationTest : UserTestBase() {
         given().pathParam("id", userId)
                 .auth()
                 .preemptive()
-                .basic(AUTH_USERNAME, AUTH_PASSWORD)
+                .basic(AUTH_USERNAME_1, AUTH_PASSWORD_1)
                 .contentType(ContentType.JSON)
                 .body(userDto)
                 .put(USERS_PATH + "/{id}")
@@ -132,15 +137,14 @@ class UserApplicationTest : UserTestBase() {
     }
 
     @Test
-    fun patchUser(){
+    fun patchUserTest(){
         // Creates UserDTO instance
-        val userDto = getUserDto()
+        val userDto = getUserDto(AUTH_USERNAME_1)
 
         //Saves UserDto in DB and get userId
         val userId = given().contentType(ContentType.JSON)
                 .auth()
-                .preemptive()
-                .basic(AUTH_USERNAME, AUTH_PASSWORD)
+                .basic(AUTH_USERNAME_1, AUTH_PASSWORD_1)
                 .body(userDto)
                 .post(USERS_PATH)
                 .then()
@@ -158,11 +162,57 @@ class UserApplicationTest : UserTestBase() {
         given().pathParam("id", userId)
                 .auth()
                 .preemptive()
-                .basic(AUTH_USERNAME, AUTH_PASSWORD)
+                .basic(AUTH_USERNAME_1, AUTH_PASSWORD_1)
                 .contentType(ContentType.JSON)
                 .body(userDto)
                 .patch(USERS_PATH +"/{id}")
                 .then()
                 .statusCode(204)
+    }
+
+    @Test
+    fun forbiddenToChangeAnotherUserTest(){
+        // Creates UserDTO instance
+        val userDto = getUserDto(AUTH_USERNAME_1)
+
+        //Saves UserDto in DB and get userId
+        val userId = given().contentType(ContentType.JSON)
+                .body(userDto)
+                .post(USERS_PATH)
+                .then()
+                .statusCode(201)
+                .extract().asString()
+
+        userDto.id=userId.toLong()
+
+
+        // Creates another UserDTO instance
+        val anotherUserDto = getUserDto(AUTH_USERNAME_2)
+
+        //Saves another UserDto in DB and get userId
+        val anotherUserId = given().contentType(ContentType.JSON)
+                .body(anotherUserDto)
+                .post(USERS_PATH)
+                .then()
+                .statusCode(201)
+                .extract().asString()
+
+        anotherUserDto.id=anotherUserId.toLong()
+
+        //changes firstname, lastname and email
+        userDto.firstName="Arne"
+        userDto.lastName="Klungenberg"
+        userDto.email="ArneSinMail@mail.com"
+
+        // patches firstname, lastname and email
+        given().pathParam("id", userId)
+                .auth()
+                .preemptive()
+                .basic(AUTH_USERNAME_2, AUTH_PASSWORD_2)
+                .contentType(ContentType.JSON)
+                .body(userDto)
+                .patch(USERS_PATH +"/{id}")
+                .then()
+                .statusCode(403)
     }
 }

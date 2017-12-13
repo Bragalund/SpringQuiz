@@ -12,7 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.context.SecurityContext
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
+import java.util.stream.Collectors
 import javax.validation.ConstraintViolationException
 
 const val BASE_JSON = MediaType.APPLICATION_JSON_VALUE
@@ -93,7 +97,7 @@ class UserCRUD {
 
     @ApiOperation("Delete one user with the given ID")
     @DeleteMapping(path = arrayOf("/{id}"))
-    @ApiResponse(code = 200, message = "Succesfully deleted user")
+    @ApiResponse(code = 204, message = "Succesfully deleted user, no body in http-response")
     fun deleteUserWithId(@ApiParam(ID_PARAM)
                          @PathVariable("id") userId: String?): ResponseEntity<Any> {
 
@@ -108,6 +112,7 @@ class UserCRUD {
         if (!userRepository.exists(id)) {
             return ResponseEntity.status(404).build()
         }
+
         userRepository.delete(id)
         return ResponseEntity.status(204).build()
     }

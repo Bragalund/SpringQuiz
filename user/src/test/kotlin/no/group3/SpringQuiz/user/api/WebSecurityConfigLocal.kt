@@ -2,6 +2,7 @@ package no.group3.SpringQuiz.user.api
 
 import no.group3.SpringQuiz.user.security.WebSecurityConfig
 import org.springframework.core.annotation.Order
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -20,8 +21,12 @@ open class WebSecurityConfigLocal : WebSecurityConfig() {
 //    }
 
     override fun configure(auth: AuthenticationManagerBuilder?) {
-                auth!!
+        auth!!
                 .inMemoryAuthentication()
-                .withUser("user").password("password").roles("USER")
+                .withUser("user1").password("password1").roles("USER")
+                .and()
+                .withUser("user2").password("password2").roles("USER")
+                .and()
+                .withUser("admin").password("admin").roles("ADMIN", "USER")
     }
 }
