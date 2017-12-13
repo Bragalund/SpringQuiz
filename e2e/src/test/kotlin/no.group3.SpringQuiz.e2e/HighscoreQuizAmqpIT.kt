@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit
  * Created by josoder on 12.12.17.
  * Test to make sure that the rabbitmq communication between quiz and highscore works
  */
-class HighscoreQuizAMQPIT {
+class HighscoreQuizAmqpIT {
     companion object {
         val QUIZ_URL = "http://localhost:8083/api"
         val HIGHSCORE_URL = "http://localhost:8085"

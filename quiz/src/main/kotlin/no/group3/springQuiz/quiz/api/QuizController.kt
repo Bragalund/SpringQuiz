@@ -190,7 +190,7 @@ class QuizController {
         var correctAnswers = 0
 
         if(quiz==null){
-            return ResponseEntity.status(400).build()
+            return ResponseEntity.status(403).build()
         }
 
         if(!dto.answers!!.isNotEmpty() || quiz.questions!=null) {
