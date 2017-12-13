@@ -34,6 +34,15 @@ pipeline {
                          }
                      }
         }
+        stage('Clean and run all'){
+          tools {
+            maven "maven"
+            jdk "jdk"
+          }
+          steps {
+            sh('mvn clean install verify')
+          }
+        }
 
     }
 }
