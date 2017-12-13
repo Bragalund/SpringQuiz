@@ -47,7 +47,8 @@ class ScoreTest : ScoreTestBase(){
         val score1 = addScore(user="Kjell", score=5)
         val score2 = addScore(user="Lars", score=3)
         val score3 = addScore(user="Jonas", score=8)
-        get(HIGHSCORE_PATH).then().body("size()", equalTo(3))
+        val scores = get(HIGHSCORE_PATH).then().extract().asByteArray()
+
 
 
     }
