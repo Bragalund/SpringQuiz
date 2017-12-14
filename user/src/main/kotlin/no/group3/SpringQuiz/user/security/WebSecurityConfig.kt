@@ -58,7 +58,7 @@ fun checkThatUserExist(id: Long): Boolean {
 
 fun checkUserName(authentication: Authentication, id: Long): Boolean {
     val cookieUsername = (authentication.principal as UserDetails).username
-    var existingUsername = ""
+    val existingUsername: String
     try {
         existingUsername = userRepository.findOne(id).userName!!
     } catch (error: NullPointerException) {
