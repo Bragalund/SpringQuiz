@@ -78,8 +78,24 @@ db.
 
 ## Other features
 
-
 #### AMQP ####
+<p>
+ The quiz module communicates with the highscore using AMQP(rabbitmq). Highscore subscribes to the
+ queue containing new entries to be inserted(patched) into the database of the highscore service.
+ 
+ <br/>
+ Go to the following links to see the implementations: 
+ <br/>
+ 
+ [(producer in quiz) /quiz/api/quizzes/{id}/check](quiz/src/main/kotlin/no/group3/springQuiz/quiz/api/QuizController.kt) 
+ 
+ [(receiver in highscore) AMQPScoreListener](highscore/src/main/kotlin/no/group3/springQuiz/highscore/AMQPScoreListener.kt)
+ 
+ This feature is also included in both of the tests in the [e2e module](e2e/src/test/kotlin/no.group3.SpringQuiz.e2e)
+ 
+ 
+</p>
+
 
 ## Testing: ##
 #### e2e ####
