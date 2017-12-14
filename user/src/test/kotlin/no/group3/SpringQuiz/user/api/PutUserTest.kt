@@ -85,11 +85,9 @@ class PutUserTest : UserTestBase() {
                 .body(userDto)
                 .put(USERS_PATH + "/{id}")
                 .then()
-                .statusCode(409)
+                .statusCode(400)
 
     }
-
-    // TODO create test that creates a new user on PUT(201)
 
 
 }

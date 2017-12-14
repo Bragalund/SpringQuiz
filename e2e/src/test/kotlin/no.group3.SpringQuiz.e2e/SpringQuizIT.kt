@@ -4,6 +4,7 @@ import io.restassured.RestAssured
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
 import no.group3.SpringQuiz.e2e.data.AnswersDto
+import no.group3.SpringQuiz.e2e.data.UserDto
 import org.awaitility.Awaitility.await
 import org.hamcrest.CoreMatchers.*
 import org.hamcrest.Matchers.contains
@@ -18,7 +19,7 @@ import kotlin.test.assertTrue
 /**
  * Created by josoder on 08.12.17.
  */
-class Quize2eIT {
+class SpringQuizIT {
     companion object {
         class KDockerComposeContainer(path: File) : DockerComposeContainer<KDockerComposeContainer>(path)
 
@@ -41,7 +42,7 @@ class Quize2eIT {
             RestAssured.enableLoggingOfRequestAndResponseIfValidationFails()
 
 
-            await().atMost(200, TimeUnit.SECONDS)
+            await().atMost(500, TimeUnit.SECONDS)
                     .ignoreExceptions()
                     .until({
                         // zuul and eureka is up when 200 is returned
@@ -128,6 +129,74 @@ class Quize2eIT {
                 .body("roles", contains("ROLE_USER"))
     }
 
+    @Test
+    fun testUser(){
+        val id = createUniqueId()
+        val password = "secret"
+        val cookies = registerUser(id, password)
+
+        // Test that cookie is valid
+        given().cookie("SESSION", cookies.session)
+                .get("/user")
+                .then()
+                .statusCode(200)
+
+        val username = "SomeUsername"
+        val firstname = "SomeFirstName"
+        val lastname = "SomeLastName"
+        val email = "MyMail@SomeMail.com"
+
+        val userDtoBody = UserDto(null, username, firstname, lastname, email)
+
+//        val userBody = "{\n" +
+//                "    \"id\": 1,\n" +
+//                "    \"userName\": \"user1\",\n" +
+//                "    \"firstName\": \"SomeFirstName\",\n" +
+//                "    \"lastName\": \"SomeLastName\",\n" +
+//                "    \"email\": \"MyMail@SomeMail.com\"\n" +
+//                "}"
+
+        // creates user
+        val userId =  given().contentType(ContentType.JSON)
+                .cookie("SESSION", cookies.session)
+                .cookie("XSRF-TOKEN", cookies.csrf)
+                .header("X-XSRF-TOKEN", cookies.csrf)
+                .body(userDtoBody)
+                .post("$USER_URL/user")
+                .then()
+                .statusCode(201)
+                .extract().asString()
+
+        userDtoBody.userId=userId.toLong()
+
+//        // updates user with put
+//        given().cookie("SESSION", cookies.session)
+//                .cookie("XSRF-TOKEN", cookies.csrf)
+//                .header("X-XSRF-TOKEN", cookies.csrf)
+//                .pathParam("id", userId)
+//                .put("$USER_URL/user/{id}")
+//                .then()
+//                .statusCode(204)
+//
+//        // updates user with patch
+//        given().cookie("SESSION", cookies.session)
+//                .cookie("XSRF-TOKEN", cookies.csrf)
+//                .header("X-XSRF-TOKEN", cookies.csrf)
+//                .pathParam("id", userId)
+//                .put("$USER_URL/user/{id}")
+//                .then()
+//                .statusCode(204)
+
+        // deletes user
+        given().pathParam("id", userId)
+                .contentType(ContentType.JSON)
+                .cookie("SESSION", cookies.session)
+                .cookie("XSRF-TOKEN", cookies.csrf)
+                .header("X-XSRF-TOKEN", cookies.csrf)
+                .delete("$USER_URL/user/{id}")
+                .then()
+                .statusCode(204)
+    }
 
     @Test
     fun testGame() {

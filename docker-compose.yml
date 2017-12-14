@@ -54,8 +54,8 @@ services:
     ports:
        - "5434"
     environment:
-      POSTGRES_DB: quiz
-      POSTGRES_USER: quiz
+      POSTGRES_DB: user
+      POSTGRES_USER: user
   ###
 
   # quiz-service, creates two instances, to be able to handle more traffic and make it more robust.
