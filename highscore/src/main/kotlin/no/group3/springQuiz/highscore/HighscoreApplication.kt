@@ -12,9 +12,11 @@ import springfox.documentation.spring.web.plugins.Docket
 import springfox.documentation.swagger2.annotations.EnableSwagger2
 
 @SpringBootApplication
+class HighscoreApplication
+
+
 @EnableEurekaClient
 @EnableSwagger2
-class HighscoreApplication{
     class config{
         @Bean
         fun swaggerApi(): Docket {
@@ -34,7 +36,7 @@ class HighscoreApplication{
                     .build()
         }
     }
-}
+
 
 
 

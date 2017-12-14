@@ -23,10 +23,24 @@
  
  ### <i>Clarifications about the endpoints</i> ### 
  <p>
-    <b><i>category-controller:</i></b> Is selfexplanatory GET, POST and DELETE to perform what the 
+    <b><i>category-controller:</i></b> <br/> Is selfexplanatory GET, POST and DELETE to perform what the 
     HTTP-verbs describes. <br/>
-    <b><i>question-controller:</i></b> Contains one endpoint for every common HTTP-verb GET, POST, 
-     PUT, PATCH and DELETE.
+    <b><i>question-controller:</i></b> <br/> Contains one endpoint for every common HTTP-verb GET, POST, 
+     PUT, PATCH and DELETE. <br/>
+    <b><i>quiz-controller:</i></b> <br/> 
+    <code> GET /quizzes </code> <br/> 
+     can take an extra param using 
+    <code> /quizzes?category={category} </code> <br/>
+    will get all quizzes from a given category.  <br/> <br/>
+    <code> POST /quizzes/{id}/check </code> <br/>
+    This endpoint is used to submit answers to the quiz given by the id. It will
+    calculate the score based on the nr of correct answers given multiplied with 
+    the difficulty of the quiz(1-3). 
+    <br/>
+    This endpoint will publish the calculated score along with the username of
+    the playing user to rabbitmq. It will then eventually end up in the highscore
+    service.
+    
  </p>
  
  
