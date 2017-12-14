@@ -3,7 +3,6 @@ package no.group3.SpringQuiz.user.api
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
 import no.group3.SpringQuiz.user.UserApplication
-import no.group3.SpringQuiz.user.model.dto.PatchDto
 import no.group3.SpringQuiz.user.model.dto.UserDto
 import org.junit.After
 import org.junit.Before
@@ -11,7 +10,6 @@ import org.junit.runner.RunWith
 import org.springframework.boot.context.embedded.LocalServerPort
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit4.SpringRunner
-import javax.print.attribute.standard.JobOriginatingUserName
 
 @RunWith(SpringRunner::class)
 @SpringBootTest("eureka.client.enabled:false",
@@ -51,13 +49,6 @@ abstract class UserTestBase{
                 .extract().asString()
     }
 
-
-    fun getPatchDto(): PatchDto{
-        val firstname = "Lars"
-        val lastname = "Larsen"
-        val email = "larsen@mail.com"
-        return PatchDto(firstname, lastname, email)
-    }
 
     fun getUserDto(chosenUserName: String): UserDto {
         val id = null

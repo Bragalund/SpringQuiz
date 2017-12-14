@@ -1,6 +1,7 @@
 package no.group3.SpringQuiz.user.api
 
 import io.restassured.RestAssured
+import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
 import org.hamcrest.CoreMatchers
 import org.junit.Test
@@ -24,7 +25,7 @@ class GetUserTest :UserTestBase(){
                 .statusCode(201)
                 .extract().asString()
 
-        RestAssured.given().pathParam("id", userId)
+        given().pathParam("id", userId)
                 .auth()
                 .preemptive()
                 .basic(AUTH_USERNAME_1, AUTH_PASSWORD_1)

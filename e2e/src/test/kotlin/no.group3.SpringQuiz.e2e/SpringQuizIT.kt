@@ -167,16 +167,21 @@ class SpringQuizIT {
                 .statusCode(201)
                 .extract().asString()
 
+        // Change userDto
         userDtoBody.userId=userId.toLong()
+        userDtoBody.userName="anotherUsername"
+        userDtoBody.firstName = "AnotherFirstName"
+        userDtoBody.lastName = "AnotherLastname"
 
-//        // updates user with put
-//        given().cookie("SESSION", cookies.session)
-//                .cookie("XSRF-TOKEN", cookies.csrf)
-//                .header("X-XSRF-TOKEN", cookies.csrf)
-//                .pathParam("id", userId)
-//                .put("$USER_URL/user/{id}")
-//                .then()
-//                .statusCode(204)
+        // updates user with put
+        given().cookie("SESSION", cookies.session)
+                .cookie("XSRF-TOKEN", cookies.csrf)
+                .header("X-XSRF-TOKEN", cookies.csrf)
+                .pathParam("id", userId)
+                .body(userDtoBody)
+                .put("$USER_URL/user/{id}")
+                .then()
+                .statusCode(204)
 //
 //        // updates user with patch
 //        given().cookie("SESSION", cookies.session)

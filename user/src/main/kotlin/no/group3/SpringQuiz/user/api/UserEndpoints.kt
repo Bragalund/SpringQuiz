@@ -4,9 +4,9 @@ import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
 import io.swagger.annotations.ApiResponse
-import no.group3.SpringQuiz.user.model.dto.PatchDto
 import no.group3.SpringQuiz.user.model.dto.UserConverter
 import no.group3.SpringQuiz.user.model.dto.UserDto
+import no.group3.SpringQuiz.user.model.entity.User
 import no.group3.SpringQuiz.user.model.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -145,7 +145,7 @@ class UserCRUD {
     @PatchMapping(path = arrayOf("/{id}"))
     fun patchUserWithId(@ApiParam(ID_PARAM)
                         @PathVariable("id") userId: String,
-                        @RequestBody patchDto: PatchDto): ResponseEntity<Any> {
+                        @RequestBody userDto: UserDto): ResponseEntity<Any> {
 
         val id: Long
         try {
@@ -159,13 +159,56 @@ class UserCRUD {
             return ResponseEntity.status(404).build()
         }
 
+        val existingUser = userRepository.findOne(id)
+        var everythingWentOk: Boolean
+
+
         try {
-            userRepository.updateFirstNameLastNameAndEmail(id, patchDto.firstName!!, patchDto.lastName!!, patchDto.email!!)
+
+            if (userDto.userName != null) {
+                // update username
+                userRepository.updateUserName(id, userDto.userName!!)
+            }
+
+            if (userDto.firstName != null) {
+                // update firstname
+                userRepository.updateFirstName(id, userDto.firstName!!)
+            }
+
+            if (userDto.lastName != null) {
+                // update lastname
+                userRepository.updateLastName(id, userDto.lastName!!)
+            }
+
+            if (userDto.email != null) {
+                // update email
+                userRepository.updateEmail(id, userDto.email!!)
+
+            }
+            everythingWentOk = true
         } catch (e: ConstraintViolationException) {
-            return ResponseEntity.status(400).build()
+            e.printStackTrace()
+            everythingWentOk = false
         }
 
-        return ResponseEntity.status(204).build()
+        if (everythingWentOk) {
+            val body = userRepository.findOne(id)
+            return ResponseEntity.status(200).body(body)
+        } else {
+            if (rollbackUser(existingUser)) {
+                return ResponseEntity.status(400).build()
+            }
+            return ResponseEntity.status(500).build()
+        }
+
+
+//        try {
+//            userRepository.updateFirstNameLastNameAndEmail(id, patchDto.firstName!!, patchDto.lastName!!, patchDto.email!!)
+//        } catch (e: ConstraintViolationException) {
+//            return ResponseEntity.status(400).build()
+//        }
+
+
     }
 
 
@@ -180,6 +223,16 @@ class UserCRUD {
         }
 
         return messages.toString()
+    }
+
+    fun rollbackUser(user: User): Boolean {
+        try {
+            userRepository.updateUser(user.userId!!, user.userName!!, user.firstName!!, user.lastName!!, user.email!!)
+            return true
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return false
     }
 
     fun usernameTaken(username: String): Boolean {

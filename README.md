@@ -18,6 +18,7 @@ There is a more detailed description of this module available
 
 #### Highscore service 
 #### User service 
+<p>Handles user-details and creates </p>
 
 ## Load balancing and routing ##
 #### eureka 

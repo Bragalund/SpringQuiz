@@ -1,7 +1,6 @@
 package no.group3.SpringQuiz.user.model
 
 import junit.framework.TestCase.*
-import no.group3.SpringQuiz.user.model.dto.PatchDto
 import no.group3.SpringQuiz.user.model.entity.User
 import no.group3.SpringQuiz.user.model.repository.UserRepository
 import org.junit.Test
@@ -93,12 +92,12 @@ open class UserJPATest {
         assertEquals("Fredrik", user!!.firstName)
     }
 
-    @Test
-    fun patchDtoTest(){
-        val id = userRepository.createUser("AwesomeUsername1", "Fredrik", "Thorelfsen", "somemail@mail.com")
-        val patchDto = PatchDto("Torgeir", "helgesen", "helgesen@mail.com")
-        userRepository.updateFirstNameLastNameAndEmail(id, patchDto.firstName!!, patchDto.lastName!!, patchDto.email!!)
-    }
+//    @Test
+//    fun patchDtoTest(){
+//        val id = userRepository.createUser("AwesomeUsername1", "Fredrik", "Thorelfsen", "somemail@mail.com")
+//        val patchDto = PatchDto("Torgeir", "helgesen", "helgesen@mail.com")
+//        userRepository.updateFirstNameLastNameAndEmail(id, patchDto.firstName!!, patchDto.lastName!!, patchDto.email!!)
+//    }
 
     @Test(expected = ConstraintViolationException::class)
     fun createUserWithNull(){
