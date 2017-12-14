@@ -30,7 +30,7 @@ interface UserRepositoryCustom {
 open class UserRepositoryImpl : UserRepositoryCustom {
 
     override fun deleteUserById(id: Long): Boolean {
-        var user = em.find(User::class.java, id) ?: return false
+        val user = em.find(User::class.java, id) ?: return false
         em.remove(user)
         return true
     }

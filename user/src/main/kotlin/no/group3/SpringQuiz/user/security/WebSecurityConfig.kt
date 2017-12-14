@@ -14,7 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails
 
 @Configuration
 @EnableWebSecurity
-open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
+class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity) {
 
         // To use PUT on user-resources and create a resource is not idempotent because of security-issues
@@ -25,7 +25,7 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                 .antMatchers(HttpMethod.GET, "/health").permitAll()
                 .antMatchers(HttpMethod.POST, "/user").permitAll()
                 .antMatchers( "/user/{id}/**")
-                .access("hasRole('USER') and @userSecurity.checkThatIdIsLong(#id) and @userSecurity.checkThatUserExist(#id) and @userSecurity.checkUserName(authentication, #id)")
+                .access("hasRole('USER') and @userSecurity.checkThatIdIsLong(#id) and @userSecurity.checkThatUserExist(#id) and @userSecurity.checkUserNameInDBWithCookie(authentication, #id)")
                 .anyRequest().denyAll()
                 .and()
                 .csrf().disable()
@@ -33,7 +33,7 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
 
     @Bean
-    open fun userSecurity(): UserSecurity {
+    fun userSecurity(): UserSecurity {
         return UserSecurity()
     }
 
@@ -48,9 +48,10 @@ class UserSecurity {
         try {
             id.toLong() //Cast String(userId) to Long
             return true
-        } catch (exception: Exception) {
-            return false
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
+        return false
 
     }
 
@@ -59,13 +60,13 @@ fun checkThatUserExist(id: Long): Boolean {
     return userRepository.exists(id)
 }
 
-fun checkUserName(authentication: Authentication, id: Long): Boolean {
+fun checkUserNameInDBWithCookie(authentication: Authentication, id: Long): Boolean {
     val cookieUsername = (authentication.principal as UserDetails).username
     val existingUsername: String
     try {
         existingUsername = userRepository.findOne(id).userName!!
-    } catch (error: NullPointerException) {
-        error.stackTrace
+    } catch (e: NullPointerException) {
+        e.printStackTrace()
         return false
     }
     return cookieUsername == existingUsername

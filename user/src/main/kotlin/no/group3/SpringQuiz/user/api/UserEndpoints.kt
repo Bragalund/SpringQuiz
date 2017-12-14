@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import javax.validation.ConstraintViolationException
 
@@ -26,6 +27,7 @@ const val ID_PARAM = "Id of user"
         produces = arrayOf(BASE_JSON)
 )
 @RestController
+@Validated
 class UserCRUD {
 
     @Autowired
@@ -87,7 +89,6 @@ class UserCRUD {
 
 
     //Delete user with Id
-
     @ApiOperation("Delete one user with the given ID")
     @DeleteMapping(path = arrayOf("/{id}"))
     @ApiResponse(code = 204, message = "Succesfully deleted user, no body in http-response")
@@ -128,15 +129,17 @@ class UserCRUD {
                 userRepository.updateUser(id, userDto.userName!!, userDto.firstName!!, userDto.lastName!!, userDto.email!!)
                 return ResponseEntity.status(204).build()
             } catch (e: ConstraintViolationException) {
-                return ResponseEntity.status(400).build()
+                e.printStackTrace()
             }
+            return ResponseEntity.status(400).build()
         } else {
             try {
                 userRepository.createUser(userDto.userName!!, userDto.firstName!!, userDto.lastName!!, userDto.email!!)
                 return ResponseEntity.status(201).build()
-            } catch (error: Exception) {
-                return ResponseEntity.status(400).build()
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
+            return ResponseEntity.status(400).build()
 
         }
     }
@@ -189,6 +192,9 @@ class UserCRUD {
         } catch (e: ConstraintViolationException) {
             e.printStackTrace()
             everythingWentOk = false
+        } catch (e: Exception) {
+            e.printStackTrace()
+            everythingWentOk = false
         }
 
         if (everythingWentOk) {
@@ -200,15 +206,6 @@ class UserCRUD {
             }
             return ResponseEntity.status(500).build()
         }
-
-
-//        try {
-//            userRepository.updateFirstNameLastNameAndEmail(id, patchDto.firstName!!, patchDto.lastName!!, patchDto.email!!)
-//        } catch (e: ConstraintViolationException) {
-//            return ResponseEntity.status(400).build()
-//        }
-
-
     }
 
 
@@ -225,7 +222,7 @@ class UserCRUD {
         return messages.toString()
     }
 
-    fun rollbackUser(user: User): Boolean {
+    private fun rollbackUser(user: User): Boolean {
         try {
             userRepository.updateUser(user.userId!!, user.userName!!, user.firstName!!, user.lastName!!, user.email!!)
             return true

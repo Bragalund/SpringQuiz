@@ -3,6 +3,7 @@ package no.group3.SpringQuiz.user.api
 import io.restassured.RestAssured
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
+import no.group3.SpringQuiz.user.model.dto.UserDto
 import org.hamcrest.CoreMatchers
 import org.junit.Test
 import org.springframework.test.annotation.DirtiesContext
@@ -13,7 +14,7 @@ class PatchUserTest : UserTestBase() {
 
 
     @Test
-    fun patchUserTest() {
+    fun patchTest() {
         // Creates UserDTO instance
         val userDto = getUserDto(UserTestBase.AUTH_USERNAME_1)
 
@@ -43,8 +44,10 @@ class PatchUserTest : UserTestBase() {
                 .body("firstName", CoreMatchers.equalTo("Kristian"))
 
         //changes firstname, lastname and email
-        userDto.firstName = "Arne"
-        userDto.email = "ArneSinMail@mail.com"
+//        userDto.firstName = "Arne"
+//        userDto.email = "ArneSinMail@mail.com"
+
+        val patchDto = UserDto(null, null, "Arne", null, "ArneSinMail@mail.com")
 
         // patches firstname, lastname and email
         given().pathParam("id", userId)
@@ -52,7 +55,7 @@ class PatchUserTest : UserTestBase() {
                 .preemptive()
                 .basic(UserTestBase.AUTH_USERNAME_1, UserTestBase.AUTH_PASSWORD_1)
                 .contentType(ContentType.JSON)
-                .body(userDto)
+                .body(patchDto)
                 .patch(UserTestBase.USERS_PATH + "/{id}")
                 .then()
                 .statusCode(200)
@@ -70,7 +73,7 @@ class PatchUserTest : UserTestBase() {
     }
 
     @Test
-    fun patchWithDto() {
+    fun simplePatchDto() {
         val userId = createUser(AUTH_USERNAME_1)
 
         val patchDto = getUserDto(AUTH_USERNAME_1)

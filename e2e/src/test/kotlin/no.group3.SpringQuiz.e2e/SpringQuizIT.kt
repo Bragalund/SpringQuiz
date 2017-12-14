@@ -3,6 +3,7 @@ package no.group3.SpringQuiz.e2e
 import io.restassured.RestAssured
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
+import junit.framework.TestCase.assertEquals
 import no.group3.SpringQuiz.e2e.data.AnswersDto
 import no.group3.SpringQuiz.e2e.data.UserDto
 import org.awaitility.Awaitility.await
@@ -131,9 +132,9 @@ class SpringQuizIT {
 
     @Test
     fun testUser(){
-        val id = createUniqueId()
+        val uniqueUsername = createUniqueId()
         val password = "secret"
-        val cookies = registerUser(id, password)
+        val cookies = registerUser(uniqueUsername, password)
 
         // Test that cookie is valid
         given().cookie("SESSION", cookies.session)
@@ -141,47 +142,53 @@ class SpringQuizIT {
                 .then()
                 .statusCode(200)
 
-        val username = "SomeUsername"
-        val firstname = "SomeFirstName"
-        val lastname = "SomeLastName"
-        val email = "MyMail@SomeMail.com"
-
-        val userDtoBody = UserDto(null, username, firstname, lastname, email)
-
-//        val userBody = "{\n" +
-//                "    \"id\": 1,\n" +
-//                "    \"userName\": \"user1\",\n" +
-//                "    \"firstName\": \"SomeFirstName\",\n" +
-//                "    \"lastName\": \"SomeLastName\",\n" +
-//                "    \"email\": \"MyMail@SomeMail.com\"\n" +
-//                "}"
+        var username = uniqueUsername
+        var firstname = "SomeFirstName"
+        var lastname = "SomeLastName"
+        var email = "somemail@mail.com"
 
         // creates user
-        val userId =  given().contentType(ContentType.JSON)
+        val userId =  given()
                 .cookie("SESSION", cookies.session)
                 .cookie("XSRF-TOKEN", cookies.csrf)
                 .header("X-XSRF-TOKEN", cookies.csrf)
-                .body(userDtoBody)
+                .contentType(ContentType.JSON)
+                .body("""
+                    {
+                        "userId": null,
+                        "userName": "$username",
+                        "firstName": "$firstname",
+                        "lastName": "$lastname",
+                        "email": "$email"
+                    }
+                    """)
                 .post("$USER_URL/user")
                 .then()
                 .statusCode(201)
                 .extract().asString()
 
         // Change userDto
-        userDtoBody.userId=userId.toLong()
-        userDtoBody.userName="anotherUsername"
-        userDtoBody.firstName = "AnotherFirstName"
-        userDtoBody.lastName = "AnotherLastname"
+        firstname = "AnotherFirstName"
+        email = "Anothermail@email.no"
 
         // updates user with put
-        given().cookie("SESSION", cookies.session)
+        val res = given().cookie("SESSION", cookies.session)
                 .cookie("XSRF-TOKEN", cookies.csrf)
                 .header("X-XSRF-TOKEN", cookies.csrf)
                 .pathParam("id", userId)
-                .body(userDtoBody)
-                .put("$USER_URL/user/{id}")
-                .then()
-                .statusCode(204)
+                .body("""
+                    {
+                        "userId": "$userId",
+                        "userName": null
+                        "firstName": "$firstname",
+                        "lastName": null,
+                        "email": "$email"
+                    }
+                    """)
+                .patch("$USER_URL/user/{id}")
+//                .then()
+//                .statusCode(200)
+        assertEquals("tets", res.body)
 //
 //        // updates user with patch
 //        given().cookie("SESSION", cookies.session)

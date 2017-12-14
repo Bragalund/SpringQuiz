@@ -1,11 +1,17 @@
 package no.group3.SpringQuiz.user
 
 
+
+
+import org.aspectj.weaver.patterns.TypePatternQuestions
+import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Profile
 import springfox.documentation.builders.ApiInfoBuilder
 import springfox.documentation.builders.PathSelectors
 import springfox.documentation.builders.RequestHandlerSelectors
@@ -14,12 +20,15 @@ import springfox.documentation.spi.DocumentationType
 import springfox.documentation.spring.web.plugins.Docket
 import springfox.documentation.swagger2.annotations.EnableSwagger2
 
+
 @SpringBootApplication
-open class UserApplication
+class UserApplication
+
 
 
 @EnableSwagger2
 @EnableEurekaClient
+@Configuration
 class config {
     @Bean
     fun swaggerApi(): Docket {
@@ -27,6 +36,7 @@ class config {
                 .apiInfo(apiInfo())
                 .select()
                 .paths(PathSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage("no.group3.springQuiz.user.api"))
                 .build()
     }
 
