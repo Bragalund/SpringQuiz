@@ -154,10 +154,6 @@ class UserCRUD {
             }
 
         }
-
-
-
-        return ResponseEntity.status(204).build()
     }
 
     @ApiOperation("Modify the private userinfo")
