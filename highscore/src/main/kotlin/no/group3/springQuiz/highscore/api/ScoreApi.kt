@@ -28,7 +28,7 @@ class ScoreApi{
     @Autowired
     lateinit var scoreRepository : ScoreRepository
 
-    //Return all scores
+    //Return all scores and then sort them with highest score on top
     @ApiOperation("Returns a list over all scores")
     @GetMapping
     fun get() : ResponseEntity<List<ScoreDto>> {
@@ -36,18 +36,9 @@ class ScoreApi{
         return ResponseEntity.ok(scores)
     }
 
-/*    //Return all scores with highest score on top
-    @ApiOperation("Returns a list over the top scores")
-    @GetMapping
-    fun getTopScores(
-            @ApiParam("The score")
-            @RequestParam("score", required = false)
-            score: Int?
-    ) : ResponseEntity<List<ScoreDto>> {
-        return ResponseEntity.ok(ScoreConverter.transform(scoreRepository.findAllByScore(score!!)))
-    }*/
 
 
+    //Create a score
     @ApiOperation("Create a score")
     @PostMapping(consumes = arrayOf(MediaType.APPLICATION_JSON_VALUE))
     @ApiResponse(code = 201, message = "The id of the created score")
@@ -76,7 +67,7 @@ class ScoreApi{
     }
 
 
-    //Delete a highscore
+    //Delete a score
     @ApiOperation("Delete score with the given id")
     @DeleteMapping(path = arrayOf("/{id}"))
     @ApiResponse(code = 204, message = "Succesfully deleted score")
@@ -95,7 +86,7 @@ class ScoreApi{
             return ResponseEntity.status(404).build()
         }
 
-        val score = scoreRepository.findOne(id)
+        scoreRepository.findOne(id)
         scoreRepository.delete(id)
         return ResponseEntity.status(204).build()
     }
@@ -144,7 +135,7 @@ class ScoreApi{
             id: Long?,
             @ApiParam("the new score")
             @RequestBody
-            newScore: PatchScoreDto
+            newScore: PatchScoreDto?
     ) : ResponseEntity<Any>{
         if (id == null) {
             return ResponseEntity.status(400).build()
