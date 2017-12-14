@@ -188,14 +188,14 @@ class SpringQuizIT {
 //                .statusCode(204)
 
         // deletes user
-        given().pathParam("id", userId)
-                .contentType(ContentType.JSON)
-                .cookie("SESSION", cookies.session)
-                .cookie("XSRF-TOKEN", cookies.csrf)
-                .header("X-XSRF-TOKEN", cookies.csrf)
-                .delete("$USER_URL/user/{id}")
-                .then()
-                .statusCode(204)
+//        given().pathParam("id", userId)
+//                .contentType(ContentType.JSON)
+//                .cookie("SESSION", cookies.session)
+//                .cookie("XSRF-TOKEN", cookies.csrf)
+//                .header("X-XSRF-TOKEN", cookies.csrf)
+//                .delete("$USER_URL/user/{id}")
+//                .then()
+//                .statusCode(204)
     }
 
     @Test
