@@ -6,7 +6,7 @@ services:
       context: ./eureka-server
       dockerfile: Dockerfile
     ports: # only for debugging purposes will be 8761 without host-port forwarding in prod
-      - "8761:8761"
+      - "8761"
   ###
 
   # session handling
