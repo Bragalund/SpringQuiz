@@ -7,6 +7,7 @@ import no.group3.springQuiz.quiz.model.dto.PatchQuestionTextDto
 import no.group3.springQuiz.quiz.model.dto.QuestionDto
 import org.junit.Test
 import org.hamcrest.CoreMatchers.equalTo
+import org.junit.Assert
 import org.junit.ClassRule
 import org.springframework.boot.test.util.EnvironmentTestUtils
 import org.springframework.context.ApplicationContextInitializer
@@ -205,21 +206,31 @@ fun createAndGetQuizzes() {
     val cat = addCategory("test")
     val q1 = addQuestion(questionText = "testq1", catId = cat)
     val q2 = addQuestion(questionText = "testq2", catId = cat)
+    val q3 = addQuestion(questionText = "testq3", catId = cat)
+    val q4 = addQuestion(questionText = "testq4", catId = cat)
     val qList = listOf(q1, q2)
-
+    val qList2 = listOf(q3, q4)
     val quizDto = addQuiz(questions = qList)
+    val quizDto2 = addQuiz(questions = qList2)
 
     given().get(QUIZ_PATH)
             .then()
             .statusCode(200)
-            .body("size()", equalTo(1))
+            .body("size()", equalTo(2))
+
 
     // get the quiz by id
-    given().pathParam("id", quizDto.id)
+    given().pathParam("id", quizDto.quizId)
             .get("$QUIZ_PATH/{id}")
             .then()
             .statusCode(200)
-            .body("id", equalTo(quizDto.id!!.toInt()))
+            .body("quizId", equalTo(quizDto.quizId!!.toInt()))
+
+    given().pathParam("id", quizDto2.quizId)
+            .get("$QUIZ_PATH/{id}")
+            .then()
+            .statusCode(200)
+            .body("quizId", equalTo(quizDto2.quizId!!.toInt()))
 }
 
 @Test
@@ -241,7 +252,7 @@ fun deleteQuiz() {
             .get("$QUIZ_PATH/{id}")
             .then()
             .statusCode(200)
-            .body("id", equalTo(quizId.toInt()))
+            .body("quizId", equalTo(quizId.toInt()))
 
     given().pathParam("id", quizId)
             .delete("$QUIZ_PATH/{id}")

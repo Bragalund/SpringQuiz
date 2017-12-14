@@ -95,7 +95,7 @@ class QuizController {
             @RequestBody
             dto: QuizDto): ResponseEntity<Long> {
         // don't want the id from the client
-        if (dto.id != null || dto.category==null) {
+        if (dto.quizId != null || dto.category==null) {
             return ResponseEntity.status(400).build()
         }
 
