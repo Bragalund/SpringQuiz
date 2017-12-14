@@ -16,6 +16,9 @@ import org.springframework.security.core.userdetails.UserDetails
 @EnableWebSecurity
 open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity) {
+
+        // To use PUT on user-resources and create a resource is not idempotent because of security-issues
+
         http.httpBasic()
                 .and()
                 .authorizeRequests()

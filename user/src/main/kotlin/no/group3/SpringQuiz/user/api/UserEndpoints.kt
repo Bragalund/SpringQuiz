@@ -109,7 +109,7 @@ class UserCRUD {
     //Put User
     @ApiOperation("Update user")
     @PutMapping(path = arrayOf("/{id}"))
-    fun updateUserWithId(
+    fun putUserWithId(
             @ApiParam(ID_PARAM)
             @PathVariable("id") userId: String,
             @ApiParam("New body to replace old one")
@@ -118,7 +118,7 @@ class UserCRUD {
         val id = userId.toLong()
 
         if (id != userDto.id) {
-            return ResponseEntity.status(409).build()
+            return ResponseEntity.status(400).build()
         }
 
         //Check if user with given ID exists
