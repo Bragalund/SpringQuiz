@@ -143,7 +143,7 @@ class QuestionController{
         }
 
         if (!questionRepository.exists(id)) {
-            // not creating a new category if it does not exist
+            // will not create a new question if it does not exist
             return ResponseEntity.status(404).build()
         }
 

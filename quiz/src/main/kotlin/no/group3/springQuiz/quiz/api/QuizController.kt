@@ -170,7 +170,7 @@ class QuizController {
     /**
      * This one is a bit tricky, it will create a new message added to the amqp
      */
-    @ApiOperation("Check answer from the playing user, and return the score derived from this session")
+    @ApiOperation("Check answer from the playing user")
     @PostMapping(path = arrayOf("/{id}/check"), consumes = arrayOf(MediaType.APPLICATION_JSON_VALUE))
     @ApiResponse(code = 201, message = "answers are submitted")
     fun checkAnswers(@ApiParam("the id of the quiz to submit answers to")

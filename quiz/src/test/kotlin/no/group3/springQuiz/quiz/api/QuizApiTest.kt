@@ -264,15 +264,15 @@ fun deleteQuiz() {
 fun checkAnswer() {
     val quizId = addQuiz()
 
-    val dto = AnswersDto(answers = arrayOf(1, 1), username = "sven")
-
+    val dto = AnswersDto(answers = arrayOf(2, 1), username = "sven")
+    // 2 is the wrong answer but 1 is correct. (see QuizTestBase to verify)
     given().pathParam("id", quizId)
             .contentType(ContentType.JSON)
             .body(dto)
             .post("$QUIZ_PATH/{id}/check")
             .then()
             .statusCode(201)
-            .body("score", equalTo(2))
+            .body("score", equalTo(1))
 }
 
 @Test

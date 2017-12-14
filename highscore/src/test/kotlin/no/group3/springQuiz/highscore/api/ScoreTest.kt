@@ -20,12 +20,6 @@ class ScoreTest : ScoreTestBase(){
         val HIGHSCORE_PATH = "/highscore"
     }
 
-    @Test
-    fun testGet(){
-        get(HIGHSCORE_PATH)
-                .then()
-                .body("size()", equalTo(0))
-    }
 
     @Test
     fun testPost(){
@@ -42,7 +36,7 @@ class ScoreTest : ScoreTestBase(){
     }
 
     @Test
-    fun testGetSorted()
+    fun testGet()
     {
         get(HIGHSCORE_PATH).then().body("size()", equalTo(0))
         addScore(user="Kjell", score=5)
@@ -51,7 +45,10 @@ class ScoreTest : ScoreTestBase(){
         get(HIGHSCORE_PATH).then().body("size()", equalTo(3))
         val output = get(HIGHSCORE_PATH).then().extract().asString()
         //Not sure how to test this in a good way, but this is the expected string if the sorting works.
-        assertEquals(output, "[{\"id\":3,\"user\":\"Jonas\",\"score\":8},{\"id\":1,\"user\":\"Kjell\",\"score\":5},{\"id\":2,\"user\":\"Lars\",\"score\":3}]")
+        assertEquals(output, "[" +
+                "{\"id\":3,\"user\":\"Jonas\",\"score\":8}," +
+                "{\"id\":1,\"user\":\"Kjell\",\"score\":5}," +
+                "{\"id\":2,\"user\":\"Lars\",\"score\":3}]")
     }
 
     @Test
