@@ -12,10 +12,11 @@
   </p>
  
  ### <i> Swagger </i> ###
-  Swagger is implemented and can be viewed at the path below when the system is running with 
+  <p> Swagger is implemented and can be viewed at the path below when the system is running with 
   docker-compose.
   <br/> 
   <i> /quiz/api/swagger-ui.html </i>
+ </p>
  
  ![alt text](doc/swagger-screen.png "swagger representation of the endpoints described 
  in the text above") 
@@ -39,11 +40,23 @@
     <br/>
     This endpoint will publish the calculated score along with the username of
     the playing user to rabbitmq. It will then eventually end up in the highscore
-    service.
+    service. See root documentation for more info on this feature.</p>
     
- </p>
+ [GOTO root doc](../README.md)
+ 
+ Besides the features described above the rest is self-explanatory. For more information
+ about the endpoints swagger is as mentioned available as well. 
  
  
  ### <i>Tests</i> ###
- 
- 
+ #### rest assured ####
+ For each endpoint in the quiz-modul there is a corresponding rest assured test.
+ All the tests can be found 
+ [here](/src/test/kotlin/no/group3/springQuiz/quiz/api/QuizApiTest.kt).
+ ##### e2e ##### 
+ The endpoint <code>POST /quizzes/{id}/check </code> is tested in the 
+ [e2e modul](../e2e/src/test/kotlin/no.group3.SpringQuiz.e2e/HighscoreQuizAmqpIT.kt)
+ <br/>
+ <br/>
+ Quiz is also tested in this [e2e](../e2e/src/test/kotlin/no.group3.SpringQuiz.e2e/Quize2eIT.kt)
+ which is a form om production test that simulates a game.
