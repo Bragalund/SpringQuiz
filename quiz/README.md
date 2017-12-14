@@ -26,11 +26,11 @@
  <p>
     <b><i>category-controller:</i></b> <br/> Is selfexplanatory GET, POST and DELETE to perform what the 
     HTTP-verbs describes. <br/>
-    <b><i>question-controller:</i></b> <br/> Contains one endpoint for every common HTTP-verb GET, POST, 
-     PUT, PATCH and DELETE. <br/>
+    <b><i>question-controller:</i></b> <br/> 
+    Contains one endpoint for every common HTTP-verb GET, POST, PUT, PATCH and DELETE. <br/>
     <b><i>quiz-controller:</i></b> <br/> 
     <code> GET /quizzes </code> <br/> 
-     can take an extra param using 
+     can take an extra param(not required) using 
     <code> /quizzes?category={category} </code> <br/>
     will get all quizzes from a given category.  <br/> <br/>
     <code> POST /quizzes/{id}/check </code> <br/>
@@ -40,23 +40,34 @@
     <br/>
     This endpoint will publish the calculated score along with the username of
     the playing user to rabbitmq. It will then eventually end up in the highscore
-    service. See root documentation for more info on this feature.</p>
+    service. See root docs for more info on this feature.
+    </p>
     
- [GOTO root doc](../README.md)
+   [root docs](../README.md)
  
  Besides the features described above the rest is self-explanatory. For more information
  about the endpoints swagger is as mentioned available as well. 
  
  
  ### <i>Tests</i> ###
- #### rest assured ####
+ ##### rest assured #####
  For each endpoint in the quiz-modul there is a corresponding rest assured test.
  All the tests can be found 
  [here](/src/test/kotlin/no/group3/springQuiz/quiz/api/QuizApiTest.kt).
+ To run the tests use
+ <code> mvn package </code> <br/>
+ 
  ##### e2e ##### 
  The endpoint <code>POST /quizzes/{id}/check </code> is tested in the 
  [e2e modul](../e2e/src/test/kotlin/no.group3.SpringQuiz.e2e/HighscoreQuizAmqpIT.kt)
  <br/>
  <br/>
  Quiz is also tested in this [e2e](../e2e/src/test/kotlin/no.group3.SpringQuiz.e2e/Quize2eIT.kt)
- which is a form om production test that simulates a game.
+ which is a form om production test that simulates a game with the whole system
+ running.
+ <br/>
+ To run the e2e tests use the following in the e2e module:
+ <br/>
+ <code>mvn verify</code> <br/>
+ or 
+ <code>mvn clean install</code> in root folder.
