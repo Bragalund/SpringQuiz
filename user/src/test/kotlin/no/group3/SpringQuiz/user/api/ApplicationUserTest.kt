@@ -1,5 +1,6 @@
 package no.group3.SpringQuiz.user.api
 
+import io.restassured.RestAssured
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
 import org.hamcrest.CoreMatchers.equalTo
@@ -12,5 +13,4 @@ class ApplicationUserTest : UserTestBase() {
     @Test
     fun contextLoads() {
     }
-
 }

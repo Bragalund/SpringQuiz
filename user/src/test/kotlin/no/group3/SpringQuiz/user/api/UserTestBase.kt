@@ -3,6 +3,7 @@ package no.group3.SpringQuiz.user.api
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
 import no.group3.SpringQuiz.user.UserApplication
+import no.group3.SpringQuiz.user.model.dto.PatchDto
 import no.group3.SpringQuiz.user.model.dto.UserDto
 import org.junit.After
 import org.junit.Before
@@ -51,6 +52,12 @@ abstract class UserTestBase{
     }
 
 
+    fun getPatchDto(): PatchDto{
+        val firstname = "Lars"
+        val lastname = "Larsen"
+        val email = "larsen@mail.com"
+        return PatchDto(firstname, lastname, email)
+    }
 
     fun getUserDto(chosenUserName: String): UserDto {
         val id = null

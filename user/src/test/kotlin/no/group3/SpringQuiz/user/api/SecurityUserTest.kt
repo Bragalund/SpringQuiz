@@ -88,7 +88,7 @@ class SecurityUserTest : UserTestBase(){
     }
 
     @Test
-    fun deleteWithMalformedIdInURL(){
+    fun deleteWithMalformedIdInURLTest(){
         RestAssured.given().pathParam("id", "ABC")
                 .auth()
                 .basic(AUTH_USERNAME_1, AUTH_PASSWORD_1)

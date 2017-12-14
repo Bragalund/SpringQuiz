@@ -46,10 +46,10 @@ class PatchUserTest : UserTestBase() {
     }
 
     @Test
-    fun patchWithWithPatchDto(){
+    fun patchWithPatchDto(){
         val userId = createUser(AUTH_USERNAME_1)
 
-        val patchDto = PatchDto("Lars", "Larsen", "larsen@mail.com")
+        val patchDto = getPatchDto()
 
         RestAssured.given().pathParam("id", userId)
                 .auth()

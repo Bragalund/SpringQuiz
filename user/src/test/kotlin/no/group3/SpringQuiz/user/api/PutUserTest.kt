@@ -29,7 +29,6 @@ class PutUserTest : UserTestBase() {
         //Checks that user exists
         RestAssured.given().pathParam("id", userId)
                 .auth()
-                .preemptive()
                 .basic(UserTestBase.AUTH_USERNAME_1, UserTestBase.AUTH_PASSWORD_1)
                 .get(UserTestBase.USERS_PATH + "/{id}")
                 .then()
@@ -45,7 +44,6 @@ class PutUserTest : UserTestBase() {
         // Updates user
         RestAssured.given().pathParam("id", userId)
                 .auth()
-                .preemptive()
                 .basic(UserTestBase.AUTH_USERNAME_1, UserTestBase.AUTH_PASSWORD_1)
                 .contentType(ContentType.JSON)
                 .body(userDto)
@@ -90,6 +88,8 @@ class PutUserTest : UserTestBase() {
                 .statusCode(409)
 
     }
+
+    // TODO create test that creates a new user on PUT(201)
 
 
 }

@@ -79,7 +79,7 @@ class UserCRUD {
     {
         val id: Long
         try {
-            id = userId!!.toLong() //Cast String(userId) to Long
+            id = userId.toLong() //Cast String(userId) to Long
         } catch (exception: Exception) {
             return ResponseEntity.status(404).build() //User not found
         }
@@ -102,7 +102,7 @@ class UserCRUD {
 
         val id: Long
         try {
-            id = userId!!.toLong() //Cast String(userId) to Long
+            id = userId.toLong() //Cast String(userId) to Long
         } catch (exception: Exception) {
             return ResponseEntity.status(400).build() //Bad request
         }
@@ -127,27 +127,35 @@ class UserCRUD {
 
         val id: Long
         try {
-            id = userId!!.toLong() //Cast String(userId) to Long
+            id = userId.toLong() //Cast String(userId) to Long
         } catch (exception: Exception) {
             return ResponseEntity.status(400).build() //Bad request
         }
 
-        //Check if user with given ID exists
-        if (!userRepository.exists(id)) {
-            return ResponseEntity.status(404).build()
-        }
-
-        if (userRepository.findByUserName(userDto.userName!!)!!.userId != userDto.id) {
+        if (id != userDto.id) {
             return ResponseEntity.status(409).build()
         }
 
+        //Check if user with given ID exists
+        if (userRepository.exists(id)) {
+            // Try to save updated user and check for constraintviolations
+            try {
+                userRepository.updateUser(id, userDto.userName!!, userDto.firstName!!, userDto.lastName!!, userDto.email!!)
+                return ResponseEntity.status(204).build()
+            } catch (e: ConstraintViolationException) {
+                return ResponseEntity.status(400).build()
+            }
+        }else{
+            try {
+                userRepository.createUser(userDto.userName!!, userDto.firstName!!, userDto.lastName!!, userDto.email!!)
+                return ResponseEntity.status(201).build()
+            }catch (error : Exception){
+                return ResponseEntity.status(400).build()
+            }
 
-        // Try to save updated user and check for constraintviolations
-        try {
-            userRepository.updateUser(id, userDto.userName!!, userDto.firstName!!, userDto.lastName!!, userDto.email!!)
-        } catch (e: ConstraintViolationException) {
-            return ResponseEntity.status(400).build()
         }
+
+
 
         return ResponseEntity.status(204).build()
     }
@@ -191,6 +199,13 @@ class UserCRUD {
         }
 
         return messages.toString()
+    }
+
+    fun usernameTaken(username: String): Boolean{
+        if(userRepository.findByUserName(username) != null){
+            return true
+        }
+        return false
     }
 
 }
