@@ -77,13 +77,7 @@ class UserCRUD {
     fun getUserWithId(@ApiParam(ID_PARAM) //documentation for swagger
                       @PathVariable("id") userId: String): ResponseEntity<UserDto>  //input and Return-values
     {
-        val id: Long
-        try {
-            id = userId.toLong() //Cast String(userId) to Long
-        } catch (exception: Exception) {
-            return ResponseEntity.status(404).build() //User not found
-        }
-
+        val id = userId.toLong()
         //Check if user exists
         val userDto = userRepository.findOne(id) ?: return ResponseEntity.status(404).build()
 
@@ -100,12 +94,8 @@ class UserCRUD {
     fun deleteUserWithId(@ApiParam(ID_PARAM)
                          @PathVariable("id") userId: String): ResponseEntity<Any> {
 
-        val id: Long
-        try {
-            id = userId.toLong() //Cast String(userId) to Long
-        } catch (exception: Exception) {
-            return ResponseEntity.status(400).build() //Bad request
-        }
+
+        val id = userId.toLong()
 
         //Check if user exists
         if (!userRepository.exists(id)) {
@@ -125,12 +115,7 @@ class UserCRUD {
             @ApiParam("New body to replace old one")
             @RequestBody userDto: UserDto): ResponseEntity<Any> {
 
-        val id: Long
-        try {
-            id = userId.toLong() //Cast String(userId) to Long
-        } catch (exception: Exception) {
-            return ResponseEntity.status(400).build() //Bad request
-        }
+        val id = userId.toLong()
 
         if (id != userDto.id) {
             return ResponseEntity.status(409).build()
@@ -145,11 +130,11 @@ class UserCRUD {
             } catch (e: ConstraintViolationException) {
                 return ResponseEntity.status(400).build()
             }
-        }else{
+        } else {
             try {
                 userRepository.createUser(userDto.userName!!, userDto.firstName!!, userDto.lastName!!, userDto.email!!)
                 return ResponseEntity.status(201).build()
-            }catch (error : Exception){
+            } catch (error: Exception) {
                 return ResponseEntity.status(400).build()
             }
 
@@ -197,8 +182,8 @@ class UserCRUD {
         return messages.toString()
     }
 
-    fun usernameTaken(username: String): Boolean{
-        if(userRepository.findByUserName(username) != null){
+    fun usernameTaken(username: String): Boolean {
+        if (userRepository.findByUserName(username) != null) {
             return true
         }
         return false

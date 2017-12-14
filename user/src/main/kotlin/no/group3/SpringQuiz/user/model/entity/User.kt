@@ -18,6 +18,6 @@ class User(
         var firstName: String? = null,
         var lastName: String? = null,
 
-        @get: NotEmpty @get: NotNull
+        @get: NotEmpty @get: NotNull @get: Email
         var email: String? = null
 )

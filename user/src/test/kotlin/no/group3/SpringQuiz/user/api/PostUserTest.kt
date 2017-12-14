@@ -2,15 +2,16 @@ package no.group3.SpringQuiz.user.api
 
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
+import org.apache.http.auth.AUTH
 import org.hamcrest.CoreMatchers
 import org.junit.Test
 import org.springframework.test.annotation.DirtiesContext
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD) // clean after each test
-class CreateUserTest : UserTestBase(){
+class PostUserTest : UserTestBase() {
 
     @Test
-    fun createUserTest(){
+    fun createUserTest() {
         RestAssured.given().contentType(ContentType.JSON)
                 .body(getUserDto(AUTH_USERNAME_1))
                 .post(USERS_PATH)
@@ -19,7 +20,7 @@ class CreateUserTest : UserTestBase(){
     }
 
     @Test
-    fun createTwoUsersWithDifferentNameTest(){
+    fun createTwoUsersWithDifferentNameTest() {
         RestAssured.given().contentType(ContentType.JSON)
                 .body(getUserDto(AUTH_USERNAME_1))
                 .post(USERS_PATH)
@@ -34,7 +35,7 @@ class CreateUserTest : UserTestBase(){
     }
 
     @Test
-    fun createUserWithSameUsernameShouldFailTest(){
+    fun createUserWithSameUsernameShouldFailTest() {
         RestAssured.given().contentType(ContentType.JSON)
                 .body(getUserDto(AUTH_USERNAME_1))
                 .post(USERS_PATH)
@@ -48,31 +49,44 @@ class CreateUserTest : UserTestBase(){
                 .statusCode(409)
     }
 
-
-    //Creates user and tries and checks if user exists
     @Test
-    fun createAndGetByIdTest() {
+    fun createUserWhereIdIsSetTest() {
+        var userDto = getUserDto(AUTH_USERNAME_1)
 
-        val userDto = getUserDto(AUTH_USERNAME_1)
+        userDto.id = 3
 
-        //Saves UserDto in DB and get userId
-        val userId = RestAssured.given().contentType(ContentType.JSON)
+        RestAssured.given().contentType(ContentType.JSON)
                 .body(userDto)
                 .post(USERS_PATH)
                 .then()
-                .statusCode(201)
-                .extract().asString()
-
-        RestAssured.given().pathParam("id", userId)
-                .auth()
-                .preemptive()
-                .basic(AUTH_USERNAME_1, AUTH_PASSWORD_1)
-                .get(USERS_PATH + "/{id}")
-                .then()
-                .statusCode(200)
-                .body("id", CoreMatchers.equalTo(userId.toInt()))
-                .body("firstName", CoreMatchers.equalTo(userDto.firstName))
-                .body("lastName", CoreMatchers.equalTo(userDto.lastName))
-                .body("email", CoreMatchers.equalTo(userDto.email))
+                .statusCode(400)
     }
+
+    @Test
+    fun createUserWhereFieldAreEmpty(){
+        var userDto = getUserDto(AUTH_USERNAME_1)
+
+        userDto.firstName = null
+
+        RestAssured.given().contentType(ContentType.JSON)
+                .body(userDto)
+                .post(USERS_PATH)
+                .then()
+                .statusCode(400)
+    }
+
+    @Test
+    fun createUserWithMalformedEmail(){
+        var userDto = getUserDto(AUTH_USERNAME_1)
+
+        userDto.email = "------abc123------"
+
+        RestAssured.given().contentType(ContentType.JSON)
+                .body(userDto)
+                .post(USERS_PATH)
+                .then()
+                .statusCode(400)
+    }
+
+
 }
