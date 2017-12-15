@@ -155,13 +155,16 @@ Our git repo for the project can be found here https://github.com/Bragalund/Spri
 #### Joakim ####
 <p>
 Github Username: josoder <br/>
-Main service: Quiz,
+Main service: Quiz
+<br/>
+Additional features:
 AMQP, 
 eureka,
 zuul, 
 e2e, 
 docs,
-docker-compose
+docker-compose,
+security
 </p>
 
 #### Henrik ####
