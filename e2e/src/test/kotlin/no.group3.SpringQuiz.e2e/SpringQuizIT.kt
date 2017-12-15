@@ -9,6 +9,7 @@ import no.group3.SpringQuiz.e2e.data.UserDto
 import org.awaitility.Awaitility.await
 import org.hamcrest.CoreMatchers.*
 import org.hamcrest.Matchers.contains
+import org.hamcrest.Matchers.greaterThan
 import org.junit.BeforeClass
 import org.junit.ClassRule
 import org.junit.Test
@@ -144,7 +145,7 @@ class SpringQuizIT {
         given().cookie("SESSION", cookies.session)
                 .contentType(ContentType.JSON)
                 .body("should not word")
-                .post("$HIGHSCORE_URL/highscore")
+                .put("$HIGHSCORE_URL/highscore/1")
                 .then()
                 .statusCode(403)
 
@@ -292,7 +293,7 @@ class SpringQuizIT {
                     .get("$HIGHSCORE_URL/highscore")
                     .then()
                     .statusCode(200)
-                    .body("size()", equalTo(1))
+                    .body("size()", greaterThan(0))
         })
 
     }
