@@ -48,6 +48,14 @@
     calculate the score based on the nr of correct answers given multiplied with 
     the difficulty of the quiz(1-3). 
     <br/>
+    This one is a bit tricky since it will technically lead to a patch in the highscore
+    but is from the perspective of the quiz-module itself creating a message that is 
+    returned as a response and published to the queue.
+    <br/>
+    I choose to implement it with the POST verb I am however not certain that which verb
+    to choose in this scenario. 
+    <br/>
+    <br/>
     This endpoint will publish the calculated score along with the username of
     the playing user to rabbitmq. It will then eventually end up in the highscore
     service. See root docs for more info on this feature.
