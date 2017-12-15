@@ -60,15 +60,15 @@ fun checkThatUserExist(id: Long): Boolean {
     return userRepository.exists(id)
 }
 
-fun checkUserNameInDBWithCookie(authentication: Authentication, id: Long): Boolean {
+fun checkUserNameInDBWithCookie(authentication: Authentication, id: String): Boolean {
     val cookieUsername = (authentication.principal as UserDetails).username
     val existingUsername: String
     try {
-        existingUsername = userRepository.findOne(id).userName!!
+        existingUsername = userRepository.findOne(id.toLong()).userName!!
     } catch (e: NullPointerException) {
         e.printStackTrace()
         return false
     }
-    return cookieUsername == existingUsername
+    return cookieUsername.equals(existingUsername)
 }
 }

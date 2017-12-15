@@ -142,7 +142,6 @@ class SpringQuizIT {
                 .then()
                 .statusCode(200)
 
-        var username = uniqueUsername
         var firstname = "SomeFirstName"
         var lastname = "SomeLastName"
         var email = "somemail@mail.com"
@@ -156,7 +155,7 @@ class SpringQuizIT {
                 .body("""
                     {
                         "userId": null,
-                        "userName": "$username",
+                        "userName": "$uniqueUsername",
                         "firstName": "$firstname",
                         "lastName": "$lastname",
                         "email": "$email"
@@ -186,9 +185,10 @@ class SpringQuizIT {
                     }
                     """)
                 .patch("$USER_URL/user/{id}")
-//                .then()
-//                .statusCode(200)
-        assertEquals("tets", res.body)
+                .then()
+                .statusCode(200)
+
+       // assertEquals("tets", res.body)
 //
 //        // updates user with patch
 //        given().cookie("SESSION", cookies.session)

@@ -27,7 +27,7 @@ interface UserRepositoryCustom {
     fun updateFirstNameLastNameAndEmail(id: Long, firstName: String, lastName: String, email: String): Boolean
 }
 
-open class UserRepositoryImpl : UserRepositoryCustom {
+class UserRepositoryImpl : UserRepositoryCustom {
 
     override fun deleteUserById(id: Long): Boolean {
         val user = em.find(User::class.java, id) ?: return false
