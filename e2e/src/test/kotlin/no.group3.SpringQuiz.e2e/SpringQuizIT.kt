@@ -54,6 +54,7 @@ class SpringQuizIT {
                                 .body("status", equalTo("UP"))
                         // need to make sure the data is created before running this tests
                         RestAssured.given().get("$QUIZ_URL/quizzes").then().body("size()", equalTo(2))
+                        RestAssured.given().get("$HIGHSCORE_URL/highscore").then().body("size()", equalTo(0))
 
                         true
                     })
