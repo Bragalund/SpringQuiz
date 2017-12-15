@@ -13,6 +13,8 @@
   <br/>
   <i> /highscore/swagger-ui.html </i>
 
+  ![alt text](pictures/swagger.png "swagger representation")
+
 
  ### <i>Clarifications about the endpoints</i> ###
  <p>
