@@ -151,7 +151,8 @@ of all the containers and partly because eureka takes some time to get all insta
 Because of the fact that this might happen a link to when the test are run on a computer
 with sufficient CPU and memory is available(to prove that they actually work) here:
 <br/>
-[link to youtube]
+
+[link to youtube](https://youtu.be/T-dNrG7SBkg)
 
 
 [amqp-test](e2e/src/test/kotlin/no.group3.SpringQuiz.e2e/HighscoreQuizAmqpIT.kt)
@@ -199,5 +200,9 @@ docs
 #### Johannes ####
 <p>
 Github Username: husjoh15 <br/>
-Main service: Highscore
+Main service: Highscore <br/>
+Contributions: I have been responsible for the highscore microservice and all documentation about that.
+I have not been able to help alot with setting the services together due to it having problems running on
+a slow windows computer. I tried to run the whole project from my computer with docker-compose, and it took
+30 minutes before it crashed. So I have tried to help in other ways.
 </p>
