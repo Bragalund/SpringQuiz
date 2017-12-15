@@ -32,10 +32,10 @@
 
  ### <i>Tests</i> ###
  #### Rest Assured ####
-    I have made RestAssured tests for all of my endpoints. <br/>
-    My GET test was kinda tricky so I used an assertEquals to the expected output. <br/>
-    It is not the best way to do it, but it works. <br/>
+ I have made RestAssured tests for all of my endpoints. <br/>
+ My GET test was kinda tricky so I used an assertEquals to the expected output. <br/>
+ It is not the best way to do it, but it works. <br/>
 
  #### TestBase ####
-    I have two methods in the ScoreTestBase class which makes testing easier. <br/>
-    Both methods are a post and they return either a dto or the id to the created score.
+ I have two methods in the ScoreTestBase class which makes testing easier. <br/>
+ Both methods are a post and they return either a dto or the id to the created score.
