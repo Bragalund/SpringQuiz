@@ -61,8 +61,6 @@ class ScoreApi{
             return ResponseEntity.status(400).build()
         }
 
-        scoreRepository.save(score)
-
         return ResponseEntity.status(201).body(score.id)
     }
 
