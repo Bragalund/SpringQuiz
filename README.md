@@ -16,7 +16,14 @@ There is a more detailed description of this module available
 [here](quiz/README.md).
 </p>
 
-#### Highscore service 
+#### Highscore service
+
+<p>The highscore module can create a new score and then sort all scores with the
+highest score on top.
+
+You can view the documentation of this module
+[here](highscore/README.md).
+</p>
 
 
 #### User service 
@@ -78,6 +85,9 @@ The actual user credentials(username, password etc) is stored in a postgresql
 db.
 
 <i><b> XSRF protection: </b></i> <br/>
+All PUT, POST and PATCH methods that is routed through zuul are secured from XSRF 
+attacks, this is proven in the e2e tests where unsafe methods has XSRF-token in both
+the header and the cookie.
 
 </p>
 
@@ -103,4 +113,72 @@ db.
 
 
 ## Testing: ##
+<p>
+Quiz, highscore and user modules all contains rest assured tests. Atleast one per endpoint
+ all the test can be run seperately using <code> mvn package </code> in the given module.
+ To run all tests run use the same command in the root module. 
+ <br/>
+ To run all test including e2e run <code>mvn install</code> in root.
+</p>
+
 #### e2e ####
+<p>
+The e2e tests can be found in the e2e module and consist of one test class that performs
+test with the whole system running. 
+<br/>
+The system test is using the docker-compose file in the root folder and is quite heavy to run
+since it starts 12 docker containers. If this test is run on a computer with low CPU and/or
+ available memory, it might actually fail.
+<br/>
+The test will take about 2-3 minutes to start up all the services. This is partly because
+of all the containers and partly because eureka takes some time to get all instances registered.
+<br/> 
+<br/>
+Because of the fact that this might happen a link to when the test are run on a computer
+with sufficient CPU and memory is available(to prove that they actually work) here:
+<br/>
+[link to youtube]
+
+
+[amqp-test](e2e/src/test/kotlin/no.group3.SpringQuiz.e2e/HighscoreQuizAmqpIT.kt)
+<br/> 
+[system-test](e2e/src/test/kotlin/no.group3.SpringQuiz.e2e/SpringQuizIT.kt)
+
+</p>
+
+## Other ##
+
+### Git Repo ###
+<p>
+Our git repo for the project can be found here https://github.com/Bragalund/SpringQuiz
+</p>
+
+
+### Contributions ###
+
+#### Joakim ####
+<p>
+Github Username: josoder <br/>
+Main service: Quiz
+<br/>
+Additional features:
+AMQP, 
+eureka,
+zuul, 
+e2e, 
+docs,
+docker-compose,
+security
+</p>
+
+#### Henrik ####
+<p>
+Github Username: Bragalund <br/>
+Main service: User
+</p>
+
+#### Johannes ####
+<p>
+Github Username: husjoh15 <br/>
+Main service: Highscore
+</p>

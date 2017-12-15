@@ -63,7 +63,6 @@ class SpringQuizIT {
 
     @Test
     fun testUnauthorizedAccess() {
-
         given().get("/user")
                 .then()
                 .statusCode(401)
@@ -128,6 +127,33 @@ class SpringQuizIT {
                 .statusCode(200)
                 .body("username", equalTo(id))
                 .body("roles", contains("ROLE_USER"))
+
+        // make sure that XSRF protection works
+        // I.e should not be able to perform unsafe operations without XSRF token in cookie and header.
+        // The proper way of doing this is showed in testGame
+        given().cookie("SESSION", cookies.session)
+                .contentType(ContentType.JSON)
+                .pathParam("id", 2)
+                .body("should not word")
+                .post("$QUIZ_URL/quizzes/{id}/check")
+                .then()
+                .statusCode(403)
+
+
+        given().cookie("SESSION", cookies.session)
+                .contentType(ContentType.JSON)
+                .body("should not word")
+                .post("$HIGHSCORE_URL/highscore")
+                .then()
+                .statusCode(403)
+
+        given().cookie("SESSION", cookies.session)
+                .contentType(ContentType.JSON)
+                .pathParam("id", 2)
+                .body("should not word")
+                .post("$USER_URL/user/{id}")
+                .then()
+                .statusCode(403)
     }
 
     @Test

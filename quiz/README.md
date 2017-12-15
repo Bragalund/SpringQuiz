@@ -3,6 +3,16 @@
  ### <i>Description</i> ###
  <p> The quiz module is a rest-service for handling quizzes. It contains 3 rest-controllers one for
  each model entity: Quiz, Question, Category. 
+ <br/>
+  The reason why there is so many endpoints(in 3 different controllers is because it is 
+  meant to be handled with a GUI. Where an administrator can create categories add question 
+  to it and then compose quizzes out of those questions. It would make sense to be able to have 
+  multiple ways of sorting the questions, categories and quizzes and thats why it is implemented
+  with three seperate controllers.
+  <br/>
+ 
+ 
+ </p>
  
  ### <i> RESTful </i> ###
  <p> The controllers has been implemented according to REST lvl 2. They follow the specifications 
@@ -38,6 +48,14 @@
     calculate the score based on the nr of correct answers given multiplied with 
     the difficulty of the quiz(1-3). 
     <br/>
+    This one is a bit tricky since it will technically lead to a patch in the highscore
+    but is from the perspective of the quiz-module itself creating a message that is 
+    returned as a response and published to the queue.
+    <br/>
+    I choose to implement it with the POST verb I am however not certain that which verb
+    to choose in this scenario. 
+    <br/>
+    <br/>
     This endpoint will publish the calculated score along with the username of
     the playing user to rabbitmq. It will then eventually end up in the highscore
     service. See root docs for more info on this feature.
@@ -48,6 +66,15 @@
  Besides the features described above the rest is self-explanatory. For more information
  about the endpoints swagger is as mentioned available as well. 
  
+ ### DB ### 
+ Postgres is used when running in production, an image dedicated to this module is started
+ with docker-compose. 
+ <br/>
+ The tests(the local ones) however is running with h2. 
+ 
+ </br>
+ For the purpose of the e2e tests, to make it easier to test, the instance will get pre-loaded
+ with 2 quizzes. 
  
  ### <i>Tests</i> ###
  ##### rest assured #####
