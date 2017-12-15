@@ -1,8 +1,10 @@
 package no.group3.SpringQuiz.user.api
 
 import io.restassured.RestAssured
+import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
-import no.group3.SpringQuiz.user.model.dto.PatchDto
+import no.group3.SpringQuiz.user.model.dto.UserDto
+import org.hamcrest.CoreMatchers
 import org.junit.Test
 import org.springframework.test.annotation.DirtiesContext
 
@@ -12,9 +14,12 @@ class PatchUserTest : UserTestBase() {
 
 
     @Test
-    fun patchUserTest() {
+    fun patchTest() {
         // Creates UserDTO instance
         val userDto = getUserDto(UserTestBase.AUTH_USERNAME_1)
+
+        userDto.firstName = "Kristian"
+        userDto.lastName = "Klungenberg"
 
         //Saves UserDto in DB and get userId
         val userId = RestAssured.given().contentType(ContentType.JSON)
@@ -28,36 +33,60 @@ class PatchUserTest : UserTestBase() {
 
         userDto.id = userId.toLong()
 
+        given().pathParam("id", userId)
+                .auth()
+                .preemptive()
+                .basic(AUTH_USERNAME_1, AUTH_PASSWORD_1)
+                .get(USERS_PATH + "/{id}")
+                .then()
+                .statusCode(200)
+                .body("id", CoreMatchers.equalTo(userId.toInt()))
+                .body("firstName", CoreMatchers.equalTo("Kristian"))
+
         //changes firstname, lastname and email
-        userDto.firstName = "Arne"
-        userDto.lastName = "Klungenberg"
-        userDto.email = "ArneSinMail@mail.com"
+//        userDto.firstName = "Arne"
+//        userDto.email = "ArneSinMail@mail.com"
+
+        val patchDto = UserDto(null, null, "Arne", null, "ArneSinMail@mail.com")
 
         // patches firstname, lastname and email
-        RestAssured.given().pathParam("id", userId)
+        given().pathParam("id", userId)
                 .auth()
                 .preemptive()
                 .basic(UserTestBase.AUTH_USERNAME_1, UserTestBase.AUTH_PASSWORD_1)
                 .contentType(ContentType.JSON)
-                .body(userDto)
+                .body(patchDto)
                 .patch(UserTestBase.USERS_PATH + "/{id}")
                 .then()
-                .statusCode(204)
+                .statusCode(200)
+
+        given().pathParam("id", userId)
+                .auth()
+                .preemptive()
+                .basic(AUTH_USERNAME_1, AUTH_PASSWORD_1)
+                .get(USERS_PATH + "/{id}")
+                .then()
+                .statusCode(200)
+                .body("id", CoreMatchers.equalTo(userId.toInt()))
+                .body("firstName", CoreMatchers.equalTo("Arne"))
+                .body("lastName", CoreMatchers.equalTo("Klungenberg"))
     }
 
     @Test
-    fun patchWithPatchDto(){
+    fun simplePatchDto() {
         val userId = createUser(AUTH_USERNAME_1)
 
-        val patchDto = getPatchDto()
+        val patchDto = getUserDto(AUTH_USERNAME_1)
 
-        RestAssured.given().pathParam("id", userId)
+        patchDto.email = "Geir@mail.com"
+
+        given().pathParam("id", userId)
                 .auth()
                 .basic(UserTestBase.AUTH_USERNAME_1, UserTestBase.AUTH_PASSWORD_1)
                 .contentType(ContentType.JSON)
                 .body(patchDto)
                 .patch(UserTestBase.USERS_PATH + "/{id}")
                 .then()
-                .statusCode(204)
+                .statusCode(200)
     }
 }

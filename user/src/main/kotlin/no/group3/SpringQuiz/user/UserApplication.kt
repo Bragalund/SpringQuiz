@@ -1,6 +1,8 @@
 package no.group3.SpringQuiz.user
 
 
+
+
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient
@@ -14,12 +16,15 @@ import springfox.documentation.spi.DocumentationType
 import springfox.documentation.spring.web.plugins.Docket
 import springfox.documentation.swagger2.annotations.EnableSwagger2
 
+
 @SpringBootApplication
-open class UserApplication
+class UserApplication
+
 
 
 @EnableSwagger2
 @EnableEurekaClient
+@Configuration
 class config {
     @Bean
     fun swaggerApi(): Docket {
@@ -27,10 +32,11 @@ class config {
                 .apiInfo(apiInfo())
                 .select()
                 .paths(PathSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage("no.group3.SpringQuiz.user.api"))
                 .build()
     }
 
-    private fun apiInfo(): ApiInfo {
+    fun apiInfo(): ApiInfo {
         return ApiInfoBuilder()
                 .title("API for REST User")
                 .description("It has CRUD-functionality for users and sessions for users.")

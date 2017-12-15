@@ -25,7 +25,11 @@ You can view the documentation of this module
 [here](highscore/README.md).
 </p>
 
+
 #### User service 
+<p>Handles user-details associated with users. 
+It does not handle passwords.
+</p>
 
 ## Load balancing and routing ##
 #### eureka 
@@ -50,7 +54,7 @@ All routes to the quiz service. See link below for more details.
 <br/>
 
 All routes to the user service see link below for more details. 
-[user service](link to user readme)
+[user service](user/README.md)
 
 <code> highscore/** </code>
 

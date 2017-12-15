@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
 import org.springframework.http.ResponseEntity
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
@@ -14,8 +15,8 @@ import org.springframework.security.core.userdetails.UserDetails
 
 @Configuration
 @EnableWebSecurity
-open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
-    override fun configure(http: HttpSecurity) {
+class WebSecurityConfig : WebSecurityConfigurerAdapter() {
+override fun configure(http: HttpSecurity) {
 
         // To use PUT on user-resources and create a resource is not idempotent because of security-issues
 
@@ -25,15 +26,21 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                 .antMatchers(HttpMethod.GET, "/health").permitAll()
                 .antMatchers(HttpMethod.POST, "/user").permitAll()
                 .antMatchers( "/user/{id}/**")
-                .access("hasRole('USER') and @userSecurity.checkThatIdIsLong(#id) and @userSecurity.checkThatUserExist(#id) and @userSecurity.checkUserName(authentication, #id)")
-                .anyRequest().denyAll()
+                .permitAll()
+                .antMatchers( "/swagger-ui.html/**")
+                .permitAll()
+                .antMatchers( "/swagger**")
+                .permitAll()
+                //.access("hasRole('USER') and @userSecurity.checkUserNameInDBWithCookie(authentication, #id)")
+                // .anyRequest().denyAll()
                 .and()
                 .csrf().disable()
+
     }
 
 
     @Bean
-    open fun userSecurity(): UserSecurity {
+    fun userSecurity(): UserSecurity {
         return UserSecurity()
     }
 
@@ -44,30 +51,40 @@ class UserSecurity {
     @Autowired
     private lateinit var userRepository: UserRepository
 
-    fun checkThatIdIsLong(id: String): Boolean {
-        try {
-            id.toLong() //Cast String(userId) to Long
-            return true
-        } catch (exception: Exception) {
-            return false
-        }
+//    fun checkThatIdIsLong(id: String): Boolean {
+//        try {
+//            id.toLong() //Cast String(userId) to Long
+//            return true
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
+//        return false
+//
+//    }
 
+
+//fun checkThatUserExist(id: Long): Boolean {
+//    return userRepository.exists(id)
+//}
+
+fun checkUserNameInDBWithCookie(authentication: Authentication, id: String): Boolean {
+    val idAsLong: Long
+    try {
+        idAsLong= id.toLong() //Cast String(userId) to Long
+    } catch (e: Exception) {
+        e.printStackTrace()
+        return false
     }
 
 
-fun checkThatUserExist(id: Long): Boolean {
-    return userRepository.exists(id)
-}
-
-fun checkUserName(authentication: Authentication, id: Long): Boolean {
     val cookieUsername = (authentication.principal as UserDetails).username
     val existingUsername: String
     try {
-        existingUsername = userRepository.findOne(id).userName!!
-    } catch (error: NullPointerException) {
-        error.stackTrace
+        existingUsername = userRepository.findOne(idAsLong).userName!!
+    } catch (e: NullPointerException) {
+        e.printStackTrace()
         return false
     }
-    return cookieUsername == existingUsername
+    return cookieUsername.equals(existingUsername)
 }
 }

@@ -3,6 +3,7 @@ package no.group3.SpringQuiz.e2e
 import io.restassured.RestAssured
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
+import junit.framework.TestCase.assertEquals
 import no.group3.SpringQuiz.e2e.data.AnswersDto
 import no.group3.SpringQuiz.e2e.data.UserDto
 import org.awaitility.Awaitility.await
@@ -42,7 +43,7 @@ class SpringQuizIT {
             RestAssured.enableLoggingOfRequestAndResponseIfValidationFails()
 
 
-            await().atMost(500, TimeUnit.SECONDS)
+            await().atMost(700, TimeUnit.SECONDS)
                     .ignoreExceptions()
                     .until({
                         // zuul and eureka is up when 200 is returned
@@ -67,7 +68,7 @@ class SpringQuizIT {
                 .statusCode(401)
     }
 
-    class NeededCookies(val session:String, val csrf: String)
+    class NeededCookies(val session: String, val csrf: String)
 
     private fun registerUser(id: String, password: String): NeededCookies {
 
@@ -79,7 +80,7 @@ class SpringQuizIT {
                 .statusCode(403)
                 .extract().cookie("XSRF-TOKEN")
 
-        val session=  given().contentType(ContentType.URLENC)
+        val session = given().contentType(ContentType.URLENC)
                 .formParam("the_user", id)
                 .formParam("the_password", password)
                 .header("X-XSRF-TOKEN", xsrfToken)
@@ -109,7 +110,7 @@ class SpringQuizIT {
                 .then()
                 .statusCode(401)
 
-        val answer = AnswersDto(arrayOf(1,2,3,4), username = "not-authed")
+        val answer = AnswersDto(arrayOf(1, 2, 3, 4), username = "not-authed")
 
         given()
                 .pathParam("id", 1)
@@ -156,10 +157,10 @@ class SpringQuizIT {
     }
 
     @Test
-    fun testUser(){
-        val id = createUniqueId()
-        val password = "secret"
-        val cookies = registerUser(id, password)
+    fun testUser() {
+        val uniqueUsername = createUniqueId()
+        val password = "password"
+        val cookies = registerUser(uniqueUsername, password)
 
         // Test that cookie is valid
         given().cookie("SESSION", cookies.session)
@@ -167,61 +168,53 @@ class SpringQuizIT {
                 .then()
                 .statusCode(200)
 
-        val username = "SomeUsername"
-        val firstname = "SomeFirstName"
-        val lastname = "SomeLastName"
-        val email = "MyMail@SomeMail.com"
-
-        val userDtoBody = UserDto(null, username, firstname, lastname, email)
-
-//        val userBody = "{\n" +
-//                "    \"id\": 1,\n" +
-//                "    \"userName\": \"user1\",\n" +
-//                "    \"firstName\": \"SomeFirstName\",\n" +
-//                "    \"lastName\": \"SomeLastName\",\n" +
-//                "    \"email\": \"MyMail@SomeMail.com\"\n" +
-//                "}"
+        var firstname = "SomeFirstName"
+        var lastname = "SomeLastName"
+        var email = "somemail@mail.com"
 
         // creates user
-        val userId =  given().contentType(ContentType.JSON)
+        val userId = given()
                 .cookie("SESSION", cookies.session)
                 .cookie("XSRF-TOKEN", cookies.csrf)
                 .header("X-XSRF-TOKEN", cookies.csrf)
-                .body(userDtoBody)
+                .contentType(ContentType.JSON)
+                .body("""
+                    {
+                        "userId": null,
+                        "userName": "$uniqueUsername",
+                        "firstName": "$firstname",
+                        "lastName": "$lastname",
+                        "email": "$email"
+                    }
+                    """)
                 .post("$USER_URL/user")
                 .then()
                 .statusCode(201)
                 .extract().asString()
 
-        userDtoBody.userId=userId.toLong()
-
-//        // updates user with put
-//        given().cookie("SESSION", cookies.session)
-//                .cookie("XSRF-TOKEN", cookies.csrf)
-//                .header("X-XSRF-TOKEN", cookies.csrf)
-//                .pathParam("id", userId)
-//                .put("$USER_URL/user/{id}")
-//                .then()
-//                .statusCode(204)
+//        // Change userDto
+//        firstname = "AnotherFirstName"
+//        email = "Anothermail@email.no"
 //
 //        // updates user with patch
-//        given().cookie("SESSION", cookies.session)
-//                .cookie("XSRF-TOKEN", cookies.csrf)
-//                .header("X-XSRF-TOKEN", cookies.csrf)
-//                .pathParam("id", userId)
-//                .put("$USER_URL/user/{id}")
-//                .then()
-//                .statusCode(204)
-
-        // deletes user
-//        given().pathParam("id", userId)
-//                .contentType(ContentType.JSON)
-//                .cookie("SESSION", cookies.session)
-//                .cookie("XSRF-TOKEN", cookies.csrf)
-//                .header("X-XSRF-TOKEN", cookies.csrf)
-//                .delete("$USER_URL/user/{id}")
-//                .then()
-//                .statusCode(204)
+        given().cookie("SESSION", cookies.session)
+                .cookie("XSRF-TOKEN", cookies.csrf)
+                .header("X-XSRF-TOKEN", cookies.csrf)
+                .auth()
+                .basic(uniqueUsername, "password")
+                .pathParam("id", userId)
+                .body("""
+                    {
+                        "userId": "$userId",
+                        "userName": null
+                        "firstName": "myfirstname",
+                        "lastName": null,
+                        "email": ""hello@mail.com"
+                    }
+                    """)
+                .patch("$USER_URL/user/{id}")
+                .then()
+                .statusCode(200)
     }
 
     @Test
@@ -254,7 +247,7 @@ class SpringQuizIT {
 
 
         // in GUI the user would select one correct answer for each question.
-        val answers: Array<Int> = arrayOf(1,1,1,1)
+        val answers: Array<Int> = arrayOf(1, 1, 1, 1)
 
         // The id would be extracted in the gui to be able to display the username
         // a logged in users role and username is available at /user
@@ -295,11 +288,11 @@ class SpringQuizIT {
         // Wait for 3000ms since it will take a moment for the message to be received by the highscore module, with
         // rabbitmq
         assertWithinTime(3000, {
-        given().cookie("SESSION", cookies.session)
-                .get("$HIGHSCORE_URL/highscore")
-                .then()
-                .statusCode(200)
-                .body("size()", equalTo(1))
+            given().cookie("SESSION", cookies.session)
+                    .get("$HIGHSCORE_URL/highscore")
+                    .then()
+                    .statusCode(200)
+                    .body("size()", equalTo(1))
         })
 
     }
