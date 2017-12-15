@@ -200,16 +200,15 @@ class SpringQuizIT {
         given().cookie("SESSION", cookies.session)
                 .cookie("XSRF-TOKEN", cookies.csrf)
                 .header("X-XSRF-TOKEN", cookies.csrf)
-                .auth()
-                .basic(uniqueUsername, "password")
+                .contentType(ContentType.JSON)
                 .pathParam("id", userId)
                 .body("""
                     {
                         "userId": "$userId",
-                        "userName": null
+                        "userName": null,
                         "firstName": "myfirstname",
                         "lastName": null,
-                        "email": ""hello@mail.com"
+                        "email": "hello@mail.com"
                     }
                     """)
                 .patch("$USER_URL/user/{id}")
