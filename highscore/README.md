@@ -15,7 +15,10 @@
 
  ### <i>Clarifications about the endpoints</i> ###
  <p>
-    
+    I have implemented all five http verbs required in the ScoreApi class. <br/>
+    <code> GET /highscore </code> <br/>
+    My GET method returns all scores and sorts them with the highest score on top using the sortedByDescending function. <br/>
+    My Patch method gets in a score it wants to change, and
  </p>
 
 
