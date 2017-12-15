@@ -4,9 +4,12 @@
  <p> The quiz module is a rest-service for handling quizzes. It contains 3 rest-controllers one for
  each model entity: Quiz, Question, Category. 
  <br/>
-  The reason why there is so many endpoints is because it is meant to be handled with a
-  GUI. Where an administrator can create categories add question to it and then compose
-  quizzes out of those questions. It would make sence to be able to 
+  The reason why there is so many endpoints(in 3 different controllers is because it is 
+  meant to be handled with a GUI. Where an administrator can create categories add question 
+  to it and then compose quizzes out of those questions. It would make sense to be able to have 
+  multiple ways of sorting the questions, categories and quizzes and thats why it is implemented
+  with three seperate controllers.
+  <br/>
  
  
  </p>
