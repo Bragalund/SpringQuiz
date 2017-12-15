@@ -16,7 +16,15 @@ There is a more detailed description of this module available
 [here](quiz/README.md).
 </p>
 
-#### Highscore service 
+#### Highscore service
+
+<p>The highscore module can create a new score and then sort all scores with the
+highest score on top.
+
+There is a more detailed description of this module available
+[here](highscore/README.md).
+</p>
+
 #### User service 
 
 ## Load balancing and routing ##
