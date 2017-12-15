@@ -47,21 +47,19 @@ Netflix zuul is used as a gateway and is the single service that is open for
 outside connections. It is running on port 80 and provides the following routes.
 <br/>
 <code> quiz/** </code> 
-<br/>
 
 All routes to the quiz service. See link below for more details. 
-[quiz service](quiz/README.md)  
+[quiz service](quiz/README.md)
 
-
-<code> user/details/** </code>
 <br/>
+<code> user/details/** </code>
+
 
 All routes to the user service see link below for more details. 
 [user service](user/README.md)
 
-<code> highscore/** </code>
-
 <br/>
+<code> highscore/** </code>
 
 All routes to the highscore service see link below for more details.
 [highscore service](link to highscore readme)
@@ -184,6 +182,14 @@ with sufficient CPU and memory is available(to prove that they actually work) he
 Our git repo for the project can be found here https://github.com/Bragalund/SpringQuiz
 </p>
 
+### Jenkins ###
+<p>
+The jenkins-server runs at AWS and listens to this repository. <br/>
+It automaticly runs the steps in the Jenkinsfile if it notices any changes and would have deployed to a container-cluster in google-cloud<br/>
+The jenkinsfile is runnable, <br/>
+but deployment is not possible because of the cost associated with the datapower this project needs to do the steps in the Jenkinsfile. <br/>
+The deployment-step is therefore not tested.
+</p>
 
 ### Contributions ###
 
@@ -205,11 +211,21 @@ security
 #### Henrik ####
 <p>
 Github Username: Bragalund <br/>
-Main service: User
+Main service: User <br>
+Additional features:
+e2e,
+docker/docker-compose,
+docs,
+Jenkins
+
 </p>
 
 #### Johannes ####
 <p>
 Github Username: husjoh15 <br/>
-Main service: Highscore
+Main service: Highscore <br/>
+Contributions: I have been responsible for the highscore microservice and all documentation about that.
+I have not been able to help alot with setting the services together due to it having problems running on
+a slow windows computer. I tried to run the whole project from my computer with docker-compose, and it took
+30 minutes before it crashed. So I have tried to help in other ways.
 </p>
