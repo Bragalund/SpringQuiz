@@ -61,8 +61,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login").permitAll()
                 .antMatchers("/user").authenticated()
                 // user-service rules
-                .antMatchers(HttpMethod.POST,"/user/details/**").authenticated()
                 .antMatchers(HttpMethod.GET, "/user/details/**").permitAll()
+                .antMatchers("/user/details/**").authenticated()
                 .anyRequest().denyAll()
                 .and()
                 .csrf()
