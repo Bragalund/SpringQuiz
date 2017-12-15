@@ -1,11 +1,48 @@
 # User
 
+### <i>Description</i> ###
+<p>
+This handles user-details associated with users. It has a user-entity and implements 
+</p>
+
+### <i> RESTful </i> ###
+<p>
+The service uses HTTP-verbs like GET, POST, PUT, PATCH and DELETE and specifies the resource in the URL. 
+
+</p>
+
+
+### <i> Security </i> ###
+<p>
+One important concept with the security in this module is that it users cant see or change other users information.
+Therefore security checks name in cookie and username with the ID, that is in the request. 
+
+There is also some form of validation of the URL by checking that the 
+
+Wanted security is enabled for RestAssured-tests, but disabled in running service. 
+The reason is that we get 403(forbidden) on almost all requests and couldnt get it to work with other services. 
+The security i want to use is overridden in the RestAssure-tests.
+Therefore i had to open up security for e2e-tests to pass. It works, 
+but not as intended and i would never accept this solution if it wasnt that i ran out of time trying to figure it out.
+</p>
+
+ ### <i>Tests</i> ###
+ ##### rest assured #####
+ <p>
+ Security is enabled for these tests and runs with in-memory authentication. 
+ This is the security i want to use, but couldnt figure out to work with rest of the services.</p>
+ 
+  ##### e2e ##### 
+<p>
+This creates a user in the DB and patches it.  
+</p>
+
 ### API
 <p>Endpoints are documented with swagger on: 
 /user/details/api/swagger-ui.html
 </p>
 
-![alt text](images/swagger.bmp "picture of swagger endpoints here")
+![alt text](images/swagger.bmp "picture of swagger endpoints")
 
 ### Documentation
 <p>The documentation used is Swagger and jacoco.
@@ -14,10 +51,6 @@ Swagger is reachable when system is running with docker-compose.
 The url is: /user/details/api/swagger-ui.html
 </p>
 
-
-
-### Tests
-<p>Using restassured and does authentication in memory without redis.</p>
 
 ###
 

@@ -29,6 +29,9 @@ You can view the documentation of this module
 #### User service 
 <p>Handles user-details associated with users. 
 It does not handle passwords.
+
+more indepth documentation is 
+[here](user/README.md).
 </p>
 
 ## Load balancing and routing ##
