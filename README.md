@@ -133,3 +133,28 @@ with sufficient CPU and memory is available(to prove that they actually work) he
 [system-test](e2e/src/test/kotlin/no.group3.SpringQuiz.e2e/SpringQuizIT.kt)
 
 </p>
+
+## Other ##
+
+### Git Repo ###
+<p>
+Our git repo for the project can be found here https://github.com/Bragalund/SpringQuiz
+</p>
+
+
+### Contributions ###
+
+#### Joakim ####
+<p>
+Github Username: josoder
+</p>
+
+#### Henrik ####
+<p>
+Github Username: Bragalund
+</p>
+
+#### Johannes ####
+<p>
+Github Username: husjoh15
+</p>
