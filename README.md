@@ -47,21 +47,19 @@ Netflix zuul is used as a gateway and is the single service that is open for
 outside connections. It is running on port 80 and provides the following routes.
 <br/>
 <code> quiz/** </code> 
-<br/>
 
 All routes to the quiz service. See link below for more details. 
-[quiz service](quiz/README.md)  
+[quiz service](quiz/README.md)
 
-
-<code> user/details/** </code>
 <br/>
+<code> user/details/** </code>
+
 
 All routes to the user service see link below for more details. 
 [user service](user/README.md)
 
-<code> highscore/** </code>
-
 <br/>
+<code> highscore/** </code>
 
 All routes to the highscore service see link below for more details.
 [highscore service](link to highscore readme)
@@ -191,6 +189,11 @@ security
 <p>
 Github Username: Bragalund <br/>
 Main service: User
+Additional features:
+e2e,
+docker,
+docs
+
 </p>
 
 #### Johannes ####
