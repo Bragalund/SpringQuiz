@@ -146,15 +146,18 @@ Our git repo for the project can be found here https://github.com/Bragalund/Spri
 
 #### Joakim ####
 <p>
-Github Username: josoder
+Github Username: josoder <br/>
+Main service: Quiz
 </p>
 
 #### Henrik ####
 <p>
-Github Username: Bragalund
+Github Username: Bragalund <br/>
+Main service: User
 </p>
 
 #### Johannes ####
 <p>
-Github Username: husjoh15
+Github Username: husjoh15 <br/>
+Main service: Highscore
 </p>
