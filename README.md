@@ -189,7 +189,7 @@ security
 #### Henrik ####
 <p>
 Github Username: Bragalund <br/>
-Main service: User
+Main service: User <br>
 Additional features:
 e2e,
 docker,
