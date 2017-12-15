@@ -73,6 +73,9 @@ The actual user credentials(username, password etc) is stored in a postgresql
 db.
 
 <i><b> XSRF protection: </b></i> <br/>
+All PUT, POST and PATCH methods that is routed threw zuul are secured from XSRF 
+attacks, this is proven in the e2e tests where unsafe methods has XSRF-token in both
+the header and the cookie.
 
 </p>
 
