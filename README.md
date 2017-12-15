@@ -21,7 +21,7 @@ There is a more detailed description of this module available
 <p>The highscore module can create a new score and then sort all scores with the
 highest score on top.
 
-You can view the documentation of this module 
+You can view the documentation of this module
 [here](highscore/README.md).
 </p>
 
