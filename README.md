@@ -125,8 +125,14 @@ the header and the cookie.
  replicas I.e with the case of highscore that is actually started twice in 
  docker-compose, was not sure how to set it up with JPA configuration etc.
  It seems to work fine with having a shared postgres instance with 
- hibernate set to <code>ddl-auto:"update"</code> so we went with this approach.
-
+ hibernate set to <code>ddl-auto:"update"</code> so we went with this approach. </br> 
+ A couple of hours before the delivery the e2e started to fail and we discovered that the highscore instances
+ actually inserts duplicates I.e both instances creates a new entry.. I can understand why this is happening the weird thing was that it did not
+ before.. </br>
+ Unfortunately we did not manage to fix this problem, will probably need an extra mechanism to synchronize
+ the insertions, which I could not find any solutions for searching in the material covered in class.
+ We did however make sure that the <i>amqp</i> implementation providing this feature actually works
+  with a slightly modified test.
 
 ## Testing: ##
 <p>
@@ -150,6 +156,14 @@ The test will take about 2-3 minutes to start up all the services. This is partl
 of all the containers and partly because eureka takes some time to get all instances registered.
 <br/> 
 <br/>
+<br/>
+In some cases <code>mvn clean install</code> have given errors because the computer could not manage to
+load all the services needed(e.g status 500 because zuul failed to route to the instance because it 
+did not start properly). 
+The solution to that has been(as seen in the video) to first do 
+<code>mvn clean package</code> and then run the tests after package is finished. 
+<br/>
+
 Because of the fact that this might happen a link to when the test are run on a computer
 with sufficient CPU and memory is available(to prove that they actually work) here:
 <br/>
