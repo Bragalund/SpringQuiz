@@ -22,6 +22,9 @@ spring:
   rabbitmq:
     host: rabbitmq
 
+security:
+  sessions: NEVER
+
 eureka:
   instance:
     preferIpAddress: true
@@ -31,8 +34,9 @@ eureka:
     serviceUrl:
       defaultZone: http://eureka:8761/eureka/
 
-security:
-  sessions: NEVER
+logging:
+  level:
+    org.springframework.security: debug
 
 ---
 spring:

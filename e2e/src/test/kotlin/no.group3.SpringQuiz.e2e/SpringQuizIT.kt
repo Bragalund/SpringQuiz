@@ -132,7 +132,7 @@ class SpringQuizIT {
 
     @Test
     fun testUser() {
-        val uniqueUsername = "admin"
+        val uniqueUsername = createUniqueId()
         val password = "password"
         val cookies = registerUser(uniqueUsername, password)
 
@@ -171,24 +171,24 @@ class SpringQuizIT {
 //        email = "Anothermail@email.no"
 //
 //        // updates user with patch
-//        given().cookie("SESSION", cookies.session)
-//                .cookie("XSRF-TOKEN", cookies.csrf)
-//                .header("X-XSRF-TOKEN", cookies.csrf)
-//                .auth()
-//                .basic("admin", "password")
-//                .pathParam("id", userId)
-//                .body("""
-//                    {
-//                        "userId": "$userId",
-//                        "userName": null
-//                        "firstName": "$firstname",
-//                        "lastName": null,
-//                        "email": "$email"
-//                    }
-//                    """)
-//                .patch("$USER_URL/user/{id}")
-//                .then()
-//                .statusCode(200)
+        given().cookie("SESSION", cookies.session)
+                .cookie("XSRF-TOKEN", cookies.csrf)
+                .header("X-XSRF-TOKEN", cookies.csrf)
+                .auth()
+                .basic(uniqueUsername, "password")
+                .pathParam("id", userId)
+                .body("""
+                    {
+                        "userId": "$userId",
+                        "userName": null
+                        "firstName": "myfirstname",
+                        "lastName": null,
+                        "email": ""hello@mail.com"
+                    }
+                    """)
+                .patch("$USER_URL/user/{id}")
+                .then()
+                .statusCode(200)
     }
 
     @Test

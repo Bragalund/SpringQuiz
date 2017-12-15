@@ -32,11 +32,11 @@ class config {
                 .apiInfo(apiInfo())
                 .select()
                 .paths(PathSelectors.any())
-                .apis(RequestHandlerSelectors.basePackage("no.group3.springQuiz.user.api"))
+                .apis(RequestHandlerSelectors.basePackage("no.group3.SpringQuiz.user.api"))
                 .build()
     }
 
-    private fun apiInfo(): ApiInfo {
+    fun apiInfo(): ApiInfo {
         return ApiInfoBuilder()
                 .title("API for REST User")
                 .description("It has CRUD-functionality for users and sessions for users.")
