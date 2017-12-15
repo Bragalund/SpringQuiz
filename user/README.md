@@ -18,7 +18,7 @@ To run the service with docker: <br>
 (requires to build all other sources and run this command from root-folder)
 
 <br>
-URL: `/user/details/api/ <your-request> `
+URL: <i><code>your-server</code>/user/details/api/<code>your-request</code> </i>
 </p>
 
 ### <i> RESTful </i> ###
@@ -32,7 +32,7 @@ The Id of the resource is specified the resource id in the url after the resourc
 ### <i> Security </i> ###
 <p>
 One important concept with the security in this module is that users cant see or change other users information.
-Therefore should check username in cookie with username from the ID in the URL. 
+Therefore it should check the username in the cookie with the username associated with the ID specified in the URL. 
 
 There is also some form of validation of the URL.
 
@@ -46,9 +46,8 @@ but not as intended and i would never accept this solution if it wasnt that i ra
  ##### rest assured #####
  <p>
  
- Security is enabled for RestAssured-tests and runs with in-memory authentication. 
- This is the [security](src/test/kotlin/no/group3/SpringQuiz/user/api/WebSecurityConfigLocal.kt) i would like to use on the service, but couldnt get to work.
- 
+ Security is enabled for RestAssured-tests and runs with in-memory authentication. <br>
+ This is the [security](src/test/kotlin/no/group3/SpringQuiz/user/api/WebSecurityConfigLocal.kt) i would like to use on the service, but couldnt get to work.<br>
  The tests are separated into: model- and api- tests.
  
  The api-tests uses an abstract [class](src/test/kotlin/no/group3/SpringQuiz/user/api/UserTestBase.kt) with configurations for the tests.
@@ -78,13 +77,25 @@ The API also incorparates actuator for checking the status of the running servic
 
 <p>
 The endpoints are structured as: <br>
-`/user`<br>
-`/user/{id}`<br>
+<i>/user</i><br>
+<i>/user/{id}</i><br>
 </p>
 
+<p>
+All endpoints are 
+</p>
+
+<p>
+ <i>GET</i> is idempotent and does not require a body. Only cookie and ID of user in URL for authentication. <br>
+ <i>POST</i> for a user is allowed as long that a valid cookie is provided. <br>
+ <i>PUT</i> Could have created a new resource if the security-policy would not been as strict as it is(in the tests).<br>
+ <i>PATCH></i> updates all fields that are not null and roll backs to old user if saving info to the DB fails. <br>
+ </p>
+
+
 ### Documentation
-<p>I use Swagger and jacoco.<br>
-Jacoco is generated in "test"-phase when running maven. <br>
+<p>Extra documentation is provided with Swagger and jacoco.<br>
+Jacoco is generated in maven "test"-phase. <br>
 Swagger is reachable when system is running with docker-compose. <br>
 The url is: `<your-server>/user/details/api/swagger-ui.html`
 </p>
