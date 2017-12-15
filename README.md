@@ -197,7 +197,7 @@ Main service: User
 #### Johannes ####
 <p>
 Github Username: husjoh15 <br/>
-Main service: Highscore
+Main service: Highscore <br/>
 Contributions: I have been responsible for the highscore microservice and all documentation about that.
 I have not been able to help alot with setting the services together due to it having problems running on
 a slow windows computer. I tried to run the whole project from my computer with docker-compose, and it took
