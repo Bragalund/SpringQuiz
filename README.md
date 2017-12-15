@@ -168,6 +168,14 @@ with sufficient CPU and memory is available(to prove that they actually work) he
 Our git repo for the project can be found here https://github.com/Bragalund/SpringQuiz
 </p>
 
+### Jenkins ###
+<p>
+The jenkins-server runs at AWS and listens to this repository. <br/>
+It automaticly runs the steps in the Jenkinsfile if it notices any changes and would have deployed to a container-cluster in google-cloud<br/>
+The jenkinsfile is runnable, <br/>
+but deployment is not possible because of the cost associated with the datapower this project needs to do the steps in the Jenkinsfile. <br/>
+The deployment-step is therefore not tested.
+</p>
 
 ### Contributions ###
 
@@ -192,8 +200,9 @@ Github Username: Bragalund <br/>
 Main service: User <br>
 Additional features:
 e2e,
-docker,
-docs
+docker/docker-compose,
+docs,
+Jenkins
 
 </p>
 
