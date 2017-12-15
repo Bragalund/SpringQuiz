@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
 import org.springframework.http.ResponseEntity
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
@@ -15,7 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails
 @Configuration
 @EnableWebSecurity
 class WebSecurityConfig : WebSecurityConfigurerAdapter() {
-    override fun configure(http: HttpSecurity) {
+override fun configure(http: HttpSecurity) {
 
         // To use PUT on user-resources and create a resource is not idempotent because of security-issues
 
@@ -25,10 +26,11 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                 .antMatchers(HttpMethod.GET, "/health").permitAll()
                 .antMatchers(HttpMethod.POST, "/user").permitAll()
                 .antMatchers( "/user/{id}/**")
-                .access("hasRole('USER') and @userSecurity.checkThatIdIsLong(#id) and @userSecurity.checkThatUserExist(#id) and @userSecurity.checkUserNameInDBWithCookie(authentication, #id)")
+                .access("hasRole('USER') and @userSecurity.checkUserNameInDBWithCookie(authentication, #id)")
                 .anyRequest().denyAll()
                 .and()
                 .csrf().disable()
+
     }
 
 
@@ -44,27 +46,36 @@ class UserSecurity {
     @Autowired
     private lateinit var userRepository: UserRepository
 
-    fun checkThatIdIsLong(id: String): Boolean {
-        try {
-            id.toLong() //Cast String(userId) to Long
-            return true
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return false
+//    fun checkThatIdIsLong(id: String): Boolean {
+//        try {
+//            id.toLong() //Cast String(userId) to Long
+//            return true
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
+//        return false
+//
+//    }
 
+
+//fun checkThatUserExist(id: Long): Boolean {
+//    return userRepository.exists(id)
+//}
+
+fun checkUserNameInDBWithCookie(authentication: Authentication, id: String): Boolean {
+    val idAsLong: Long
+    try {
+        idAsLong= id.toLong() //Cast String(userId) to Long
+    } catch (e: Exception) {
+        e.printStackTrace()
+        return false
     }
 
 
-fun checkThatUserExist(id: Long): Boolean {
-    return userRepository.exists(id)
-}
-
-fun checkUserNameInDBWithCookie(authentication: Authentication, id: String): Boolean {
     val cookieUsername = (authentication.principal as UserDetails).username
     val existingUsername: String
     try {
-        existingUsername = userRepository.findOne(id.toLong()).userName!!
+        existingUsername = userRepository.findOne(idAsLong).userName!!
     } catch (e: NullPointerException) {
         e.printStackTrace()
         return false

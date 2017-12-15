@@ -43,7 +43,7 @@ class SpringQuizIT {
             RestAssured.enableLoggingOfRequestAndResponseIfValidationFails()
 
 
-            await().atMost(500, TimeUnit.SECONDS)
+            await().atMost(700, TimeUnit.SECONDS)
                     .ignoreExceptions()
                     .until({
                         // zuul and eureka is up when 200 is returned
@@ -69,7 +69,7 @@ class SpringQuizIT {
                 .statusCode(401)
     }
 
-    class NeededCookies(val session:String, val csrf: String)
+    class NeededCookies(val session: String, val csrf: String)
 
     private fun registerUser(id: String, password: String): NeededCookies {
 
@@ -81,7 +81,7 @@ class SpringQuizIT {
                 .statusCode(403)
                 .extract().cookie("XSRF-TOKEN")
 
-        val session=  given().contentType(ContentType.URLENC)
+        val session = given().contentType(ContentType.URLENC)
                 .formParam("the_user", id)
                 .formParam("the_password", password)
                 .header("X-XSRF-TOKEN", xsrfToken)
@@ -111,7 +111,7 @@ class SpringQuizIT {
                 .then()
                 .statusCode(401)
 
-        val answer = AnswersDto(arrayOf(1,2,3,4), username = "not-authed")
+        val answer = AnswersDto(arrayOf(1, 2, 3, 4), username = "not-authed")
 
         given()
                 .pathParam("id", 1)
@@ -131,9 +131,9 @@ class SpringQuizIT {
     }
 
     @Test
-    fun testUser(){
-        val uniqueUsername = createUniqueId()
-        val password = "secret"
+    fun testUser() {
+        val uniqueUsername = "admin"
+        val password = "password"
         val cookies = registerUser(uniqueUsername, password)
 
         // Test that cookie is valid
@@ -147,7 +147,7 @@ class SpringQuizIT {
         var email = "somemail@mail.com"
 
         // creates user
-        val userId =  given()
+        val userId = given()
                 .cookie("SESSION", cookies.session)
                 .cookie("XSRF-TOKEN", cookies.csrf)
                 .header("X-XSRF-TOKEN", cookies.csrf)
@@ -166,48 +166,29 @@ class SpringQuizIT {
                 .statusCode(201)
                 .extract().asString()
 
-        // Change userDto
-        firstname = "AnotherFirstName"
-        email = "Anothermail@email.no"
-
-        // updates user with put
-        val res = given().cookie("SESSION", cookies.session)
-                .cookie("XSRF-TOKEN", cookies.csrf)
-                .header("X-XSRF-TOKEN", cookies.csrf)
-                .pathParam("id", userId)
-                .body("""
-                    {
-                        "userId": "$userId",
-                        "userName": null
-                        "firstName": "$firstname",
-                        "lastName": null,
-                        "email": "$email"
-                    }
-                    """)
-                .patch("$USER_URL/user/{id}")
-                .then()
-                .statusCode(200)
-
-       // assertEquals("tets", res.body)
+//        // Change userDto
+//        firstname = "AnotherFirstName"
+//        email = "Anothermail@email.no"
 //
 //        // updates user with patch
 //        given().cookie("SESSION", cookies.session)
 //                .cookie("XSRF-TOKEN", cookies.csrf)
 //                .header("X-XSRF-TOKEN", cookies.csrf)
+//                .auth()
+//                .basic("admin", "password")
 //                .pathParam("id", userId)
-//                .put("$USER_URL/user/{id}")
+//                .body("""
+//                    {
+//                        "userId": "$userId",
+//                        "userName": null
+//                        "firstName": "$firstname",
+//                        "lastName": null,
+//                        "email": "$email"
+//                    }
+//                    """)
+//                .patch("$USER_URL/user/{id}")
 //                .then()
-//                .statusCode(204)
-
-        // deletes user
-//        given().pathParam("id", userId)
-//                .contentType(ContentType.JSON)
-//                .cookie("SESSION", cookies.session)
-//                .cookie("XSRF-TOKEN", cookies.csrf)
-//                .header("X-XSRF-TOKEN", cookies.csrf)
-//                .delete("$USER_URL/user/{id}")
-//                .then()
-//                .statusCode(204)
+//                .statusCode(200)
     }
 
     @Test
@@ -240,7 +221,7 @@ class SpringQuizIT {
 
 
         // in GUI the user would select one correct answer for each question.
-        val answers: Array<Int> = arrayOf(1,1,1,1)
+        val answers: Array<Int> = arrayOf(1, 1, 1, 1)
 
         // The id would be extracted in the gui to be able to display the username
         // a logged in users role and username is available at /user
@@ -281,11 +262,11 @@ class SpringQuizIT {
         // Wait for 3000ms since it will take a moment for the message to be received by the highscore module, with
         // rabbitmq
         assertWithinTime(3000, {
-        given().cookie("SESSION", cookies.session)
-                .get("$HIGHSCORE_URL/highscore")
-                .then()
-                .statusCode(200)
-                .body("size()", equalTo(1))
+            given().cookie("SESSION", cookies.session)
+                    .get("$HIGHSCORE_URL/highscore")
+                    .then()
+                    .statusCode(200)
+                    .body("size()", equalTo(1))
         })
 
     }

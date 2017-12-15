@@ -5,9 +5,10 @@ import org.springframework.core.annotation.Order
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 
+
 @EnableWebSecurity
 @Order(1)
-open class WebSecurityConfigLocal : WebSecurityConfig() {
+class WebSecurityConfigLocal : WebSecurityConfig() {
 
 //    override fun configure(http: HttpSecurity) {
 //        http.httpBasic()
