@@ -177,6 +177,8 @@ but deployment is not possible because of the cost associated with the datapower
 The deployment-step is therefore not tested.
 </p>
 
+![alt text](./user/images/Jenkins_Build_taking_to_long.bmp "Picture of Jenkins-server build time.")
+
 ### Contributions ###
 
 #### Joakim ####
