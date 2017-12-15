@@ -70,7 +70,7 @@
  Postgres is used when running in production, an image dedicated to this module is started
  with docker-compose. 
  <br/>
- The tests however is running with h2. 
+ The tests(the local ones) however is running with h2. 
  
  </br>
  For the purpose of the e2e tests, to make it easier to test, the instance will get pre-loaded
