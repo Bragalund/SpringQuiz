@@ -5,7 +5,7 @@
 
  ### <i> RESTful </i> ###
  <p> The api is made with level 2 standards of RESTful api. It follows rules for the URL and HTTP verbs. My url is /highscore and not /highscores because it will always be one list over the best scores,
- not multiple. It still would probably make more sense to have it as /highscores according to REST standards, but I just left it at /highscore
+ not multiple. It still could probably make more sense to have it as /highscores according to REST standards, but I just left it at /highscore
   </p>
 
  ### <i> Swagger </i> ###
@@ -31,3 +31,11 @@
 
 
  ### <i>Tests</i> ###
+<p>
+#### Rest Assured ####
+    I have made RestAssured tests for all of my endpoints. <br/>
+    My GET test was kinda tricky so I used an assertEquals to the expected output. It is not the best way to do it, but it works. <br/>
+
+#### TestBase ####
+    I have two methods in the ScoreTestBase class which makes testing easier. Both methods are a post and they return either a dto or the id to the created score.
+</p>
