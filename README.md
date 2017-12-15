@@ -153,7 +153,8 @@ of all the containers and partly because eureka takes some time to get all insta
 Because of the fact that this might happen a link to when the test are run on a computer
 with sufficient CPU and memory is available(to prove that they actually work) here:
 <br/>
-[link to youtube]
+
+[link to youtube](https://youtu.be/T-dNrG7SBkg)
 
 
 [amqp-test](e2e/src/test/kotlin/no.group3.SpringQuiz.e2e/HighscoreQuizAmqpIT.kt)
