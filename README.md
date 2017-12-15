@@ -72,6 +72,9 @@ a api called auth handling requests. <br/>
 <code> GET /user </code> (get information about the authenticated user) <br/>
 <br/>
 
+Since the credentials is handled by zuul it has it's own db server(postgres).
+I is started with docker-compose.
+
 <i><b> Basic auth: </b></i> <br/>
 Authentication is handled by spring security and the sessions 
 are stored in a redis store which is shared among the components 
@@ -106,6 +109,16 @@ the header and the cookie.
  
  
 </p>
+
+#### Persistence management ####
+ Every service that needs to persist data has it's own database dedicated to
+ it. They are all using postgres(besides within the local tests) and all the
+ postgres images is started using docker-compose. <br/>
+ We struggled a bit to figure out how to handle the persistence when using
+ replicas I.e with the case of highscore that is actually started twice in 
+ docker-compose, was not sure how to set it up with JPA configuration etc.
+ It seems to work fine with having a shared postgres instance with 
+ hibernate set to <code>ddl-auto:"update"</code> so we went with this approach.
 
 
 ## Testing: ##
