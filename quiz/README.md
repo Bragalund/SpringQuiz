@@ -3,6 +3,13 @@
  ### <i>Description</i> ###
  <p> The quiz module is a rest-service for handling quizzes. It contains 3 rest-controllers one for
  each model entity: Quiz, Question, Category. 
+ <br/>
+  The reason why there is so many endpoints is because it is meant to be handled with a
+  GUI. Where an administrator can create categories add question to it and then compose
+  quizzes out of those questions. It would make sence to be able to 
+ 
+ 
+ </p>
  
  ### <i> RESTful </i> ###
  <p> The controllers has been implemented according to REST lvl 2. They follow the specifications 
@@ -48,6 +55,15 @@
  Besides the features described above the rest is self-explanatory. For more information
  about the endpoints swagger is as mentioned available as well. 
  
+ ### DB ### 
+ Postgres is used when running in production, an image dedicated to this module is started
+ with docker-compose. 
+ <br/>
+ The tests however is running with h2. 
+ 
+ </br>
+ For the purpose of the e2e tests, to make it easier to test, the instance will get pre-loaded
+ with 2 quizzes. 
  
  ### <i>Tests</i> ###
  ##### rest assured #####
